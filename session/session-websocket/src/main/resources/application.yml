@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-boot-session-websocket
+  mvc:
+    static-path-pattern: /**
+    view:
+      prefix: /html/
+      suffix: .html
+  web:
+    resources:
+      static-locations: classpath:static

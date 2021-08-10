@@ -1,12 +1,12 @@
 server:
-  port: 8084
+  port: 8080
 spring:
   application:
     name: spring-boot-security
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/security
-    username: root
-    password: root
-  thymeleaf:
-    cache: false
+  session:
+    store-type: redis
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 3000

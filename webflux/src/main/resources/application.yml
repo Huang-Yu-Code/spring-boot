@@ -1,0 +1,14 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: spring-boot-webflux
+  webflux:
+    static-path-pattern: /**
+  mvc:
+    view:
+      prefix: /html/
+      suffix: .html
+  web:
+    resources:
+      static-locations: classpath:static/

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>com.github.codingob</groupId>
     <artifactId>spring-boot</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
@@ -19,6 +19,9 @@
         <module>amqp</module>
         <module>session</module>
         <module>mail</module>
+        <module>websocket</module>
+        <module>admin</module>
+        <module>webflux</module>
     </modules>
 
     <properties>
@@ -26,7 +29,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <spring-boot.version>2.5.2</spring-boot.version>
         <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
-        <mysql.version>8.0.25</mysql.version>
+        <mybatis-plusspring-boot.version>3.4.3.1</mybatis-plusspring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +40,16 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plusspring-boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

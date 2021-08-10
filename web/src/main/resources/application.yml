@@ -3,3 +3,11 @@ server:
 spring:
   application:
     name: spring-boot-web
+  web:
+    resources:
+      static-locations: classpath:static/
+  mvc:
+    static-path-pattern: /**
+    view:
+      prefix: /html/
+      suffix: .html

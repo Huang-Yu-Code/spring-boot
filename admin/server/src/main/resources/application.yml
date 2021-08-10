@@ -1,0 +1,9 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: spring-boot-admin-server
+  thymeleaf:
+    cache: false
+    check-template: false
+    check-template-location: false
