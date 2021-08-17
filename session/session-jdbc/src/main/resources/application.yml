@@ -5,6 +5,8 @@ spring:
     name: spring-boot-session-jdbc
   session:
     store-type: jdbc
-  h2:
-    console:
-      enabled: true
+    timeout: 1800
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_session
+    username: root
+    password: root

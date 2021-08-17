@@ -22,14 +22,18 @@
         <module>websocket</module>
         <module>admin</module>
         <module>webflux</module>
+        <module>webservice</module>
+        <module>starter</module>
+        <module>shiro</module>
     </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring-boot.version>2.5.2</spring-boot.version>
-        <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
-        <mybatis-plusspring-boot.version>3.4.3.1</mybatis-plusspring-boot.version>
+        <mybatis.version>2.2.0</mybatis.version>
+        <mybatis-plus.version>3.4.3.1</mybatis-plus.version>
+        <shiro.version>1.7.1</shiro.version>
     </properties>
 
     <dependencyManagement>
@@ -44,12 +48,17 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot.version}</version>
+                <version>${mybatis.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>${mybatis-plusspring-boot.version}</version>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-web-starter</artifactId>
+                <version>${shiro.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

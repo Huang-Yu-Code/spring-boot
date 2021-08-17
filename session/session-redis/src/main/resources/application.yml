@@ -5,6 +5,7 @@ spring:
     name: spring-boot-session-redis
   session:
     store-type: redis
+    timeout: 60
   redis:
     host: localhost
     port: 6379
