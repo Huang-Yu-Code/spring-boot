@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 登录
+ * 注册
  *
  * @author codingob
  * @version 1.0.0
@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Login {
+public class Logon {
     private String username;
     private String password;
+    private String rePassword;
     private String code;
 }

@@ -1,13 +1,12 @@
 package com.github.codingob.amqp;
 
-import com.github.codingob.amqp.entity.Entity;
-import com.github.codingob.amqp.service.QueueService;
-import com.github.codingob.amqp.service.WorkFairService;
-import com.github.codingob.amqp.service.WorkLoopService;
-import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * 测试类
@@ -17,36 +16,36 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @since JDK1.8
  */
 @SpringBootTest
-@Slf4j
 public class AmqpTest {
-    @Autowired
-    private QueueService queueService;
 
     @Autowired
-    private WorkFairService workFairService;
+    private RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    private WorkLoopService workLoopService;
 
-    @Test
-    void queueService() {
-        Entity entity = new Entity(1L, "rabbitmq");
-        queueService.send(entity);
+    @BeforeEach
+    void config(){
+        rabbitTemplate.setReturnsCallback(returnedMessage -> {
+            System.out.println("消息路由失败!");
+            System.out.println(returnedMessage);
+        });
+        rabbitTemplate.setConfirmCallback((correlationData, b, s) -> {
+            if (b) {
+                System.out.println("消息投递成功");
+            } else {
+                System.out.println("消息投递失败 " + s);
+            }
+        });
     }
 
     @Test
-    void workFairService() {
-        for (long i = 0L; i < 10; i++) {
-            Entity entity = new Entity(i, "rabbitmq");
-            workFairService.send(entity);
-        }
+    void queue(){
+        rabbitTemplate.convertAndSend("queue1","message");
     }
 
+
     @Test
-    void workLoopService() {
-        for (long i = 0L; i < 10; i++) {
-            Entity entity = new Entity(i, "rabbitmq");
-            workLoopService.send(entity);
-        }
+    void sendACK(){
+        rabbitTemplate.convertAndSend("","ack.queue","ack.queue",new CorrelationData("1"));
     }
+
 }
