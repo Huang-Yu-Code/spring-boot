@@ -1,12 +1,7 @@
 package com.demo.web.interceptor;
 
-import com.demo.web.util.ResponseUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,29 +15,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 @Slf4j
-public class AuthInterceptor implements HandlerInterceptor {
-
-    private final ObjectMapper mapper;
-
-    public AuthInterceptor(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
-
+public class GlobalInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 放行静态资源
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-        // 认证
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (null == token) {
-            int status = HttpStatus.UNAUTHORIZED.value();
-            response.setStatus(status);
-            response.setContentType("application/json; charset=utf-8");
-            response.getWriter().write(mapper.writeValueAsString(ResponseUtils.failure(status, "非法访问")));
-            return false;
-        }
+        String ip = request.getRemoteAddr();
+        String path = request.getServletPath();
+        String method = request.getMethod();
+        log.info(String.format("ip:%s,path:%s,method:%s", ip, path, method));
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

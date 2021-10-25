@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>SpringBoot-Web</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 </head>
 <body>
-
+<img src="http://localhost:8084/web/favicon.ico" alt="">
+<script>
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8084/web/json", true);
+    xhr.setRequestHeader("Accept", "*/*");
+    // xhr.setRequestHeader("Authorization", "*/*");
+    xhr.withCredentials = true;
+    xhr.responseType = "json";
+    xhr.send();
+    console.log(xhr);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.response);
+        }
+    }
+</script>
 </body>
 </html>

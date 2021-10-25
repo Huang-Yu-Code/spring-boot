@@ -1,8 +1,10 @@
 package com.demo.web.config;
 
 import com.demo.web.interceptor.AuthInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.web.interceptor.GlobalInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,15 +17,32 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private AuthInterceptor authInterceptor;
 
-    @Autowired
-    public void setAuthInterceptor(AuthInterceptor authInterceptor) {
+    private final GlobalInterceptor globalInterceptor;
+
+    private final AuthInterceptor authInterceptor;
+
+    public WebMvcConfig(GlobalInterceptor globalInterceptor, AuthInterceptor authInterceptor) {
+        this.globalInterceptor = globalInterceptor;
         this.authInterceptor = authInterceptor;
     }
 
+    // 拦截器
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(globalInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
+        registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
+    }
+
+    // 跨域处理
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
+                .exposedHeaders(HttpHeaders.AUTHORIZATION)
+                .allowCredentials(true);
     }
 }

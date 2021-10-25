@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author yu
  */
 @SpringBootApplication
-@MapperScan(basePackages = "com.demo.mybatis.mapper")
+@MapperScan(basePackages = "com.demo.mybatis.dao")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
