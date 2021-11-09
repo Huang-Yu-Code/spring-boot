@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,8 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/10/27 0:23
+ * 认证拦截器
+ *
  * @author codingob
  * @version 1.0.0
  * @since JDK1.8
@@ -36,10 +42,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         // 认证
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (null == token) {
+        if (null == token || "null".equals(token)) {
             int status = HttpStatus.UNAUTHORIZED.value();
             response.setStatus(status);
-            response.setContentType("application/json; charset=utf-8");
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(mapper.writeValueAsString(ResponseUtils.failure(status, "非法访问")));
             return false;
         }

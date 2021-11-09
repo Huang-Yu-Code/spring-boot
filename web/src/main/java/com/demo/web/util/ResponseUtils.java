@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/10/27 0:23
  * Response工具类
  *
  * @author codingob
@@ -40,8 +42,8 @@ public class ResponseUtils extends HashMap<String, Object> implements Serializab
     }
 
     public ResponseUtils putInfo(Map<String, Object> info) {
-        for (String key: info.keySet()){
-            this.putInfo(key,info.get(key));
+        for (String key : info.keySet()) {
+            this.putInfo(key, info.get(key));
         }
         return this;
     }

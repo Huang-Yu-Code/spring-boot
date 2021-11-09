@@ -32,7 +32,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(globalInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
-        registry.addInterceptor(authInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/captcha");
     }
 
     // 跨域处理

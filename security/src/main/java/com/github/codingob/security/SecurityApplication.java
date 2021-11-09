@@ -5,7 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/10/27 0:36
+ *
  * @author codingob
+ * @version 1.0.0
+ * @since JDK1.8
  */
 @SpringBootApplication
 @EnableRedisHttpSession

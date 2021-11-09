@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/10/27 0:23
  * 文件下载工具类
  *
  * @author codingob
@@ -19,6 +21,7 @@ public class DownloadUtils {
 
     /**
      * 从Resources下载文件
+     *
      * @param file 文件名(相对路径)
      * @return 文件字节数组
      */
@@ -29,6 +32,7 @@ public class DownloadUtils {
 
     /**
      * 从System下载文件
+     *
      * @param file 文件名(绝对路径)
      * @return 文件字节数组
      */
@@ -39,6 +43,7 @@ public class DownloadUtils {
 
     /**
      * 转换字节数组
+     *
      * @param resource 资源
      * @return 字节数组
      */

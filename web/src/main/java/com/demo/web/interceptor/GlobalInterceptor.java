@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/10/27 0:23
+ * 全局拦截器
+ *
  * @author codingob
  * @version 1.0.0
  * @since JDK1.8
@@ -22,6 +26,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         String path = request.getServletPath();
         String method = request.getMethod();
         log.info(String.format("ip:%s,path:%s,method:%s", ip, path, method));
+        log.info("session:{}", request.getSession().getId());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
