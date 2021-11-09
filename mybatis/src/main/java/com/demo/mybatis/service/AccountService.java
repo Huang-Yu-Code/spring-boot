@@ -1,7 +1,8 @@
 package com.demo.mybatis.service;
 
 import com.demo.mybatis.dao.AccountDao;
-import com.demo.mybatis.model.*;
+import com.demo.mybatis.entity.Account;
+import com.demo.mybatis.entity.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,90 +23,41 @@ import java.util.List;
 @Slf4j
 public class AccountService {
 
-    private final AccountDao dao;
+    private final AccountDao accountDao;
 
-    public AccountService(AccountDao dao) {
-        this.dao = dao;
+    public AccountService(AccountDao accountDao) {
+        this.accountDao = accountDao;
     }
 
-    public boolean create(AccountBO bo) {
-        Assert.notNull(bo, "为空");
-        Account model = new Account();
-        model.setUserId(bo.getUserId());
-        model.setBankId(bo.getBankId());
-        int rows = dao.create(model);
-        return rows == 1;
+    public Account add(Account account) {
+        int rows = accountDao.add(account);
+        Assert.isTrue(rows == 1, "新增失败");
+        return accountDao.get(account.getId());
     }
 
-    public boolean create(List<AccountBO> boList) {
-        Assert.notNull(boList, "为空");
-        boolean result = true;
-        for (AccountBO bo : boList) {
-            result = result && create(bo);
-        }
-        return result;
+    public Account update(Account account) {
+        int rows = accountDao.update(account);
+        Assert.isTrue(rows == 1, "更新失败");
+        return accountDao.get(account.getId());
     }
 
-    public boolean update(AccountBO bo) {
-        Assert.notNull(bo, "为空");
-        Account model = new Account();
-        model.setMoney(bo.getMoney());
-        int rows = dao.update(model);
-        return rows == 1;
+    public Account get(long id) {
+        Account account = accountDao.get(id);
+        Assert.notNull(account, "未找到");
+        return account;
     }
 
-    public boolean update(List<AccountBO> boList) {
-        Assert.notNull(boList, "为空");
-        boolean result = true;
-        for (AccountBO bo : boList) {
-            result = result && update(bo);
-        }
-        return result;
-    }
-
-    public AccountVO get(String id) {
-        Assert.notNull(id, "为空");
-        AccountVO vo = dao.get(id);
-        log.info("get{}", vo);
-        Assert.notNull(vo, "未找到");
-        return vo;
-    }
-
-    public List<AccountVO> getList(List<String> idList) {
-        Assert.notNull(idList, "为空");
-        List<AccountVO> voList = dao.getList(idList);
-        log.info("getList{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
-    }
-
-    public List<AccountVO> getPage(long currentPage, long pageSize) {
+    public List<Account> getPage(long currentPage, long pageSize) {
         Page page = new Page(currentPage, pageSize);
-        List<AccountVO> voList = dao.getPage(page);
-        log.info("getPage{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
+        return accountDao.getPage(page);
     }
 
-    public List<AccountVO> getAll() {
-        List<AccountVO> voList = dao.getAll();
-        log.info("getAll{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
+    public List<Account> getAll() {
+        return accountDao.getAll();
     }
 
-    public boolean delete(String id) {
-        Assert.notNull(id, "为空");
-        int rows = dao.delete(id);
-        return rows == 1;
-    }
-
-    public boolean delete(List<String> idList) {
-        Assert.notNull(idList, "为空");
-        boolean result = true;
-        for (String id : idList) {
-            result = result && delete(id);
-        }
-        return result;
+    public void delete(Account account) {
+        int rows = accountDao.delete(account);
+        Assert.isTrue(rows == 1, "删除失败");
     }
 }

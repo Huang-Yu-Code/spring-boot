@@ -1,12 +1,12 @@
-package com.demo.mybatis.model;
+package com.demo.mybatis.entity;
 
 import lombok.Data;
 
 /**
  * 项目: spring-boot
- * 时间: 2021/10/24 3:36
+ * 时间: 2021/11/9 11:23
  *
- * @author codingob
+ * @author HuangYu
  * @version 1.0.0
  * @since JDK1.8
  */

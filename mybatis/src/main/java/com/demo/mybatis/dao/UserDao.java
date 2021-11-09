@@ -1,6 +1,7 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.model.*;
+import com.demo.mybatis.entity.Page;
+import com.demo.mybatis.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,56 +20,48 @@ public interface UserDao {
     /**
      * 新增
      *
-     * @param model model
+     * @param user 用户
      * @return rows
      */
-    int create(User model);
+    int add(User user);
 
     /**
-     * 更新
+     * 查询
      *
-     * @param model model
-     * @return rows
+     * @param id 用户ID
+     * @return User
      */
-    int update(User model);
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return rows
-     */
-    int delete(@Param("id") String id);
-
-    /**
-     * 查询单条
-     *
-     * @param id id
-     * @return VO
-     */
-    UserVO get(@Param("id") String id);
-
-    /**
-     * 查询多条
-     *
-     * @param idList idList
-     * @return VOList
-     */
-    List<UserVO> getList(List<String> idList);
+    User get(@Param("id") long id);
 
     /**
      * 查询全部
      *
-     * @return VOList
+     * @return List<User>
      */
-    List<UserVO> getAll();
+    List<User> getAll();
 
     /**
      * 分页查询
      *
-     * @param page page
-     * @return VOList
+     * @param page 分页
+     * @return List<User>
      */
-    List<UserVO> getPage(Page page);
+    List<User> getPage(Page page);
+
+    /**
+     * 更新
+     *
+     * @param user 用户
+     * @return rows
+     */
+    int update(User user);
+
+    /**
+     * 删除
+     *
+     * @param user 用户
+     * @return rows
+     */
+    int delete(User user);
 
 }

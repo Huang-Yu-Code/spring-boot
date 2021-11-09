@@ -1,8 +1,7 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.model.Bank;
-import com.demo.mybatis.model.BankVO;
-import com.demo.mybatis.model.Page;
+import com.demo.mybatis.entity.Bank;
+import com.demo.mybatis.entity.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,56 +20,48 @@ public interface BankDao {
     /**
      * 新增
      *
-     * @param model model
+     * @param bank 银行
      * @return rows
      */
-    int create(Bank model);
-
-    /**
-     * 更新
-     *
-     * @param model model
-     * @return rows
-     */
-    int update(Bank model);
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return rows
-     */
-    int delete(@Param("id") String id);
+    int add(Bank bank);
 
     /**
      * 查询单条
      *
      * @param id id
-     * @return VO
+     * @return Bank
      */
-    BankVO get(@Param("id") String id);
-
-    /**
-     * 查询多条
-     *
-     * @param idList idList
-     * @return VOList
-     */
-    List<BankVO> getList(List<String> idList);
+    Bank get(@Param("id") long id);
 
     /**
      * 查询全部
      *
-     * @return VOList
+     * @return List<Bank>
      */
-    List<BankVO> getAll();
+    List<Bank> getAll();
 
     /**
      * 分页查询
      *
-     * @param page page
-     * @return VOList
+     * @param page 分页
+     * @return List<Bank>
      */
-    List<BankVO> getPage(Page page);
+    List<Bank> getPage(Page page);
+
+    /**
+     * 更新
+     *
+     * @param bank 银行
+     * @return rows
+     */
+    int update(Bank bank);
+
+    /**
+     * 删除
+     *
+     * @param bank 银行
+     * @return rows
+     */
+    int delete(Bank bank);
 
 }

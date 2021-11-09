@@ -1,11 +1,8 @@
 package com.demo.mybatis.service;
 
 import com.demo.mybatis.dao.UserDao;
-import com.demo.mybatis.model.Page;
-import com.demo.mybatis.model.User;
-import com.demo.mybatis.model.UserBO;
-import com.demo.mybatis.model.UserVO;
-import lombok.extern.slf4j.Slf4j;
+import com.demo.mybatis.entity.Page;
+import com.demo.mybatis.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -22,95 +19,45 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-@Slf4j
 public class UserService {
 
-    private final UserDao dao;
+    private final UserDao userDao;
 
-    public UserService(UserDao dao) {
-        this.dao = dao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    public boolean create(UserBO bo) {
-        Assert.notNull(bo, "为空");
-        User model = new User();
-        model.setUsername(bo.getUsername());
-        model.setPassword(bo.getPassword());
-        int rows = dao.create(model);
-        return rows == 1;
+    public User add(User user) {
+        int rows = userDao.add(user);
+        Assert.isTrue(rows == 1, "新增失败");
+        Long id = user.getId();
+        return userDao.get(id);
     }
 
-    public boolean create(List<UserBO> boList) {
-        Assert.notEmpty(boList, "为空");
-        boolean result = true;
-        for (UserBO bo : boList) {
-            result = result && create(bo);
-        }
-        return result;
+    public User update(User user) {
+        int rows = userDao.update(user);
+        Assert.isTrue(rows == 1, "更新失败");
+        Long id = user.getId();
+        return userDao.get(id);
     }
 
-    public boolean update(UserBO bo) {
-        Assert.notNull(bo, "为空");
-        User model = new User();
-        model.setUserId(bo.getUserId());
-        model.setUsername(bo.getUsername());
-        model.setPassword(bo.getPassword());
-        int rows = dao.update(model);
-        return rows == 1;
+    public User get(long id) {
+        User user = userDao.get(id);
+        Assert.notNull(user, "查询失败");
+        return user;
     }
 
-    public boolean update(List<UserBO> boList) {
-        Assert.notEmpty(boList, "为空");
-        boolean result = true;
-        for (UserBO bo : boList) {
-            result = result && update(bo);
-        }
-        return result;
+    public List<User> getPage(long currentPage, long pageSize) {
+        return userDao.getPage(new Page(currentPage, pageSize));
     }
 
-    public UserVO get(String id) {
-        Assert.notNull(id, "为空");
-        UserVO vo = dao.get(id);
-        log.info("get{}", vo);
-        Assert.notNull(vo, "未找到");
-        return vo;
+    public List<User> getAll() {
+        return userDao.getAll();
     }
 
-    public List<UserVO> getList(List<String> idList) {
-        Assert.notNull(idList, "为空");
-        List<UserVO> voList = dao.getList(idList);
-        log.info("getList{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
-    }
-
-    public List<UserVO> getPage(long currentPage, long pageSize) {
-        List<UserVO> voList = dao.getPage(new Page(currentPage, pageSize));
-        log.info("getPage{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
-    }
-
-    public List<UserVO> getAll() {
-        List<UserVO> voList = dao.getAll();
-        log.info("getAll{}", voList);
-        Assert.notEmpty(voList, "未找到");
-        return voList;
-    }
-
-    public boolean delete(String id) {
-        Assert.notNull(id, "为空");
-        int rows = dao.delete(id);
-        return rows == 1;
-    }
-
-    public boolean delete(List<String> idList) {
-        Assert.notEmpty(idList, "为空");
-        boolean result = true;
-        for (String id : idList) {
-            result = result && delete(id);
-        }
-        return result;
+    public void delete(User user) {
+        int rows = userDao.delete(user);
+        Assert.isTrue(rows == 1, "删除失败");
     }
 
 }

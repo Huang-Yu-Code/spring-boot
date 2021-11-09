@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.dao.AccountDao">
+
+    <resultMap id="vo" type="Account">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="money" column="money"/>
+        <result property="locked" column="is_locked"/>
+        <result property="version" column="version"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="delete" column="is_delete"/>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true">
+        INSERT INTO sys_account (user_id, bank_id)
+        VALUES (#{userId}, #{bankId})
+    </insert>
+
+    <select id="get" resultMap="vo">
+        SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
+        from sys_account
+        where id = #{id}
+          and is_delete = 0
+    </select>
+
+    <select id="getAll" resultMap="vo">
+        SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
+        from sys_account
+        where is_delete = 0
+        order by gmt_create
+    </select>
+
+    <select id="getPage" resultMap="vo">
+        SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
+        from sys_account
+        where is_delete = 0
+        order by gmt_create
+        limit #{startIndex}, #{endIndex}
+    </select>
+
+    <update id="update">
+        UPDATE sys_account
+        <set>
+            <if test="money!=null">
+                money=#{money},version=version+1
+            </if>
+        </set>
+        WHERE id = #{id} AND version=#{version} AND is_delete = 0
+    </update>
+
+    <update id="delete">
+        UPDATE sys_account
+        SET is_delete = 1,
+            version=version + 1
+        WHERE id = #{id}
+          AND version = #{version}
+          AND is_delete = 0
+    </update>
+
+</mapper>

@@ -1,6 +1,7 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.model.*;
+import com.demo.mybatis.entity.Account;
+import com.demo.mybatis.entity.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,49 +20,25 @@ public interface AccountDao {
     /**
      * 新增
      *
-     * @param model model
+     * @param account 账户
      * @return rows
      */
-    int create(Account model);
+    int add(Account account);
 
     /**
-     * 更新
+     * 查询
      *
-     * @param model model
-     * @return rows
-     */
-    int update(Account model);
-
-    /**
-     * 删除
-     *
-     * @param id id
-     * @return rows
-     */
-    int delete(@Param("id") String id);
-
-    /**
-     * 查询单条
-     *
-     * @param id id
+     * @param id 账户id
      * @return VO
      */
-    AccountVO get(@Param("id") String id);
-
-    /**
-     * 查询多条
-     *
-     * @param idList idList
-     * @return VOList
-     */
-    List<AccountVO> getList(List<String> idList);
+    Account get(@Param("id") long id);
 
     /**
      * 查询全部
      *
      * @return VOList
      */
-    List<AccountVO> getAll();
+    List<Account> getAll();
 
     /**
      * 分页查询
@@ -69,5 +46,21 @@ public interface AccountDao {
      * @param page page
      * @return VOList
      */
-    List<AccountVO> getPage(Page page);
+    List<Account> getPage(Page page);
+
+    /**
+     * 更新
+     *
+     * @param account 账户
+     * @return rows
+     */
+    int update(Account account);
+
+    /**
+     * 删除
+     *
+     * @param account 账户
+     * @return rows
+     */
+    int delete(Account account);
 }
