@@ -30,19 +30,21 @@ public class AccountService {
     }
 
     public Account add(Account account) {
+        Account account1 = accountDao.get(Account.builder().userId(account.getUserId()).bankId(account.getBankId()).delete(false).build());
+        Assert.isNull(account1, "账户已存在");
         int rows = accountDao.add(account);
         Assert.isTrue(rows == 1, "新增失败");
-        return accountDao.get(account.getId());
+        return accountDao.get(Account.builder().id(account.getId()).delete(false).build());
     }
 
     public Account update(Account account) {
         int rows = accountDao.update(account);
         Assert.isTrue(rows == 1, "更新失败");
-        return accountDao.get(account.getId());
+        return accountDao.get(Account.builder().id(account.getId()).delete(false).build());
     }
 
-    public Account get(long id) {
-        Account account = accountDao.get(id);
+    public Account get(Account account) {
+        account = accountDao.get(account);
         Assert.notNull(account, "未找到");
         return account;
     }

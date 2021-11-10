@@ -16,16 +16,43 @@
         <result property="delete" column="is_delete"/>
     </resultMap>
 
-    <insert id="add" useGeneratedKeys="true">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_account (user_id, bank_id)
         VALUES (#{userId}, #{bankId})
     </insert>
 
     <select id="get" resultMap="vo">
         SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
-        from sys_account
-        where id = #{id}
-          and is_delete = 0
+        FROM sys_account
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="bankId != null">
+                AND bank_id = #{bankId}
+            </if>
+            <if test="money != null">
+                AND money = #{money}
+            </if>
+            <if test="locked != null">
+                AND is_locked = #{locked}
+            </if>
+            <if test="version != null">
+                AND version = #{version}
+            </if>
+            <if test="gmtCreate != null">
+                AND gmt_create = #{gmtCreate}
+            </if>
+            <if test="gmtModified != null">
+                AND gmt_modified = #{gmtModified}
+            </if>
+            <if test="delete != null">
+                AND is_delete = #{delete}
+            </if>
+        </where>
     </select>
 
     <select id="getAll" resultMap="vo">

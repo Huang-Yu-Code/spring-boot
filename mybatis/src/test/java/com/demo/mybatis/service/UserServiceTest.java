@@ -69,7 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("删除")
+    @DisplayName("逻辑删除")
     void delete() {
         User user = service.get(1L);
         service.delete(user);

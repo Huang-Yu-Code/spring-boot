@@ -43,7 +43,7 @@ public class AccountDaoTest {
     @DisplayName("查询")
     void get() {
         long id = 1L;
-        Account account = accountDao.get(id);
+        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
         log.info("{}", account);
         Assertions.assertNotNull(account);
     }
@@ -69,7 +69,7 @@ public class AccountDaoTest {
     @DisplayName("更新")
     void update() {
         long id = 1L;
-        Account account = accountDao.get(id);
+        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
         account.setMoney(new BigDecimal("2000.00"));
         int rows = accountDao.update(account);
         log.info("{}", account);
@@ -80,7 +80,7 @@ public class AccountDaoTest {
     @DisplayName("逻辑删除")
     void delete() {
         long id = 1L;
-        Account account = accountDao.get(id);
+        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
         int rows = accountDao.delete(account);
         Assertions.assertEquals(1, rows);
     }

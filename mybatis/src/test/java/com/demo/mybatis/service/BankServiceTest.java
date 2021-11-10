@@ -26,7 +26,7 @@ public class BankServiceTest {
     private BankService bankService;
 
     @Test
-    @DisplayName("新增一个")
+    @DisplayName("新增")
     void add() {
         Bank bank = Bank.builder()
                 .name("法国银行")
@@ -46,7 +46,7 @@ public class BankServiceTest {
     }
 
     @Test
-    @DisplayName("查询一个")
+    @DisplayName("查询")
     void get() {
         long id = 1L;
         Bank bank = bankService.get(id);
@@ -68,7 +68,7 @@ public class BankServiceTest {
     }
 
     @Test
-    @DisplayName("删除一个")
+    @DisplayName("逻辑删除")
     void delete() {
         long id = 1L;
         Bank bank = bankService.get(id);
