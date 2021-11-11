@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 项目: spring-boot
+ * 时间: 2021/11/9 15:08
  * WebMvc配置
  *
  * @author codingob

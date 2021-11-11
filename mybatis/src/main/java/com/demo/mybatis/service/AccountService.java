@@ -29,24 +29,32 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public Account add(Account account) {
-        Account account1 = accountDao.get(Account.builder().userId(account.getUserId()).bankId(account.getBankId()).delete(false).build());
-        Assert.isNull(account1, "账户已存在");
+    public Account add(long userId, long bankId) {
+        Account account = Account.builder().userId(userId).bankId(bankId).delete(false).build();
+        List<Account> accounts = accountDao.getList(account);
+        log.info("{}",accounts);
+        Assert.isTrue(accounts.size()==0, "账户已存在");
         int rows = accountDao.add(account);
         Assert.isTrue(rows == 1, "新增失败");
-        return accountDao.get(Account.builder().id(account.getId()).delete(false).build());
+        Long id = account.getId();
+        return accountDao.get(id);
     }
 
     public Account update(Account account) {
         int rows = accountDao.update(account);
         Assert.isTrue(rows == 1, "更新失败");
-        return accountDao.get(Account.builder().id(account.getId()).delete(false).build());
+        Long id = account.getId();
+        return accountDao.get(id);
     }
 
-    public Account get(Account account) {
-        account = accountDao.get(account);
+    public Account get(long id) {
+        Account account = accountDao.get(id);
         Assert.notNull(account, "未找到");
         return account;
+    }
+
+    public List<Account> getList(Account account) {
+        return accountDao.getList(account);
     }
 
     public List<Account> getPage(long currentPage, long pageSize) {

@@ -1,19 +1,20 @@
 package com.demo.web.util;
 
+import org.springframework.http.ResponseEntity;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 项目: spring-boot
- * 时间: 2021/10/27 0:23
- * Response工具类
+ * 时间: 2021/11/10 11:08
  *
- * @author codingob
+ * @author HuangYu
  * @version 1.0.0
  * @since JDK1.8
  */
-public class ResponseUtils extends HashMap<String, Object> implements Serializable {
+public class ResponseUtils implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String CODE = "code";
@@ -21,51 +22,52 @@ public class ResponseUtils extends HashMap<String, Object> implements Serializab
     private static final String DATA = "data";
     private static final String ERROR = "error";
 
-    public static ResponseUtils getResponse() {
-        return new ResponseUtils();
-    }
-
-    public static ResponseUtils success(int code, String msg) {
-        return ResponseUtils.getResponse().putCode(code).putMsg(msg);
-    }
-
-    public static ResponseUtils success(int code, Object data) {
-        return ResponseUtils.getResponse().putCode(code).putData(data);
-    }
-
-    public static ResponseUtils failure(int code, String error) {
-        return ResponseUtils.getResponse().putCode(code).putError(error);
-    }
-
-    public static ResponseUtils failure(String error) {
-        return ResponseUtils.failure(400, error);
-    }
-
-    public ResponseUtils putInfo(Map<String, Object> info) {
-        for (String key : info.keySet()) {
-            this.putInfo(key, info.get(key));
+    public static Map<String, Object> getResponse(int code, String msg, Object data) {
+        Map<String, Object> response = new HashMap<>(3);
+        response.put(CODE, code);
+        response.put(MSG, msg);
+        if (data != null) {
+            response.put(DATA, data);
         }
-        return this;
+        return response;
     }
 
-    public ResponseUtils putInfo(String key, Object value) {
-        this.put(key, value);
-        return this;
+    public static Map<String, Object> getResponse(int code, String error) {
+        Map<String, Object> response = new HashMap<>(2);
+        response.put(CODE, code);
+        response.put(ERROR, error);
+        return response;
     }
 
-    private ResponseUtils putCode(int code) {
-        return this.putInfo(CODE, code);
+    public static ResponseEntity<Object> success(int code, String msg, Object data) {
+        Map<String, Object> response = getResponse(code, msg, data);
+        return ResponseEntity.status(code).body(response);
     }
 
-    private ResponseUtils putMsg(String msg) {
-        return this.putInfo(MSG, msg);
+    public static ResponseEntity<Object> success(int code, Object data) {
+        return success(code, "OK", data);
     }
 
-    private ResponseUtils putData(Object data) {
-        return this.putInfo(DATA, data);
+    public static ResponseEntity<Object> success(Object data) {
+        return success(200, "OK", data);
     }
 
-    private ResponseUtils putError(String error) {
-        return this.putInfo(ERROR, error);
+    public static ResponseEntity<Object> success() {
+        return success(null);
+    }
+
+    public static ResponseEntity<Object> failure(int code, String error) {
+        Map<String, Object> response = getResponse(code, error);
+        return ResponseEntity.status(code).body(response);
+    }
+
+    public static ResponseEntity<Object> failure() {
+        int code = 500;
+        String error = "服务器异常";
+        return failure(code, error);
+    }
+
+    public static ResponseEntity<Object> failure(String error) {
+        return failure(400, error);
     }
 }

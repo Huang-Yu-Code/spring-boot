@@ -1,8 +1,10 @@
 package com.demo.web.controller;
 
-import com.demo.web.util.ResponseUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,28 +19,36 @@ import java.util.Map;
 @RestController
 @RequestMapping("/json")
 public class JsonController {
-    @GetMapping("")
-    public Object get(){
-        Map<String,Object> map = new HashMap<>(16);
-        map.put("key1","value1");
-        map.put("key2","value2");
-        map.put("key3","value3");
-        map.put("key4","value4");
-        return ResponseUtils.success(200,map);
-    }
 
     @PostMapping("")
-    public Object insert(){
-        return ResponseUtils.success(201,"success");
+    public Object add(@RequestBody Map<String, Object> map) {
+        try {
+            URI uri = new URI("http://localhost");
+            return ResponseEntity.created(uri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @GetMapping("")
+    public Object get() {
+        Map<String, Object> map = new HashMap<>(16);
+        map.put("key1", "value1");
+        map.put("key2", "value2");
+        map.put("key3", "value3");
+        map.put("key4", "value4");
+        return null;
     }
 
     @PutMapping("")
-    public Object update(){
-        return ResponseUtils.success(200,"success");
+    public Object update() {
+        return null;
     }
 
     @DeleteMapping("")
-    public Object delete(){
-        return ResponseUtils.success(200,"success");
+    public Object delete() {
+        return null;
     }
 }

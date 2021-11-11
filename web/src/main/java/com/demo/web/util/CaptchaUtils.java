@@ -4,8 +4,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.Base64;
+import java.util.Random;
 
 /**
  * 项目: spring-boot
@@ -93,7 +93,7 @@ public class CaptchaUtils {
      */
     public static String getImage(int width, int height, String format, String text) {
         if (width <= 0 || height <= 0 || format == null || text == null || text.length() <= 0) {
-            throw new RuntimeException("验证码属性参数异常");
+            throw new IllegalArgumentException("验证码属性参数异常");
         }
         int length = text.length();
         char[] chars = text.toCharArray();
@@ -112,9 +112,9 @@ public class CaptchaUtils {
             ImageIO.write(image, format, outputStream);
             bytes = outputStream.toByteArray();
             return String.format("data:image/%s;base64,%s", format, Base64.getEncoder().encodeToString(bytes));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("生成验证码图片异常");
+            throw new IllegalArgumentException("生成验证码图片失败");
         }
     }
 }

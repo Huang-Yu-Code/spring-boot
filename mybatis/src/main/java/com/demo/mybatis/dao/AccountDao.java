@@ -2,6 +2,7 @@ package com.demo.mybatis.dao;
 
 import com.demo.mybatis.entity.Account;
 import com.demo.mybatis.entity.Page;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,15 +28,23 @@ public interface AccountDao {
     /**
      * 查询
      *
-     * @param account 账户
-     * @return VO
+     * @param id 账户ID
+     * @return Account
      */
-    Account get(Account account);
+    Account get(@Param("id") long id);
+
+    /**
+     * 查询多个
+     *
+     * @param account 账户
+     * @return List<Account>
+     */
+    List<Account> getList(Account account);
 
     /**
      * 查询全部
      *
-     * @return VOList
+     * @return List<Account>
      */
     List<Account> getAll();
 
@@ -43,7 +52,7 @@ public interface AccountDao {
      * 分页查询
      *
      * @param page page
-     * @return VOList
+     * @return List<Account>
      */
     List<Account> getPage(Page page);
 

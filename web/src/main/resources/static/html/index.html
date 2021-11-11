@@ -11,11 +11,10 @@
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "http://localhost:8084/web/json", true);
     xhr.setRequestHeader("Accept", "*/*");
-    // xhr.setRequestHeader("Authorization", "*/*");
+    xhr.setRequestHeader("Authorization", "*/*");
     xhr.withCredentials = true;
     xhr.responseType = "json";
     xhr.send();
-    console.log(xhr);
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
             console.log(xhr.response);

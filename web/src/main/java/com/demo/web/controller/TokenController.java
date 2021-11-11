@@ -1,6 +1,6 @@
 package com.demo.web.controller;
 
-import com.demo.web.util.TokenUtils;
+import com.demo.web.util.JwtUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class TokenController {
     @PostMapping("")
     public Object addToken() {
-        String token = TokenUtils.getToken();
-        return ResponseEntity.status(201).header(HttpHeaders.AUTHORIZATION, token).body(null);
+        String token = JwtUtils.createToken("uid");
+        return ResponseEntity.status(201).header(HttpHeaders.AUTHORIZATION, token).build();
     }
 
     @DeleteMapping()

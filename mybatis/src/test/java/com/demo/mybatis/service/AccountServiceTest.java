@@ -25,16 +25,14 @@ public class AccountServiceTest {
     @Autowired
     private AccountService accountService;
 
+    private final long id = 1L;
+
     @Test
     @DisplayName("新增")
     void add() {
         long userId = 1L;
         long bankId = 1L;
-        Account account = accountService.add(
-                Account.builder()
-                        .userId(userId)
-                        .bankId(bankId)
-                        .build());
+        Account account = accountService.add(userId, bankId);
         log.info("{}", account);
         Assertions.assertNotNull(account);
     }
@@ -42,10 +40,18 @@ public class AccountServiceTest {
     @Test
     @DisplayName("查询")
     void get() {
-        long id = 1L;
-        Account account = accountService.get(Account.builder().id(id).delete(false).build());
+        Account account = accountService.get(id);
         log.info("{}", account);
-        Assertions.assertNotNull(account);
+    }
+
+    @Test
+    @DisplayName("查询列表")
+    void getList() {
+        long userId = 1L;
+        long bankId = 1L;
+        Account account = Account.builder().userId(userId).bankId(bankId).build();
+        List<Account> accounts = accountService.getList(account);
+        log.info("{}", accounts);
     }
 
     @Test
@@ -53,33 +59,30 @@ public class AccountServiceTest {
     void getAll() {
         List<Account> accounts = accountService.getAll();
         log.info("{}", accounts);
-        Assertions.assertTrue(accounts.size() != 0);
     }
 
     @Test
     @DisplayName("分页查询")
     void getPage() {
-        List<Account> accounts = accountService.getPage(1L,10L);
+        long currentPage = 1L;
+        long pageSize = 10L;
+        List<Account> accounts = accountService.getPage(currentPage, pageSize);
         log.info("{}", accounts);
-        Assertions.assertTrue(accounts.size() != 0);
     }
 
     @Test
     @DisplayName("更新")
     void update() {
-        long id = 1L;
-        Account account = accountService.get(Account.builder().id(id).delete(false).build());
+        Account account = accountService.get(id);
         account.setMoney(new BigDecimal("2000.00"));
-        Account update = accountService.update(account);
+        account = accountService.update(account);
         log.info("{}", account);
-        Assertions.assertNotNull(update);
     }
 
     @Test
     @DisplayName("逻辑删除")
     void delete() {
-        long id = 1L;
-        Account account = accountService.get(Account.builder().id(id).delete(false).build());
+        Account account = accountService.get(id);
         accountService.delete(account);
     }
 }

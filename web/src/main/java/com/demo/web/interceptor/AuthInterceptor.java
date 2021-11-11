@@ -1,7 +1,12 @@
 package com.demo.web.interceptor;
 
+import com.demo.web.util.JwtUtils;
 import com.demo.web.util.ResponseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * 项目: spring-boot
@@ -42,15 +48,34 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         // 认证
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (null == token || "null".equals(token)) {
+        try {
+            JwtUtils.checkToken(token);
+            return HandlerInterceptor.super.preHandle(request, response, handler);
+        } catch (Exception e) {
+            String msg = "无效Token";
+            if (e instanceof ExpiredJwtException) {
+                msg = "Token已过期";
+            }
+            if (e instanceof UnsupportedJwtException) {
+                msg = "无效Token";
+            }
+            if (e instanceof MalformedJwtException) {
+                msg = "无效Token";
+            }
+            if (e instanceof SignatureException) {
+                msg = "无效Token";
+            }
+            if (e instanceof IllegalArgumentException) {
+                msg = "无效Token";
+            }
             int status = HttpStatus.UNAUTHORIZED.value();
             response.setStatus(status);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.getWriter().write(mapper.writeValueAsString(ResponseUtils.failure(status, "非法访问")));
+            Map<String, Object> map = ResponseUtils.getResponse(status, msg);
+            response.getWriter().write(mapper.writeValueAsString(map));
             return false;
         }
-        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     @Override

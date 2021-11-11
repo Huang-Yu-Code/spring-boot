@@ -1,8 +1,11 @@
 package com.demo.web.controller;
 
+import com.demo.web.entity.File;
 import com.demo.web.service.FileService;
 import com.demo.web.util.ResponseUtils;
-import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,24 +19,39 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/files")
+@Slf4j
 public class FileController {
 
     private final FileService fileService;
 
-    public FileController(FileService fileService) {
+    private final ObjectMapper objectMapper;
+
+    public FileController(FileService fileService, ObjectMapper objectMapper) {
         this.fileService = fileService;
+        this.objectMapper = objectMapper;
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Object fileUpload(@RequestParam("json") String json, @RequestParam("files") MultipartFile[] multipartFiles) {
-        fileService.upload(json, multipartFiles);
-        return ResponseUtils.success(201,"上传成功");
+    @PostMapping(value = "")
+    public Object addFile(@RequestParam("json") String json, @RequestPart("file") MultipartFile multipartFile) throws JsonProcessingException {
+        File file = objectMapper.readValue(json, File.class);
+        file = fileService.addFile(file, multipartFile);
+        return ResponseUtils.success(file);
+    }
+
+    @GetMapping("{id}")
+    public Object getFile(@PathVariable long id) {
+        fileService.download();
+        return ResponseUtils.success();
     }
 
     @GetMapping("")
-    public Object fileDownload() {
+    public Object getFiles() {
         fileService.download();
-        return null;
+        return ResponseUtils.success();
+    }
+
+    @DeleteMapping("{id}")
+    public Object deleteFile(@PathVariable long id){
+        return ResponseUtils.success(204,null);
     }
 }

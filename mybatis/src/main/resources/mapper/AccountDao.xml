@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.mybatis.dao.AccountDao">
 
-    <resultMap id="vo" type="Account">
+    <resultMap id="BaseResultMap" type="Account">
         <id property="id" column="id"/>
         <result property="userId" column="user_id"/>
         <result property="bankId" column="bank_id"/>
@@ -21,7 +21,22 @@
         VALUES (#{userId}, #{bankId})
     </insert>
 
-    <select id="get" resultMap="vo">
+    <select id="get" resultMap="BaseResultMap">
+        SELECT id,
+               user_id,
+               bank_id,
+               money,
+               is_locked,
+               version,
+               gmt_create,
+               gmt_modified,
+               is_delete
+        FROM sys_account
+        WHERE id = #{id}
+          AND is_delete = 0
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
         SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
         FROM sys_account
         <where>
@@ -55,15 +70,31 @@
         </where>
     </select>
 
-    <select id="getAll" resultMap="vo">
-        SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT id,
+               user_id,
+               bank_id,
+               money,
+               is_locked,
+               version,
+               gmt_create,
+               gmt_modified,
+               is_delete
         from sys_account
         where is_delete = 0
         order by gmt_create
     </select>
 
-    <select id="getPage" resultMap="vo">
-        SELECT id, user_id, bank_id, money, is_locked, version, gmt_create, gmt_modified, is_delete
+    <select id="getPage" resultMap="BaseResultMap">
+        SELECT id,
+               user_id,
+               bank_id,
+               money,
+               is_locked,
+               version,
+               gmt_create,
+               gmt_modified,
+               is_delete
         from sys_account
         where is_delete = 0
         order by gmt_create

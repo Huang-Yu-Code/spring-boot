@@ -30,10 +30,9 @@ public class AccountDaoTest {
     @Test
     @DisplayName("新增")
     void add() {
-        Account account = Account.builder()
-                .userId(1L)
-                .bankId(1L)
-                .build();
+        long userId = 1L;
+        long bankId = 1L;
+        Account account = Account.builder().userId(userId).bankId(bankId).delete(false).build();
         int rows = accountDao.add(account);
         log.info("{}", account);
         Assertions.assertEquals(1, rows);
@@ -43,9 +42,19 @@ public class AccountDaoTest {
     @DisplayName("查询")
     void get() {
         long id = 1L;
-        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
+        Account account = accountDao.get(id);
         log.info("{}", account);
         Assertions.assertNotNull(account);
+    }
+
+    @Test
+    @DisplayName("查询列表")
+    void getList() {
+        long userId = 1L;
+        long bankId = 1L;
+        Account account = Account.builder().userId(userId).bankId(bankId).build();
+        List<Account> accounts = accountDao.getList(account);
+        log.info("{}", accounts);
     }
 
     @Test
@@ -69,7 +78,7 @@ public class AccountDaoTest {
     @DisplayName("更新")
     void update() {
         long id = 1L;
-        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
+        Account account = accountDao.get(id);
         account.setMoney(new BigDecimal("2000.00"));
         int rows = accountDao.update(account);
         log.info("{}", account);
@@ -80,7 +89,7 @@ public class AccountDaoTest {
     @DisplayName("逻辑删除")
     void delete() {
         long id = 1L;
-        Account account = accountDao.get(Account.builder().id(id).delete(false).build());
+        Account account = accountDao.get(id);
         int rows = accountDao.delete(account);
         Assertions.assertEquals(1, rows);
     }
