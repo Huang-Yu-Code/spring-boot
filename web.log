@@ -520,3 +520,16 @@
 2021-11-11 19:42:43.980  INFO 12112 --- [http-nio-8084-exec-1] c.d.web.interceptor.GlobalInterceptor    : session:710733B86593DEAF0432DD5E0C0BC03D
 2021-11-11 19:42:44.451  INFO 12112 --- [http-nio-8084-exec-1] com.demo.web.service.FileService         : File(id=1, name=xxx, format=null, size=null, url=null, version=null, gmtCreate=null, gmtModified=null, delete=null)
 2021-11-11 19:42:44.452  INFO 12112 --- [http-nio-8084-exec-1] com.demo.web.service.FileService         : org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@76829cb2
+2021-11-11 19:46:04.128  INFO 13588 --- [restartedMain] com.demo.web.WebApplication              : Starting WebApplication using Java 1.8.0_301 on PC-HuangYu with PID 13588 (D:\github\java\spring-boot\web\target\classes started by HuangYu in D:\github\java\spring-boot)
+2021-11-11 19:46:04.132  INFO 13588 --- [restartedMain] com.demo.web.WebApplication              : The following profiles are active: dev
+2021-11-11 19:46:04.229  INFO 13588 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-11-11 19:46:04.229  INFO 13588 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-11-11 19:46:06.332  INFO 13588 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8084 (http)
+2021-11-11 19:46:06.345  INFO 13588 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-11-11 19:46:06.345  INFO 13588 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.53]
+2021-11-11 19:46:06.435  INFO 13588 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/web]    : Initializing Spring embedded WebApplicationContext
+2021-11-11 19:46:06.435  INFO 13588 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2204 ms
+2021-11-11 19:46:07.214  WARN 13588 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2021-11-11 19:46:07.220  INFO 13588 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2021-11-11 19:46:07.291  INFO 13588 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8084 (http) with context path '/web'
+2021-11-11 19:46:07.314  INFO 13588 --- [restartedMain] com.demo.web.WebApplication              : Started WebApplication in 4.246 seconds (JVM running for 5.983)

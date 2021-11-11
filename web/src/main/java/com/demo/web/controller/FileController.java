@@ -40,18 +40,21 @@ public class FileController {
 
     @GetMapping("{id}")
     public Object getFile(@PathVariable long id) {
-        fileService.download();
         return ResponseUtils.success();
     }
 
     @GetMapping("")
     public Object getFiles() {
-        fileService.download();
         return ResponseUtils.success();
     }
 
+    @PutMapping("{id}")
+    public Object updateFile(@PathVariable String id, @RequestBody File file) {
+        return ResponseUtils.success(200, file);
+    }
+
     @DeleteMapping("{id}")
-    public Object deleteFile(@PathVariable long id){
-        return ResponseUtils.success(204,null);
+    public Object deleteFile(@PathVariable long id) {
+        return ResponseUtils.success(200, null);
     }
 }
