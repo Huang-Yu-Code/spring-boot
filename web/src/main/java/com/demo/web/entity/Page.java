@@ -2,6 +2,8 @@ package com.demo.web.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 项目: spring-boot
  * 时间: 2021/11/9 11:23
@@ -11,7 +13,8 @@ import lombok.Data;
  * @since JDK1.8
  */
 @Data
-public class Page {
+public class Page implements Serializable {
+    private static final long serialVersionUID = 1L;
     private long startIndex;
     private long endIndex;
 

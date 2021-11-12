@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class TokenController {
     @PostMapping("")
     public Object addToken() {
-        String token = JwtUtils.createToken("uid");
+        String token = JwtUtils.createToken(1L);
         return ResponseEntity.status(201).header(HttpHeaders.AUTHORIZATION, token).build();
     }
 

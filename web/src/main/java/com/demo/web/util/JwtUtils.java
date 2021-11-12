@@ -18,6 +18,9 @@ import java.util.UUID;
  */
 public class JwtUtils {
 
+    private JwtUtils() {
+    }
+
     /**
      * 签名
      */
@@ -38,12 +41,12 @@ public class JwtUtils {
      * @param uid 用户ID
      * @return Token
      */
-    public static String createToken(String uid) {
+    public static String createToken(long uid) {
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
-                .setIssuer("spring_boot")
-                .setAudience("spring_boot")
+                .setIssuer("web")
+                .setAudience("web")
                 .setSubject("auth")
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .setId(UUID.randomUUID().toString())
@@ -77,7 +80,7 @@ public class JwtUtils {
      * @param token Token
      * @return UID
      */
-    public static String getUid(String token) {
-        return (String) getClaims(token).get(UID);
+    public static long getUid(String token) {
+        return (Long) getClaims(token).get(UID);
     }
 }

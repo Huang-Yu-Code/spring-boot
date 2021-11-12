@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 
@@ -17,6 +18,9 @@ import java.util.Random;
  * @since JDK1.8
  */
 public class CaptchaUtils {
+
+    private CaptchaUtils(){}
+
     /**
      * 纯数字
      */
@@ -32,7 +36,7 @@ public class CaptchaUtils {
      * @return Color
      */
     private static Color color() {
-        Random random = new Random();
+        Random random = new SecureRandom();
         return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
     }
 
@@ -48,7 +52,7 @@ public class CaptchaUtils {
         length = Math.max(length, 4);
         StringBuilder text = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            text.append(chars[new Random().nextInt(chars.length)]);
+            text.append(chars[new SecureRandom().nextInt(chars.length)]);
         }
         return text.toString();
     }

@@ -1,7 +1,6 @@
 package com.demo.web.config;
 
 import com.demo.web.interceptor.AuthInterceptor;
-import com.demo.web.interceptor.GlobalInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -18,14 +17,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since JDK1.8
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
-
-    private final GlobalInterceptor globalInterceptor;
+public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
-    public WebMvcConfig(GlobalInterceptor globalInterceptor, AuthInterceptor authInterceptor) {
-        this.globalInterceptor = globalInterceptor;
+    public WebConfig(AuthInterceptor authInterceptor) {
         this.authInterceptor = authInterceptor;
     }
 
@@ -33,7 +29,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(globalInterceptor).addPathPatterns("/**").excludePathPatterns("/error");
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/error")

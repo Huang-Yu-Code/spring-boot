@@ -28,24 +28,28 @@ public class FileService {
     public File addFile(File file, MultipartFile multipartFile) {
         log.info("{}", file);
         log.info("{}", multipartFile);
+        Assert.isTrue(multipartFile.getSize()>0,"文件为空");
         String filename = multipartFile.getOriginalFilename();
         Assert.notNull(filename, "文件名为空");
         file.setName(filename);
         file.setFormat(FileUtils.getFormat(filename));
         file.setSize(multipartFile.getSize());
+        String location = fileProperties.getLocation();
+        log.info(location);
+        filename = FileUtils.save(multipartFile, location);
         file.setUrl(FileUtils.rename(filename));
         return file;
     }
 
-    public File getFile(long id){
+    public File getFile(long id) {
         return null;
     }
 
-    public File getFiles(){
+    public File getFiles() {
         return null;
     }
 
-    public File deleteFile(long id){
+    public File deleteFile(long id) {
         return null;
     }
 

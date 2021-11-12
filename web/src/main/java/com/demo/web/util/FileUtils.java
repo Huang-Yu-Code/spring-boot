@@ -4,7 +4,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +19,9 @@ import java.util.UUID;
  */
 public class FileUtils {
 
+    private FileUtils(){
+    }
+
     private static final String REGEX = "\\.";
     private static final String SYMBOL = ".";
 
@@ -31,8 +33,7 @@ public class FileUtils {
 
     public static String rename(String filename) {
         String format = getFormat(filename);
-        filename = UUID.randomUUID() + SYMBOL + format;
-        return filename;
+        return UUID.randomUUID() + SYMBOL + format;
     }
 
     public static String save(MultipartFile multipartFile, String path) {

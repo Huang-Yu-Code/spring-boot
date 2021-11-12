@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Object illegalArgumentException(MissingServletRequestParameterException e) {
+    public Object missingServletRequestParameterException(Exception e) {
         e.printStackTrace();
         return ResponseUtils.failure("接口参数异常");
     }
@@ -38,7 +38,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object illegalArgumentException(IllegalArgumentException e) {
-        e.printStackTrace();
         return ResponseUtils.failure(e.getMessage());
     }
 
