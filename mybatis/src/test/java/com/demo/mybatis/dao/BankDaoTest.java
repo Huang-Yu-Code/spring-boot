@@ -1,7 +1,7 @@
 package com.demo.mybatis.dao;
 
 import com.demo.mybatis.entity.Bank;
-import com.demo.mybatis.entity.Page;
+import com.demo.mybatis.util.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

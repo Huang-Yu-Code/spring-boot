@@ -1,6 +1,6 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.entity.Page;
+import com.demo.mybatis.util.Page;
 import com.demo.mybatis.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;

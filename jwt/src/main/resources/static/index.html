@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Json Web Token</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div id="logon">
+    <label>
+        <input type="text" name="username" class="logonUsername">
+    </label>
+    <label>
+        <input type="password" name="password" class="logonPassword">
+    </label>
+    <label>
+        <input type="button" name="logon" value="注册" class="logonButton">
+    </label>
+</div>
+<div id="login">
+    <label>
+        <input type="text" name="username" class="loginUsername">
+    </label>
+    <label>
+        <input type="password" name="password" class="loginPassword">
+    </label>
+    <label>
+        <input type="button" name="login" value="登录" class="loginButton">
+    </label>
+</div>
+<div>
+    <button class="user">用户</button>
+    <p class="username"></p>
+    <p class="password"></p>
+</div>
+<script type="text/javascript">
+    const basicUrl = 'https://localhost:8080/jwt';
+    const logonUrl = basicUrl + '/logon';
+    const loginUrl = basicUrl + '/login';
+    const userUrl = basicUrl + '/user';
+
+    const request = (type, url, data, success) => {
+        $.ajax({
+            type: type,
+            async: true,
+            headers: {
+                AUTHORIZATION: document.cookie.split('=')[1],
+            },
+            contentType: 'application/json',
+            dataType: 'json',
+            url: url,
+            data: data === null ? null : JSON.stringify(data),
+            xhrFields: {
+                withCredentials: true,
+            },
+            success: success,
+            error: (XMLHttpRequest, textStatus) => {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                if (XMLHttpRequest.status === 400 || XMLHttpRequest.status === 401) {
+                    alert(XMLHttpRequest['responseJSON'].error);
+                }
+            }
+        })
+    }
+
+    $('.logonButton').click(() => {
+        const data = {
+            username: $('.logonUsername').val(),
+            password: $('.logonPassword').val(),
+        };
+        const success = (data, textStatus, jqXHR) => {
+            alert('注册成功');
+        };
+        request('POST', logonUrl, data, success)
+    });
+
+
+    $('.loginButton').click(() => {
+        const data = {
+            username: $('.loginUsername').val(),
+            password: $('.loginPassword').val(),
+        };
+        const success = (data, textStatus, jqXHR) => {
+            alert('登录成功');
+        };
+        request('POST', loginUrl, data, success)
+    });
+    console.log(document.cookie);
+
+    $('.user').click(() => {
+        const success = (data, textStatus, jqXHR) => {
+            console.log(data)
+            $('.username').text(data.username)
+            $('.password').text(data.password)
+        };
+        request('GET', userUrl, null, success)
+    });
+
+</script>
+</body>
+</html>

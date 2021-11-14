@@ -1,6 +1,6 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.entity.Page;
+import com.demo.mybatis.util.Page;
 import com.demo.mybatis.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
