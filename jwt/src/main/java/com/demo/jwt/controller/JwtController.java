@@ -6,6 +6,7 @@ import com.demo.jwt.util.JwtUtils;
 import com.demo.jwt.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,10 +46,10 @@ public class JwtController {
     @PostMapping("/login")
     public Object login(@RequestBody User user) {
         String token = jwtService.login(user.getUsername(), user.getPassword());
-        Map<String, Object> body = ResponseUtils.getResponse(200, "OK", null);
+        Map<String, Object> body = ResponseUtils.getBody(HttpStatus.OK);
         return ResponseEntity
-                .status(200)
-                .header(HttpHeaders.SET_COOKIE, "token="+token+";HttpOnly=true;Secure=true")
+                .status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, "token=" + token + ";HttpOnly=true;Secure=true")
                 .body(body);
     }
 

@@ -8,6 +8,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.demo.jwt.service.impl.JwtServiceImpl.TOKENS;
@@ -38,11 +40,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         this.objectMapper = objectMapper;
     }
 
-    private boolean response(HttpServletResponse response, String error) throws Exception {
+    private boolean response(HttpServletResponse response, String error) throws IOException {
         response.setStatus(401);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        String body = objectMapper.writeValueAsString(ResponseUtils.getResponse(401, error));
+        String body = objectMapper.writeValueAsString(ResponseUtils.getBody(HttpStatus.UNAUTHORIZED, error));
         Cookie cookie = new Cookie("token", null);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
