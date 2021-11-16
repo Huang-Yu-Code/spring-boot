@@ -1,6 +1,6 @@
 package com.demo.web.aspect;
 
-import com.demo.web.entity.Log;
+import com.demo.web.properties.JwtProperties;
 import com.demo.web.util.JwtUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,9 +28,11 @@ import java.util.Map;
 @Aspect
 @Slf4j
 public class LogAspect {
+    private final JwtProperties jwtProperties;
     private final ObjectMapper objectMapper;
 
-    public LogAspect(ObjectMapper objectMapper) {
+    public LogAspect(JwtProperties jwtProperties, ObjectMapper objectMapper) {
+        this.jwtProperties = jwtProperties;
         this.objectMapper = objectMapper;
     }
 
@@ -41,7 +43,8 @@ public class LogAspect {
         HttpServletRequest request = requestAttributes.getRequest();
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        long uid = JwtUtils.getUid(token);
+        String signature = jwtProperties.getSignature();
+        String uid = JwtUtils.getUid(signature, token);
 
         String host = request.getRemoteHost();
         String url = request.getRequestURI();
@@ -53,8 +56,6 @@ public class LogAspect {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-        Log log = Log.builder().id(1L).host(host).uid(uid).url(url).method(method).args(args).build();
-        LogAspect.log.info("{}", log);
+        log.info("host:{}\turl:{}\tmethod:{}\targs:{}\tuid:{}", host, url, method, args, uid);
     }
 }

@@ -2,6 +2,7 @@ package com.demo.jwt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  * 项目: spring-boot
@@ -11,7 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0.0
  * @since JDK1.8
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.demo.jwt"})
+@ConfigurationPropertiesScan({"com.demo.jwt.properties"})
 public class JwtApplication {
     public static void main(String[] args) {
         SpringApplication.run(JwtApplication.class, args);

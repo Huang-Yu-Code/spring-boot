@@ -22,65 +22,59 @@ public class JwtUtils {
     }
 
     /**
-     * 签名
-     */
-    private static final String SIGNATURE = "spring_boot";
-    /**
-     * 有效期
-     * 1天
-     */
-    private static final long EXPIRATION = 1000L * 60 * 60 * 24;
-    /**
-     * 用户ID
-     */
-    private static final String UID = "uid";
-
-    /**
      * 生成Token
      *
-     * @param uid 用户ID
+     * @param issuer     发行
+     * @param audience   受众
+     * @param signature  签名
+     * @param subject    主题
+     * @param expiration 有效期
+     * @param uid        用户ID
      * @return Token
      */
-    public static String createToken(String uid) {
+    public static <T> String createToken(String issuer, String audience, String signature, String subject, long expiration,
+                                         T uid) {
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setHeaderParam("alg", "HS256")
-                .setIssuer("jwt")
-                .setAudience("jwt")
-                .setSubject("auth")
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .setIssuer(issuer)
+                .setAudience(audience)
+                .setSubject(subject)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .setId(UUID.randomUUID().toString())
-                .signWith(SignatureAlgorithm.HS256, SIGNATURE)
-                .claim(UID, uid)
+                .signWith(SignatureAlgorithm.HS256, signature)
+                .claim("uid", uid)
                 .compact();
     }
 
     /**
      * 校验Token
      *
-     * @param token Token
+     * @param signature 签名
+     * @param token     token
      */
-    public static void checkToken(String token) {
-        Jwts.parser().setSigningKey(SIGNATURE).parseClaimsJws(token);
+    public static void checkToken(String signature, String token) {
+        Jwts.parser().setSigningKey(signature).parseClaimsJws(token);
     }
 
     /**
      * 获取载荷
      *
-     * @param token token
+     * @param signature 签名
+     * @param token     token
      * @return 荷载
      */
-    public static Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(SIGNATURE).parseClaimsJws(token).getBody();
+    public static Claims getClaims(String signature, String token) {
+        return Jwts.parser().setSigningKey(signature).parseClaimsJws(token).getBody();
     }
 
     /**
      * 获取用户ID
      *
-     * @param token Token
-     * @return UID
+     * @param signature 签名
+     * @param token     token
+     * @return uid
      */
-    public static String getUid(String token) {
-        return (String) getClaims(token).get(UID);
+    public static String getUid(String signature, String token) {
+        Object uid = getClaims(signature, token).get("uid");
+        return (String) uid;
     }
 }

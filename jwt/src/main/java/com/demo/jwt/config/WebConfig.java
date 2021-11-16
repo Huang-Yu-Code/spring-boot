@@ -1,6 +1,7 @@
 package com.demo.jwt.config;
 
 import com.demo.jwt.interceptor.JwtInterceptor;
+import com.demo.jwt.properties.JwtProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,29 +20,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final JwtInterceptor jwtInterceptor;
+    private final JwtProperties jwtProperties;
 
-    public WebConfig(JwtInterceptor jwtInterceptor) {
+    public WebConfig(JwtInterceptor jwtInterceptor, JwtProperties jwtProperties) {
         this.jwtInterceptor = jwtInterceptor;
+        this.jwtProperties = jwtProperties;
     }
 
     // 拦截器
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/error")
-                .excludePathPatterns("/logon")
-                .excludePathPatterns("/login");
+        final String[] excludePathPatterns = {"/error", "/logon", "/login"};
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/**").excludePathPatterns(excludePathPatterns);
     }
 
     // 跨域处理
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        final String[] methods = {"GET", "POST", "DELETE", "PUT", "PATCH"};
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
+                .allowedMethods(methods)
                 .allowCredentials(true);
     }
 }

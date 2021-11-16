@@ -1,5 +1,6 @@
 package com.demo.jwt.interceptor;
 
+import com.demo.jwt.properties.JwtProperties;
 import com.demo.jwt.util.JwtUtils;
 import com.demo.jwt.util.ResponseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.demo.jwt.service.impl.JwtServiceImpl.TOKENS;
 
@@ -35,9 +39,11 @@ import static com.demo.jwt.service.impl.JwtServiceImpl.TOKENS;
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
     private final ObjectMapper objectMapper;
+    private final JwtProperties jwtProperties;
 
-    public JwtInterceptor(ObjectMapper objectMapper) {
+    public JwtInterceptor(ObjectMapper objectMapper, JwtProperties jwtProperties) {
         this.objectMapper = objectMapper;
+        this.jwtProperties = jwtProperties;
     }
 
     private boolean response(HttpServletResponse response, String error) throws IOException {
@@ -65,17 +71,17 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (cookies == null) {
             return response(response, "禁止访问");
         } else {
-            String token = null;
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    if (token == null || "".equals(token)) {
-                        return response(response, "非法令牌");
-                    }
-                }
+            List<Cookie> list = Arrays.stream(cookies)
+                    .filter(cookie -> "token".equals(cookie.getName()))
+                    .collect(Collectors.toList());
+            if (list.isEmpty()) {
+                log.info("list:{}", list);
+                return response(response, "非法令牌");
             }
+            String token = list.get(0).getName();
             try {
-                JwtUtils.checkToken(token);
+                String signature = jwtProperties.getSignature();
+                JwtUtils.checkToken(signature, token);
                 if (!TOKENS.containsKey(token)) {
                     return response(response, "令牌不存在");
                 }

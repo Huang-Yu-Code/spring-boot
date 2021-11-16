@@ -1,5 +1,6 @@
 package com.demo.web.interceptor;
 
+import com.demo.web.properties.JwtProperties;
 import com.demo.web.util.JwtUtils;
 import com.demo.web.util.ResponseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,9 +35,11 @@ import java.util.Map;
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
+    private final JwtProperties jwtProperties;
     private final ObjectMapper mapper;
 
-    public AuthInterceptor(ObjectMapper mapper) {
+    public AuthInterceptor(JwtProperties jwtProperties, ObjectMapper mapper) {
+        this.jwtProperties = jwtProperties;
         this.mapper = mapper;
     }
 
@@ -48,8 +51,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         // 认证
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String signature = jwtProperties.getSignature();
         try {
-            JwtUtils.checkToken(token);
+            JwtUtils.checkToken(signature, token);
             return HandlerInterceptor.super.preHandle(request, response, handler);
         } catch (Exception e) {
             String msg = "无效Token";
@@ -68,11 +72,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (e instanceof IllegalArgumentException) {
                 msg = "无效Token";
             }
-            int status = HttpStatus.UNAUTHORIZED.value();
-            response.setStatus(status);
+            HttpStatus status = HttpStatus.UNAUTHORIZED;
+            response.setStatus(status.value());
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            Map<String, Object> map = ResponseUtils.getResponse(status, msg);
+            Map<String, Object> map = ResponseUtils.getBody(status, msg);
             response.getWriter().write(mapper.writeValueAsString(map));
             return false;
         }

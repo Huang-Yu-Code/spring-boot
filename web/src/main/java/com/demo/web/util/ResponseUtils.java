@@ -1,73 +1,88 @@
 package com.demo.web.util;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 项目: spring-boot
- * 时间: 2021/11/10 11:08
+ * 项目: Buddhism
+ * 时间: 2021/11/15 9:36
  *
- * @author HuangYu
+ * @author codingob
  * @version 1.0.0
  * @since JDK1.8
  */
-public class ResponseUtils implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    private static final String CODE = "code";
-    private static final String MSG = "msg";
+public class ResponseUtils {
+    private static final String STATUS = "status";
     private static final String DATA = "data";
+    private static final String MSG = "msg";
     private static final String ERROR = "error";
+    private static final String TIMESTAMP = "timestamp";
 
-    public static Map<String, Object> getResponse(int code, String msg, Object data) {
+    private static final String SUCCESS = "success";
+    private static final String FAILURE = "failure";
+    private static final String SERVER_ERROR = "服务器异常";
+
+    private ResponseUtils() {
+    }
+
+    public static Map<String, Object> getBody(HttpStatus status, Object data) {
+        Map<String, Object> response = new HashMap<>(4);
+        response.put(STATUS, status.value());
+        response.put(DATA, data);
+        response.put(MSG, SUCCESS);
+        response.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
+        return response;
+    }
+
+    public static Map<String, Object> getBody(HttpStatus status) {
         Map<String, Object> response = new HashMap<>(3);
-        response.put(CODE, code);
-        response.put(MSG, msg);
-        if (data != null) {
-            response.put(DATA, data);
-        }
+        response.put(STATUS, status.value());
+        response.put(MSG, SUCCESS);
+        response.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
         return response;
     }
 
-    public static Map<String, Object> getResponse(int code, String error) {
-        Map<String, Object> response = new HashMap<>(2);
-        response.put(CODE, code);
-        response.put(ERROR, error);
-        return response;
+    public static Map<String, Object> getBody(HttpStatus status, String error) {
+        Map<String, Object> body = new HashMap<>(4);
+        body.put(STATUS, status.value());
+        body.put(MSG, FAILURE);
+        body.put(ERROR, error);
+        body.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
+        return body;
     }
 
-    public static ResponseEntity<Object> success(int code, String msg, Object data) {
-        Map<String, Object> response = getResponse(code, msg, data);
-        return ResponseEntity.status(code).body(response);
+    public static ResponseEntity<Object> success(HttpStatus status, Object data) {
+        Map<String, Object> body = getBody(status, data);
+        return ResponseEntity.status(status).body(body);
     }
 
-    public static ResponseEntity<Object> success(int code, Object data) {
-        return success(code, "OK", data);
+    public static ResponseEntity<Object> success(HttpStatus status) {
+        Map<String, Object> body = getBody(status);
+        return ResponseEntity.status(status).body(body);
     }
 
     public static ResponseEntity<Object> success(Object data) {
-        return success(200, "OK", data);
+        return success(HttpStatus.OK, data);
     }
 
     public static ResponseEntity<Object> success() {
-        return success(null);
+        return success(HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> failure(int code, String error) {
-        Map<String, Object> response = getResponse(code, error);
-        return ResponseEntity.status(code).body(response);
-    }
-
-    public static ResponseEntity<Object> failure() {
-        int code = 500;
-        String error = "服务器异常";
-        return failure(code, error);
+    public static ResponseEntity<Object> failure(HttpStatus status, String error) {
+        Map<String, Object> body = getBody(status, error);
+        return ResponseEntity.status(status).body(body);
     }
 
     public static ResponseEntity<Object> failure(String error) {
-        return failure(400, error);
+        return failure(HttpStatus.BAD_REQUEST, error);
+    }
+
+    public static ResponseEntity<Object> failure() {
+        return failure(HttpStatus.INTERNAL_SERVER_ERROR, SERVER_ERROR);
     }
 }

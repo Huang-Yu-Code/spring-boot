@@ -48,7 +48,7 @@ public class ResponseUtils {
 
     public static Map<String, Object> getBody(HttpStatus status, String error) {
         Map<String, Object> body = new HashMap<>(4);
-        body.put(STATUS, status);
+        body.put(STATUS, status.value());
         body.put(MSG, FAILURE);
         body.put(ERROR, error);
         body.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));

@@ -1,6 +1,7 @@
 package com.demo.jwt.handler;
 
 import com.demo.jwt.util.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -13,16 +14,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @since JDK1.8
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, RuntimeException.class})
     public Object exception(Exception e) {
-        e.printStackTrace();
+        log.error("异常信息:", e);
         return ResponseUtils.failure();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public Object illegalArgumentException(Exception e) {
-        e.printStackTrace();
+        log.error("异常信息:", e);
         return ResponseUtils.failure(e.getMessage());
     }
 }

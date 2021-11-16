@@ -50,11 +50,11 @@ public class FileController {
 
     @PutMapping("{id}")
     public Object updateFile(@PathVariable String id, @RequestBody File file) {
-        return ResponseUtils.success(200, file);
+        return ResponseUtils.success(file);
     }
 
     @DeleteMapping("{id}")
     public Object deleteFile(@PathVariable long id) {
-        return ResponseUtils.success(200, null);
+        return ResponseUtils.success();
     }
 }

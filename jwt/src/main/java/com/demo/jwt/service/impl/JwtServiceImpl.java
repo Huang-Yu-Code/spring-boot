@@ -1,5 +1,7 @@
 package com.demo.jwt.service.impl;
 
+import com.demo.jwt.entity.User;
+import com.demo.jwt.properties.JwtProperties;
 import com.demo.jwt.service.JwtService;
 import com.demo.jwt.util.JwtUtils;
 import org.springframework.stereotype.Service;
@@ -19,8 +21,20 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class JwtServiceImpl implements JwtService {
-    public final static Map<String, String> USERS = new ConcurrentHashMap<>();
-    public final static Map<String, String> TOKENS = new ConcurrentHashMap<>();
+    public static final Map<String, String> USERS = new ConcurrentHashMap<>();
+    public static final Map<String, String> TOKENS = new ConcurrentHashMap<>();
+    private final JwtProperties jwtProperties;
+
+    public JwtServiceImpl(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
+
+    @Override
+    public User get(String token) {
+        String signature = jwtProperties.getSignature();
+        String uid = JwtUtils.getUid(signature, token);
+        return User.builder().username(uid).password(USERS.get(uid)).build();
+    }
 
     @Override
     public void logon(String username, String password) {
@@ -32,10 +46,16 @@ public class JwtServiceImpl implements JwtService {
     public String login(String username, String password) {
         Assert.isTrue(USERS.containsKey(username), "用户名或密码错误");
         Assert.isTrue(Objects.equals(USERS.get(username), password), "用户名或密码错误");
-        String token = JwtUtils.createToken(username);
+        String issuer = jwtProperties.getIssuer();
+        String audience = jwtProperties.getAudience();
+        String signature = jwtProperties.getSignature();
+        String subject = jwtProperties.getSubject();
+        long expiration = jwtProperties.getExpiration();
+        String token = JwtUtils.createToken(issuer, audience, signature, subject, expiration, username);
         if (TOKENS.containsValue(username)) {
-            for (String key : TOKENS.keySet()) {
-                if (TOKENS.get(key).equals(username)){
+            for (Map.Entry<String, String> entry : TOKENS.entrySet()) {
+                String key = entry.getKey();
+                if (key.equals(username)) {
                     TOKENS.remove(key);
                 }
             }

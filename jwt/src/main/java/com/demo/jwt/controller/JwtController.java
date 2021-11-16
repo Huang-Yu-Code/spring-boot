@@ -2,7 +2,6 @@ package com.demo.jwt.controller;
 
 import com.demo.jwt.entity.User;
 import com.demo.jwt.service.JwtService;
-import com.demo.jwt.util.JwtUtils;
 import com.demo.jwt.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
-import static com.demo.jwt.service.impl.JwtServiceImpl.USERS;
 
 /**
  * 项目: spring-boot
@@ -33,8 +30,8 @@ public class JwtController {
 
     @GetMapping("/user")
     public Object get(@CookieValue("token") String token) {
-        String uid = JwtUtils.getUid(token);
-        return ResponseEntity.status(200).body(User.builder().username(uid).password(USERS.get(uid)).build());
+        User user = jwtService.get(token);
+        return ResponseUtils.success(user);
     }
 
     @PostMapping("/logon")
@@ -49,7 +46,7 @@ public class JwtController {
         Map<String, Object> body = ResponseUtils.getBody(HttpStatus.OK);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header(HttpHeaders.SET_COOKIE, "token=" + token + ";HttpOnly=true;Secure=true")
+                .header(HttpHeaders.SET_COOKIE, "token=" + token + ";Path=/;HttpOnly=true;Secure=true")
                 .body(body);
     }
 

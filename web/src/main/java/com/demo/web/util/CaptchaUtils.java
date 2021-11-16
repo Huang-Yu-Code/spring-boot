@@ -58,35 +58,6 @@ public class CaptchaUtils {
     }
 
     /**
-     * 生成4位验证码
-     *
-     * @param number true:数字,false:数字+字母
-     * @return 验证码字符串
-     */
-    public static String getText(boolean number) {
-        return getText(number, 4);
-    }
-
-    /**
-     * 生成4位数字+字母验证码
-     *
-     * @return 验证码字符串
-     */
-    public static String getText() {
-        return getText(false, 4);
-    }
-
-    /**
-     * 生成数字验证码
-     *
-     * @param length 长度
-     * @return 验证码字符串
-     */
-    public static String getText(int length) {
-        return getText(true, length);
-    }
-
-    /**
      * 生成验证码图像
      *
      * @param width  宽度
