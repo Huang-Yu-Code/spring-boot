@@ -70,6 +70,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return response(response, "禁止访问");
+        }
+        Arrays.stream(cookies).forEach(System.out::println);
+        if (cookies == null) {
+            return response(response, "禁止访问");
         } else {
             List<Cookie> list = Arrays.stream(cookies)
                     .filter(cookie -> "token".equals(cookie.getName()))
