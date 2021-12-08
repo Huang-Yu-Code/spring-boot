@@ -27,7 +27,7 @@ public class MailServiceTest {
     String subject = "测试主题";
     String text = "测试正文";
     String html = "<html><body><a href='https://spring.io/'>百度一下</a><img src='cid:%s'></body></html>";
-    String file = "mail.png";
+    String file = "file/mail.png";
 
     @Test
     void sendText() {

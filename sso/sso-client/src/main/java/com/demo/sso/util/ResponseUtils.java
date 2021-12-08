@@ -29,29 +29,24 @@ public class ResponseUtils {
     private ResponseUtils() {
     }
 
-    public static Map<String, Object> getBody(HttpStatus status, Object data) {
+    public static Map<String, Object> getBody(HttpStatus status) {
         Map<String, Object> response = new HashMap<>(4);
         response.put(STATUS, status.value());
-        response.put(DATA, data);
-        response.put(MSG, SUCCESS);
         response.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
         return response;
     }
 
-    public static Map<String, Object> getBody(HttpStatus status) {
-        Map<String, Object> response = new HashMap<>(3);
-        response.put(STATUS, status.value());
+    public static Map<String, Object> getBody(HttpStatus status, Object data) {
+        Map<String, Object> response = getBody(status);
         response.put(MSG, SUCCESS);
-        response.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
+        response.put(DATA, data);
         return response;
     }
 
     public static Map<String, Object> getBody(HttpStatus status, String error) {
-        Map<String, Object> body = new HashMap<>(4);
-        body.put(STATUS, status.value());
+        Map<String, Object> body = getBody(status);
         body.put(MSG, FAILURE);
         body.put(ERROR, error);
-        body.put(TIMESTAMP, new Timestamp(System.currentTimeMillis()));
         return body;
     }
 
@@ -60,29 +55,16 @@ public class ResponseUtils {
         return ResponseEntity.status(status).body(body);
     }
 
-    public static ResponseEntity<Object> success(HttpStatus status) {
-        Map<String, Object> body = getBody(status);
-        return ResponseEntity.status(status).body(body);
-    }
-
-    public static ResponseEntity<Object> success(Object data) {
-        return success(HttpStatus.OK, data);
-    }
-
-    public static ResponseEntity<Object> success() {
-        return success(HttpStatus.OK);
-    }
-
     public static ResponseEntity<Object> failure(HttpStatus status, String error) {
         Map<String, Object> body = getBody(status, error);
         return ResponseEntity.status(status).body(body);
     }
 
-    public static ResponseEntity<Object> failure(String error) {
-        return failure(HttpStatus.BAD_REQUEST, error);
+    public static ResponseEntity<Object> serverError() {
+        return failure(HttpStatus.INTERNAL_SERVER_ERROR, SERVER_ERROR);
     }
 
-    public static ResponseEntity<Object> failure() {
-        return failure(HttpStatus.INTERNAL_SERVER_ERROR, SERVER_ERROR);
+    public static ResponseEntity<Object> clientError(String error) {
+        return failure(HttpStatus.BAD_REQUEST, error);
     }
 }

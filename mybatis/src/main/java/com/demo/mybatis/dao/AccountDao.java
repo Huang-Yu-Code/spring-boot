@@ -5,8 +5,6 @@ import com.demo.mybatis.util.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * 项目: spring-boot
  * 时间: 2021/10/23 3:05
@@ -34,27 +32,41 @@ public interface AccountDao {
     Account get(@Param("id") long id);
 
     /**
-     * 查询多个
-     *
-     * @param account 账户
-     * @return List<Account>
+     *  查询
+     * @param userId 用户ID
+     * @return Account[]
      */
-    List<Account> getList(Account account);
+    Account[] getByUserId(@Param("userId") long userId);
+
+    /**
+     *  查询
+     * @param bankId 银行ID
+     * @return Account[]
+     */
+    Account[] getByBankId(@Param("bankId") long bankId);
+
+    /**
+     * 查询
+     * @param userId 用户ID
+     * @param bankId 银行ID
+     * @return Account[]
+     */
+    Account[] getByUserIdAndBankId(@Param("userId") long userId, @Param("bankId") long bankId);
 
     /**
      * 查询全部
      *
-     * @return List<Account>
+     * @return Account[]
      */
-    List<Account> getAll();
+    Account[] getAll();
 
     /**
      * 分页查询
      *
      * @param page page
-     * @return List<Account>
+     * @return Account[]
      */
-    List<Account> getPage(Page page);
+    Account[] getPage(Page page);
 
     /**
      * 更新

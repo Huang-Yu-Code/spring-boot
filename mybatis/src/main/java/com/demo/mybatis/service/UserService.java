@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 /**
  * 项目: spring-boot
  * 时间: 2021/10/23 2:46
@@ -47,11 +45,11 @@ public class UserService {
         return user;
     }
 
-    public List<User> getPage(long currentPage, long pageSize) {
+    public User[] getPage(long currentPage, long pageSize) {
         return userDao.getPage(new Page(currentPage, pageSize));
     }
 
-    public List<User> getAll() {
+    public User[] getAll() {
         return userDao.getAll();
     }
 

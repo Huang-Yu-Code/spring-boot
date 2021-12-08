@@ -1,9 +1,8 @@
 package com.demo.sso.config;
 
 import com.demo.sso.interceptor.AuthInterceptor;
+import com.demo.sso.properties.AuthProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,28 +20,19 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
-    public WebConfig(AuthInterceptor authInterceptor) {
+    private final AuthProperties authProperties;
+
+    public WebConfig(AuthInterceptor authInterceptor, AuthProperties authProperties) {
         this.authInterceptor = authInterceptor;
+        this.authProperties = authProperties;
     }
 
     // 拦截器
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/error")
-                .excludePathPatterns("/captcha");
-    }
-
-    // 跨域处理
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
-                .exposedHeaders(HttpHeaders.AUTHORIZATION)
-                .allowCredentials(true);
+        String[] pathPatterns = authProperties.getPathPatterns();
+        String[] excludePathPatterns = authProperties.getExcludePathPatterns();
+        registry.addInterceptor(authInterceptor).addPathPatterns(pathPatterns).excludePathPatterns(excludePathPatterns);
     }
 }

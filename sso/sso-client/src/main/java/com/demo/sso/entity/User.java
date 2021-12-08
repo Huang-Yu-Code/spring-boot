@@ -1,21 +1,19 @@
-package com.demo.mybatis.entity;
+package com.demo.sso.entity;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * 项目: spring-boot
- * 时间: 2021/11/9 11:13
+ * 时间: 2021/11/25 2:10
  *
- * @author HuangYu
+ * @author codingob
  * @version 1.0.0
  * @since JDK1.8
  */
 @Data
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class User {
     private Long id;
     private String username;
     private String password;

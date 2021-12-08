@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 /**
  * 项目: spring-boot
  * 时间: 2021/10/23 3:05
@@ -30,10 +28,11 @@ public class AccountService {
     }
 
     public Account add(long userId, long bankId) {
-        Account account = Account.builder().userId(userId).bankId(bankId).delete(false).build();
-        List<Account> accounts = accountDao.getList(account);
-        log.info("{}",accounts);
-        Assert.isTrue(accounts.size()==0, "账户已存在");
+        Account account = new Account();
+        account.setUserId(userId);
+        account.setBankId(bankId);
+        Account[] accounts = accountDao.getByUserIdAndBankId(userId, bankId);
+        Assert.isTrue(accounts.length == 0, "账户已存在");
         int rows = accountDao.add(account);
         Assert.isTrue(rows == 1, "新增失败");
         Long id = account.getId();
@@ -53,16 +52,16 @@ public class AccountService {
         return account;
     }
 
-    public List<Account> getList(Account account) {
-        return accountDao.getList(account);
+    public Account[] getByUserIdAndBankId(long userId, long bankId) {
+        return accountDao.getByUserIdAndBankId(userId, bankId);
     }
 
-    public List<Account> getPage(long currentPage, long pageSize) {
+    public Account[] getPage(long currentPage, long pageSize) {
         Page page = new Page(currentPage, pageSize);
         return accountDao.getPage(page);
     }
 
-    public List<Account> getAll() {
+    public Account[] getAll() {
         return accountDao.getAll();
     }
 

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 /**
  * 项目: spring-boot
  * 时间: 2021/10/24 2:28
@@ -47,12 +45,12 @@ public class BankService {
         return bank;
     }
 
-    public List<Bank> getPage(long currentPage, long pageSize) {
+    public Bank[] getPage(long currentPage, long pageSize) {
         Page page = new Page(currentPage, pageSize);
         return bankDao.getPage(page);
     }
 
-    public List<Bank> getAll() {
+    public Bank[] getAll() {
         return bankDao.getAll();
     }
 

@@ -1,8 +1,6 @@
 package com.demo.sso.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,32 +14,34 @@ import java.util.UUID;
  * @version 1.0.0
  * @since JDK1.8
  */
-public class JwtUtils {
+public class TokenUtils {
 
-    private JwtUtils() {
+    private TokenUtils() {
     }
+
+    private static final String UID = "uid";
 
     /**
      * 生成Token
      *
      * @param issuer     发行
      * @param audience   受众
-     * @param signature  签名
      * @param subject    主题
      * @param expiration 有效期
+     * @param signature  签名
      * @param uid        用户ID
      * @return Token
      */
-    public static <T> String createToken(String issuer, String audience, String signature, String subject, long expiration,
+    public static <T> String createToken(String issuer, String audience, String subject, int expiration, String signature,
                                          T uid) {
         return Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setIssuer(issuer)
                 .setAudience(audience)
                 .setSubject(subject)
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .setId(UUID.randomUUID().toString())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
                 .signWith(SignatureAlgorithm.HS256, signature)
-                .claim("uid", uid)
+                .claim(UID, uid)
                 .compact();
     }
 
@@ -74,7 +74,7 @@ public class JwtUtils {
      * @return uid
      */
     public static String getUid(String signature, String token) {
-        Object uid = getClaims(signature, token).get("uid");
+        Object uid = getClaims(signature, token).get(UID);
         return (String) uid;
     }
 }

@@ -26,15 +26,17 @@ public class MailServiceImpl implements MailService {
 
     private final MailProperties mailProperties;
 
+    private final MimeMessage mimeMessage;
+
     public MailServiceImpl(JavaMailSender mailSender, MailProperties mailProperties) {
         this.mailSender = mailSender;
         this.mailProperties = mailProperties;
+        this.mimeMessage = this.mailSender.createMimeMessage();
     }
 
     @Override
     public void sendText(String email, String subject, String text) {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        MimeMessageHelper helper = new MimeMessageHelper(this.mimeMessage);
         try {
             helper.setFrom(mailProperties.getUsername());
             helper.setTo(email);
@@ -43,14 +45,13 @@ public class MailServiceImpl implements MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        mailSender.send(message);
+        mailSender.send(this.mimeMessage);
     }
 
     @Override
     public void sendHtml(String email, String subject, String html, Map<String, File> files) {
-        MimeMessage message = mailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(this.mimeMessage, true);
             helper.setFrom(mailProperties.getUsername());
             helper.setTo(email);
             helper.setSubject(subject);
@@ -61,14 +62,13 @@ public class MailServiceImpl implements MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        mailSender.send(message);
+        mailSender.send(this.mimeMessage);
     }
 
     @Override
     public void sendFile(String email, String subject, String text, Map<String, File> files) {
-        MimeMessage message = mailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(this.mimeMessage, true);
             helper.setFrom(mailProperties.getUsername());
             helper.setTo(email);
             helper.setSubject(subject);
@@ -79,6 +79,6 @@ public class MailServiceImpl implements MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        mailSender.send(message);
+        mailSender.send(this.mimeMessage);
     }
 }

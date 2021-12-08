@@ -3,34 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>SpringBoot-SSO</title>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./index.js"></script>
 </head>
 <body>
-<div id="app">
-    <p> {{msg}}</p>
-    <button @click="get">测试</button>
+<div class="app">
+    <div class="logon">
+        <div class="username">
+            <label>用户名
+                <input type="text" name="username">
+            </label>
+        </div>
+        <div class="password">
+            <label>密码
+                <input type="password" name="password">
+            </label>
+        </div>
+        <div class="captcha">
+            <label>验证码
+                <input type="text" name="captcha">
+            </label>
+        </div>
+        <div class="button">
+            <label>
+                <input type="button" value="注册" onclick="logon()">
+            </label>
+        </div>
+    </div>
+    <div class="login">
+        <div class="username">
+            <label>用户名
+                <input type="text" name="username">
+            </label>
+        </div>
+        <div class="password">
+            <label>密码
+                <input type="password" name="password">
+            </label>
+        </div>
+        <div class="captcha">
+            <label>验证码
+                <input type="text" name="captcha">
+            </label>
+        </div>
+        <div class="button">
+            <label>
+                <input type="button" value="登录" onclick="login()">
+            </label>
+        </div>
+    </div>
+    <div class="logout">
+        <div class="button">
+            <label>
+                <input type="button" value="注销" onclick="logout()">
+            </label>
+        </div>
+    </div>
 </div>
-<script>
-    const App = {
-        data() {
-            return {
-                msg: 'Hello World',
-            }
-        },
-        methods: {
-            get() {
-                axios({
-                    method: 'get',
-                    url: 'http://192.168.1.118:8084/sso/users/123',
-                    withCredentials: true,
-                }).then(response => {
-                    console.log(response.data);
-                }).catch();
-            }
-        },
-    };
-    Vue.createApp(App).mount('#app');
-</script>
 </body>
 </html>

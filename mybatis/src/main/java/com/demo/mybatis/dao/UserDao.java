@@ -1,11 +1,11 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.util.Page;
 import com.demo.mybatis.entity.User;
+import com.demo.mybatis.util.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 项目: spring-boot
@@ -38,7 +38,7 @@ public interface UserDao {
      *
      * @return List<User>
      */
-    List<User> getAll();
+    User[] getAll();
 
     /**
      * 分页查询
@@ -46,7 +46,7 @@ public interface UserDao {
      * @param page 分页
      * @return List<User>
      */
-    List<User> getPage(Page page);
+    User[] getPage(Page page);
 
     /**
      * 更新
@@ -63,5 +63,13 @@ public interface UserDao {
      * @return rows
      */
     int delete(User user);
+
+    /**
+     * 查询
+     *
+     * @param id 用户ID
+     * @return Object
+     */
+    Map<String, Object> getAccount(@Param("id") long id);
 
 }

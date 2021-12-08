@@ -2,7 +2,6 @@ package com.demo.mybatis.dao;
 
 import com.demo.mybatis.entity.Account;
 import com.demo.mybatis.util.Page;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 项目: spring-boot
@@ -21,7 +19,6 @@ import java.util.List;
  * @since JDK1.8
  */
 @SpringBootTest
-@Slf4j
 public class AccountDaoTest {
 
     @Autowired
@@ -32,46 +29,30 @@ public class AccountDaoTest {
     void add() {
         long userId = 1L;
         long bankId = 1L;
-        Account account = Account.builder().userId(userId).bankId(bankId).delete(false).build();
-        int rows = accountDao.add(account);
-        log.info("{}", account);
-        Assertions.assertEquals(1, rows);
+        Account account = new Account();
+        account.setUserId(userId);
+        account.setBankId(bankId);
+        Assertions.assertEquals(1, accountDao.add(account));
     }
 
     @Test
     @DisplayName("查询")
     void get() {
         long id = 1L;
-        Account account = accountDao.get(id);
-        log.info("{}", account);
-        Assertions.assertNotNull(account);
-    }
-
-    @Test
-    @DisplayName("查询列表")
-    void getList() {
-        long userId = 1L;
-        long bankId = 1L;
-        Account account = Account.builder().userId(userId).bankId(bankId).build();
-        List<Account> accounts = accountDao.getList(account);
-        log.info("{}", accounts);
+        Assertions.assertNotNull(accountDao.get(id));
     }
 
     @Test
     @DisplayName("分页查询")
     void getPage() {
         Page page = new Page();
-        List<Account> accounts = accountDao.getPage(page);
-        log.info("{}", accounts);
-        Assertions.assertNotNull(accounts);
+        Assertions.assertNotEquals(0, accountDao.getPage(page).length);
     }
 
     @Test
     @DisplayName("查询全部")
     void getAll() {
-        List<Account> accounts = accountDao.getAll();
-        log.info("{}", accounts);
-        Assertions.assertNotNull(accounts);
+        Assertions.assertNotEquals(0, accountDao.getAll().length);
     }
 
     @Test
@@ -80,9 +61,7 @@ public class AccountDaoTest {
         long id = 1L;
         Account account = accountDao.get(id);
         account.setMoney(new BigDecimal("2000.00"));
-        int rows = accountDao.update(account);
-        log.info("{}", account);
-        Assertions.assertEquals(1, rows);
+        Assertions.assertEquals(1, accountDao.update(account));
     }
 
     @Test
@@ -90,7 +69,6 @@ public class AccountDaoTest {
     void delete() {
         long id = 1L;
         Account account = accountDao.get(id);
-        int rows = accountDao.delete(account);
-        Assertions.assertEquals(1, rows);
+        Assertions.assertEquals(1, accountDao.delete(account));
     }
 }

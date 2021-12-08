@@ -5,8 +5,6 @@ import com.demo.mybatis.util.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * 项目: spring-boot
  * 时间: 2021/10/24 2:28
@@ -38,7 +36,7 @@ public interface BankDao {
      *
      * @return List<Bank>
      */
-    List<Bank> getAll();
+    Bank[] getAll();
 
     /**
      * 分页查询
@@ -46,7 +44,7 @@ public interface BankDao {
      * @param page 分页
      * @return List<Bank>
      */
-    List<Bank> getPage(Page page);
+    Bank[] getPage(Page page);
 
     /**
      * 更新

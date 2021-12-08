@@ -1,18 +1,16 @@
 package com.demo.mybatis.dao;
 
-import com.demo.mybatis.util.Page;
 import com.demo.mybatis.entity.User;
-import lombok.extern.slf4j.Slf4j;
+import com.demo.mybatis.util.Page;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
-@Slf4j
 public class UserDaoTest {
 
     @Autowired
@@ -21,57 +19,56 @@ public class UserDaoTest {
     @Test
     @DisplayName("新增")
     void add() {
-        User user = User.builder()
-                .username("xxx")
-                .password("123456")
-                .name("dev")
-                .build();
-        int rows = userDao.add(user);
-        log.info("create:{}", user);
-        Assertions.assertEquals(1, rows);
+        User user = new User();
+        user.setUsername("xxx");
+        user.setPassword("123456");
+        user.setName("test");
+        Assertions.assertEquals(1, userDao.add(user));
     }
 
     @Test
     @DisplayName("查询")
     void get() {
         long id = 1L;
-        User user = userDao.get(id);
-        log.info("{}", user);
-        Assertions.assertNotNull(user);
+        Assertions.assertNotNull(userDao.get(id));
     }
 
     @Test
     @DisplayName("分页查询")
     void getPage() {
         Page page = new Page(1, 10);
-        List<User> users = userDao.getPage(page);
-        log.info("{}", users);
-        Assertions.assertNotEquals(0, users.size());
+        Assertions.assertNotEquals(0, userDao.getPage(page).length);
     }
 
     @Test
     @DisplayName("查询全部")
     void getAll() {
-        List<User> users = userDao.getAll();
-        log.info("{}", users);
-        Assertions.assertNotEquals(0, users.size());
+        Assertions.assertNotEquals(0, userDao.getAll().length);
     }
 
     @Test
     @DisplayName("更新")
     void update() {
-        User user = userDao.get(1L);
+        long id = 1L;
+        User user = userDao.get(id);
         user.setPassword("654321");
-        int rows = userDao.update(user);
-        log.info("update:{}", user);
-        Assertions.assertEquals(1, rows);
+        Assertions.assertEquals(1, userDao.update(user));
     }
 
     @Test
     @DisplayName("删除")
     void delete() {
-        User user = userDao.get(1L);
-        int rows = userDao.delete(user);
-        Assertions.assertEquals(1, rows);
+        long id = 1L;
+        User user = userDao.get(id);
+        Assertions.assertEquals(1, userDao.delete(user));
+    }
+
+    @Test
+    @DisplayName("关联查询")
+    void getAccount(){
+        long id = 1L;
+        Map<String, Object> account = userDao.getAccount(id);
+        System.out.println(account);
+        Assertions.assertNotNull(account);
     }
 }

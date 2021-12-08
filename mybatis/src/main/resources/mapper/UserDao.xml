@@ -16,8 +16,31 @@
         <result property="delete" column="is_delete"/>
     </resultMap>
 
+    <resultMap id="AccountResultMap" type="map">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="locked" column="is_locked"/>
+        <result property="version" column="version"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="delete" column="is_delete"/>
+        <collection property="accounts" ofType="Account" javaType="ArrayList">
+            <id property="id" column="account_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="bankId" column="bank_id"/>
+            <result property="money" column="money"/>
+            <result property="locked" column="is_locked"/>
+            <result property="version" column="version"/>
+            <result property="gmtCreate" column="gmt_create"/>
+            <result property="gmtModified" column="gmt_modified"/>
+            <result property="delete" column="is_delete"/>
+        </collection>
+    </resultMap>
+
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (username, password, name)
+        INSERT INTO mybatis_user (username, password, name)
         VALUES (#{username}, #{password}, #{name})
     </insert>
 
@@ -31,7 +54,7 @@
                gmt_create,
                gmt_modified,
                is_delete
-        FROM sys_user
+        FROM mybatis_user
         WHERE id = #{id}
           AND is_delete = 0
     </select>
@@ -46,7 +69,7 @@
                gmt_create,
                gmt_modified,
                is_delete
-        FROM sys_user
+        FROM mybatis_user
         WHERE is_delete = 0
         ORDER BY gmt_create
     </select>
@@ -61,14 +84,14 @@
                gmt_create,
                gmt_modified,
                is_delete
-        FROM sys_user
+        FROM mybatis_user
         WHERE is_delete = 0
         ORDER BY gmt_create
         LIMIT #{startIndex}, #{endIndex}
     </select>
 
     <update id="update">
-        UPDATE sys_user
+        UPDATE mybatis_user
         <set>
             <if test="password != null">
                 password = #{password},
@@ -87,12 +110,38 @@
     </update>
 
     <update id="delete">
-        update sys_user
+        update mybatis_user
         set is_delete = 1,
             version=version + 1
         where id = #{id}
           AND version = #{version}
           AND is_delete = 0
     </update>
+
+    <select id="getAccount" resultMap="AccountResultMap">
+        SELECT user.id           as id,
+               username,
+               password,
+               name,
+               user.is_locked    as is_locked,
+               user.version      as version,
+               user.gmt_create   as gmt_create,
+               user.gmt_modified as gmt_modified,
+               user.is_delete    as is_delete,
+               account.id as account_id,
+               user_id,
+               bank_id,
+               money,
+               account.is_locked    as is_locked,
+               account.version      as version,
+               account.gmt_create   as gmt_create,
+               account.gmt_modified as gmt_modified,
+               account.is_delete    as is_delete
+        FROM mybatis_user user
+                 left join mybatis_account account on user.id = account.user_id
+        WHERE user.id = #{id}
+          AND user.is_delete = 0
+          AND account.is_delete = 0
+    </select>
 
 </mapper>

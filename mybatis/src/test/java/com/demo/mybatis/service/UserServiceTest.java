@@ -1,14 +1,11 @@
 package com.demo.mybatis.service;
 
 import com.demo.mybatis.entity.User;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 /**
  * 项目: spring-boot
@@ -19,60 +16,55 @@ import java.util.List;
  * @since JDK1.8
  */
 @SpringBootTest
-@Slf4j
 public class UserServiceTest {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @Test
     @DisplayName("新增")
     void add() {
-        User user = User.builder()
-                .username("xxx1234")
-                .password("123456")
-                .name("xxx2")
-                .build();
-        User add = service.add(user);
-        Assertions.assertNotNull(add);
+        User user = new User();
+        user.setUsername("xxx");
+        user.setPassword("123456");
+        user.setName("test");
+        Assertions.assertNotNull(userService.add(user));
     }
 
     @Test
     @DisplayName("更新")
     void update() {
-        User user = service.get(1L);
+        long id = 1L;
+        User user = userService.get(id);
         user.setPassword("3306");
-        User update = service.update(user);
-        Assertions.assertNotNull(update);
+        Assertions.assertNotNull(userService.update(user));
     }
 
     @Test
     @DisplayName("查询")
     void get() {
         long id = 1L;
-        User user = service.get(id);
-        Assertions.assertNotNull(user);
+        Assertions.assertNotNull(userService.get(id));
     }
 
     @Test
     @DisplayName("分页查询")
     void getPage() {
-        List<User> users = service.getPage(1L, 10L);
-        Assertions.assertNotNull(users);
+        Assertions.assertNotEquals(0,userService.getPage(1L, 10L).length);
     }
 
     @Test
     @DisplayName("查询全部")
     void getAll() {
-        List<User> users = service.getAll();
-        Assertions.assertNotNull(users);
+        Assertions.assertNotEquals(0,userService.getAll().length);
     }
 
     @Test
     @DisplayName("逻辑删除")
     void delete() {
-        User user = service.get(1L);
-        service.delete(user);
+        long id = 1L;
+        User user = userService.get(id);
+        userService.delete(user);
     }
 
 }

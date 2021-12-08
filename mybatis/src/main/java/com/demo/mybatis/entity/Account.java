@@ -1,9 +1,6 @@
 package com.demo.mybatis.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,9 +15,6 @@ import java.sql.Timestamp;
  * @since JDK1.8
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
