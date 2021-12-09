@@ -27,6 +27,7 @@
         <module>shiro</module>
         <module>jwt</module>
         <module>sso</module>
+        <module>wechat</module>
     </modules>
 
     <properties>
