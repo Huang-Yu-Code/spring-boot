@@ -26,7 +26,7 @@
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="delete" column="is_delete"/>
-        <collection property="accounts" ofType="Account" javaType="ArrayList">
+        <collection property="accounts" ofType="Account">
             <id property="id" column="account_id"/>
             <result property="userId" column="user_id"/>
             <result property="bankId" column="bank_id"/>
