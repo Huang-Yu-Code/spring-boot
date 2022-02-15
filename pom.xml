@@ -28,6 +28,7 @@
         <module>jwt</module>
         <module>sso</module>
         <module>wechat</module>
+        <module>minio</module>
     </modules>
 
     <properties>

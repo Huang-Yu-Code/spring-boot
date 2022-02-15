@@ -16,11 +16,14 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
+    restart: always
 
   redis:
     image: redis
+    command: redis-server --requirepass 123456
     ports:
       - "6379:6379"
+    restart: always
 
   mongodb:
     image: mongo

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SpringBoot-Web</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    class Captcha extends React.Component {
+        constructor(props) {
+            super(props);
+            this.baseURL = 'http://localhost:8080/api';
+            this.state = {
+                captchaURL: this.baseURL + '/captcha'
+            };
+            this.flush = this.flush.bind(this);
+        }
+
+        componentDidMount() {
+            console.log("挂载执行");
+        }
+
+        componentWillUnmount() {
+            console.log("卸载执行");
+        }
+
+        flush() {
+            this.setState({
+                captchaURL: this.baseURL + '/captcha?timestamp=' + new Date().getTime()
+            });
+            console.log("刷新验证码");
+        }
+
+        render() {
+            return (
+                <div>
+                    <img src={this.state.captchaURL} alt="验证码" onClick={this.flush}/>
+                </div>
+            );
+        }
+    };
+    let dom = <Captcha/>;
+    let element = document.getElementById('root');
+    ReactDOM.render(dom, element);
+</script>
+
+<button onclick="add()">添加</button>
+<script>
+    function add() {
+        fetch('http://localhost:8080/api/json', {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                mode: 'cors',
+                credentials: 'same-origin'
+            },
+            body: JSON.stringify({
+                name: '123',
+                age: 100
+            }),
+        },)
+            .then()
+            .catch()
+    }
+</script>
+</body>
+
+</html>
