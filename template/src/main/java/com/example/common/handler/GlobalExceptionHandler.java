@@ -1,6 +1,7 @@
 package com.example.common.handler;
 
-import com.example.common.enums.ResponseCode;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
 import com.example.common.util.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +22,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({BindException.class})
+    @ExceptionHandler(BindException.class)
     public ResponseEntity<Response> bindException(BindException e) {
-        log.error("ERROR:", e);
-        return ResponseEntity.badRequest().body(Response.failure(ResponseCode.BIND_EXCEPTION));
+        log.error(StatusCode.BIND_EXCEPTION.getMsg(), e);
+        return ResponseEntity.badRequest().body(Response.failure(StatusCode.BIND_EXCEPTION));
+    }
+
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<Response> commonException(CommonException e) {
+        log.error(e.getStatusCode().getMsg(), e);
+        return ResponseEntity.badRequest().body(Response.failure(e.getStatusCode()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response> exception(Exception e) {
         log.error("ERROR:", e);
-        return ResponseEntity.internalServerError().body(Response.failure(ResponseCode.SERVER_EXCEPTION));
+        return ResponseEntity.internalServerError().body(Response.failure(StatusCode.SERVER_EXCEPTION));
     }
 
 }

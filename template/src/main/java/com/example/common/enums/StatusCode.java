@@ -13,15 +13,20 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum ResponseCode {
+public enum StatusCode {
     // 成功
     SUCCESS(200, "success"),
     // 失败
     FAILURE(400, "failure"),
+    USERNAME_EXIST(400,"账号已存在"),
     BIND_EXCEPTION(400,"接口参数错误"),
-    // 异常
+    // MINIO
+    MINIO_EXCEPTION(400,"文件服务器异常"),
+    MINIO_UPLOAD_EXCEPTION(400,"文件上传异常"),
+    MINIO_DELETE_EXCEPTION(400,"文件删除异常"),
     SERVER_EXCEPTION(500, "服务器异常");
 
     private final int code;
     private final String msg;
+
 }

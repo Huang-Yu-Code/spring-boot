@@ -1,6 +1,7 @@
 package com.example.common.util;
 
 import com.example.common.config.MinioConfig;
+import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +37,8 @@ public class MinioUtils {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
             }
         } catch (Exception e) {
-            log.error("文件服务器异常:", e);
-            throw new CommonException("文件服务器异常");
+            log.error(StatusCode.MINIO_EXCEPTION.getMsg(), e);
+            throw new CommonException(StatusCode.MINIO_EXCEPTION);
         }
     }
 
@@ -56,8 +57,8 @@ public class MinioUtils {
             minioClient.putObject(PutObjectArgs.builder().bucket(bucket).object(object).stream(inputStream, size, -1).contentType(contentType).build());
             return String.format("%s/%s/%s", endpoint, bucket, object);
         } catch (Exception e) {
-            log.error("文件上传异常:", e);
-            throw new CommonException("文件上传异常");
+            log.error(StatusCode.MINIO_UPLOAD_EXCEPTION.getMsg(), e);
+            throw new CommonException(StatusCode.MINIO_UPLOAD_EXCEPTION);
         }
     }
 
@@ -67,8 +68,8 @@ public class MinioUtils {
             String object = url.split(bucket)[1];
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucket).object(object).build());
         } catch (Exception e) {
-            log.error("文件删除异常:", e);
-            throw new CommonException("文件删除异常");
+            log.error(StatusCode.MINIO_DELETE_EXCEPTION.getMsg(), e);
+            throw new CommonException(StatusCode.MINIO_DELETE_EXCEPTION);
         }
     }
 }

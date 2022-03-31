@@ -1,6 +1,6 @@
 package com.example.common.util;
 
-import com.example.common.enums.ResponseCode;
+import com.example.common.enums.StatusCode;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -25,15 +25,15 @@ public class Response {
 
     /**
      * 响应
-     * @param responseCode 状态码
+     * @param statusCode 状态码
      * @param data 数据
      * @param <T> 数据类型
      * @return 响应
      */
-    private static <T> Response response(ResponseCode responseCode, T data) {
+    private static <T> Response response(StatusCode statusCode, T data) {
         Response response = new Response();
-        response.setCode(responseCode.getCode());
-        response.setMsg(responseCode.getMsg());
+        response.setCode(statusCode.getCode());
+        response.setMsg(statusCode.getMsg());
         response.setData(data);
         response.setTimestamp(LocalDateTime.now());
         return response;
@@ -41,21 +41,21 @@ public class Response {
 
     /**
      * 成功响应
-     * @param responseCode 状态码
+     * @param statusCode 状态码
      * @param data 数据
      * @param <T> 数据类型
      * @return 成功响应
      */
-    public static <T> Response success(ResponseCode responseCode, T data) {
-        return response(responseCode, data);
+    public static <T> Response success(StatusCode statusCode, T data) {
+        return response(statusCode, data);
     }
 
     /**
      * 失败响应
-     * @param responseCode 状态码
+     * @param statusCode 状态码
      * @return 失败响应
      */
-    public static Response failure(ResponseCode responseCode) {
-        return response(responseCode, null);
+    public static Response failure(StatusCode statusCode) {
+        return response(statusCode, null);
     }
 }
