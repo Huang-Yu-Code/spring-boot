@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.codingob</groupId>
+    <groupId>com.example.codingob</groupId>
     <artifactId>spring-boot</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
@@ -29,6 +29,7 @@
         <module>sso</module>
         <module>wechat</module>
         <module>minio</module>
+        <module>template</module>
     </modules>
 
     <properties>

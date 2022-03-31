@@ -18,6 +18,12 @@ services:
       MYSQL_ROOT_PASSWORD: root
     restart: always
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "3307:8080"
+
   redis:
     image: redis
     command: redis-server --requirepass 123456
@@ -29,3 +35,13 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+  minio:
+    restart: always
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
