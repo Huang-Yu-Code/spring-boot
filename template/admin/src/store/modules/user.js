@@ -6,7 +6,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: '',
+    image: '',
     roles: []
   }
 }
@@ -23,8 +23,8 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_IMAGE: (state, image) => {
+    state.image = image
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -54,19 +54,19 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('认证失败, 请重新登录!')
         }
 
-        const { roles, name, avatar } = data
+        const { roles, name, image } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject('当前用户角色为空!')
         }
 
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_IMAGE', image)
         resolve(data)
       }).catch(error => {
         reject(error)

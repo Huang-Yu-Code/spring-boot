@@ -2,7 +2,7 @@ package com.example.common.handler;
 
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
-import com.example.common.util.Response;
+import com.example.system.entity.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
