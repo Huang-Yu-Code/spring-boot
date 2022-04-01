@@ -14,11 +14,11 @@ import java.io.InputStream;
 import java.util.UUID;
 
 /**
- * 项目: minio
+ * 项目: template
  * 时间: 2021/11/9 15:08
  * Minio工具类
  *
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */

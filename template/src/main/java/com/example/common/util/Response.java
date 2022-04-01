@@ -6,11 +6,11 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 项目: minio
+ * 项目: template
  * 时间: 2021/11/9 15:08
  * 统一响应工具类
  *
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
@@ -19,7 +19,7 @@ public class Response {
     private Integer code;
     private String msg;
     private Object data;
-    private LocalDateTime timestamp;
+    private LocalDateTime time;
 
     private Response(){}
 
@@ -35,7 +35,7 @@ public class Response {
         response.setCode(statusCode.getCode());
         response.setMsg(statusCode.getMsg());
         response.setData(data);
-        response.setTimestamp(LocalDateTime.now());
+        response.setTime(LocalDateTime.now());
         return response;
     }
 

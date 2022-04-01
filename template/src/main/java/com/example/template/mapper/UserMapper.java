@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.template.entity.User;
 
 /**
- * 项目: 修行宝
+ * 项目: template
  * 时间: 2022/3/31 15:20
  *
  * @author 黄宇

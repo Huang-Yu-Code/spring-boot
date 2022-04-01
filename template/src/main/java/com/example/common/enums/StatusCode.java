@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 项目: minio
+ * 项目: template
  * 时间: 2022/3/24 23:33
  *
  * @author 黄宇
