@@ -18,6 +18,7 @@ public enum StatusCode {
     SUCCESS(200, "success"),
     // 失败
     FAILURE(400, "failure"),
+    USERNAME_OR_PASSWORD_ERROR(400,"账号或密码错误"),
     USERNAME_EXIST(400,"账号已存在"),
     BIND_EXCEPTION(400,"接口参数错误"),
     // MINIO
@@ -27,6 +28,6 @@ public enum StatusCode {
     SERVER_EXCEPTION(500, "服务器异常");
 
     private final int code;
-    private final String msg;
+    private final String message;
 
 }

@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: {title: 'Dashboard', icon: 'dashboard'}
     }]
   },
 ]
@@ -62,19 +62,135 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
 
+  // personal
+  {
+    path: '/personal',
+    component: Layout,
+    redirect: '/personal/index',
+    name: 'Personal',
+    meta: {
+      title: '个人中心',
+      icon: 'el-icon-s-help',
+      roles: ['admin', 'doctor', 'warehouse']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/personal/index'),
+        meta: {title: '个人信息'}
+      },
+      {
+        path: 'password',
+        component: () => import('@/views/personal/password'),
+        meta: {title: '修改密码'}
+      }
+    ]
+  },
+
+  // goods
+  {
+    path: '/goods',
+    component: Layout,
+    name: 'Goods',
+    meta: {
+      title: '防疫物品',
+      icon: 'el-icon-s-help'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/goods/index'),
+        meta: { title: '物品详情' }
+      },
+      {
+        path: 'donation',
+        component: () => import('@/views/goods/donation'),
+        meta: { title: '物品捐赠' }
+      },
+      {
+        path: 'donation-log',
+        component: () => import('@/views/goods/donationLog'),
+        meta: { title: '物品捐赠记录' }
+      },
+      {
+        path: 'apply',
+        component: () => import('@/views/goods/apply'),
+        meta: { title: '物品申请',roles:['admin','doctor'] }
+      },
+      {
+        path: 'apply-log',
+        component: () => import('@/views/goods/applyLog'),
+        meta: { title: '物品申请记录' }
+      },
+    ]
+  },
+
+  //warehouse
+  {
+    path: '/warehouse',
+    component: Layout,
+    name: 'Warehouse',
+    meta: {
+      title: '仓库',
+      icon: 'el-icon-s-help',
+      roles: ['admin','warehouse']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/warehouse/index'),
+        meta: { title: '仓库详情' }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/warehouse/donation'),
+        meta: { title: '捐赠审核' }
+      },
+      {
+        path: '13',
+        component: () => import('@/views/warehouse/apply'),
+        meta: { title: '申请审核' }
+      },
+    ]
+  },
+
+  // system
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/role',
+    name: 'System',
+    meta: {
+      roles: ['admin'],
+      title: '系统管理',
+      icon: 'el-icon-s-help'
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/system/user'),
+        meta: { title: '用户管理' }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/system/role'),
+        meta: { title: '角色管理' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

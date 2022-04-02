@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         try {
             userMapper.insert(user);
         } catch (DuplicateKeyException e) {
-            log.error(StatusCode.USERNAME_EXIST.getMsg(), e);
+            log.error(StatusCode.USERNAME_EXIST.getMessage(), e);
             throw new CommonException(StatusCode.USERNAME_EXIST);
         }
     }

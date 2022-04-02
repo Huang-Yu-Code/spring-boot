@@ -37,7 +37,7 @@ public class MinioUtils {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
             }
         } catch (Exception e) {
-            log.error(StatusCode.MINIO_EXCEPTION.getMsg(), e);
+            log.error(StatusCode.MINIO_EXCEPTION.getMessage(), e);
             throw new CommonException(StatusCode.MINIO_EXCEPTION);
         }
     }
@@ -57,7 +57,7 @@ public class MinioUtils {
             minioClient.putObject(PutObjectArgs.builder().bucket(bucket).object(object).stream(inputStream, size, -1).contentType(contentType).build());
             return String.format("%s/%s/%s", endpoint, bucket, object);
         } catch (Exception e) {
-            log.error(StatusCode.MINIO_UPLOAD_EXCEPTION.getMsg(), e);
+            log.error(StatusCode.MINIO_UPLOAD_EXCEPTION.getMessage(), e);
             throw new CommonException(StatusCode.MINIO_UPLOAD_EXCEPTION);
         }
     }
@@ -68,7 +68,7 @@ public class MinioUtils {
             String object = url.split(bucket)[1];
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucket).object(object).build());
         } catch (Exception e) {
-            log.error(StatusCode.MINIO_DELETE_EXCEPTION.getMsg(), e);
+            log.error(StatusCode.MINIO_DELETE_EXCEPTION.getMessage(), e);
             throw new CommonException(StatusCode.MINIO_DELETE_EXCEPTION);
         }
     }

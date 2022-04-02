@@ -1,5 +1,7 @@
 package com.example.system.service;
 
+import java.util.List;
+
 /**
  * 项目: template
  * 时间: 2022/3/31 23:11
@@ -9,5 +11,5 @@ package com.example.system.service;
  * @since JDK1.8
  */
 public interface UserRoleService {
-
+    List<String> list(String token);
 }

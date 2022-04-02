@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
  * @since JDK1.8
  */
 @Data
-@TableName("role")
 public class Role {
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Long id;
     private String code;
     private String name;

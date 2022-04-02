@@ -1,6 +1,9 @@
 package com.example.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.common.util.TokenUtils;
 import com.example.system.entity.UserInfo;
+import com.example.system.mapper.UserInfoMapper;
 import com.example.system.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +25,19 @@ import java.util.List;
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class UserInfoServiceImpl implements UserInfoService {
+    private final TokenUtils tokenUtils;
+    private final UserInfoMapper userInfoMapper;
+
     @Override
-    public List<UserInfo> list(UserInfo userInfo) {
-        return null;
+    public UserInfo one(String token) {
+        Long id = tokenUtils.getId(token);
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        return userInfoMapper.selectOne(queryWrapper);
     }
 
     @Override
-    public UserInfo one() {
+    public List<UserInfo> list(UserInfo userInfo) {
         return null;
     }
 

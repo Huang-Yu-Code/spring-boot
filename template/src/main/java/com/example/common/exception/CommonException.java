@@ -19,7 +19,7 @@ public class CommonException extends RuntimeException {
     private final StatusCode statusCode;
 
     public CommonException(StatusCode statusCode) {
-        super(statusCode.getMsg());
+        super(statusCode.getMessage());
         this.statusCode = statusCode;
 
     }

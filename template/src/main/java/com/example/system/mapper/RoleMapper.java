@@ -1,8 +1,8 @@
 package com.example.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.system.entity.Role;
 
-import javax.management.relation.Role;
 
 /**
  * 项目: template

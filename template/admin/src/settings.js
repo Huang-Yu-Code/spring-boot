@@ -1,6 +1,6 @@
 module.exports = {
 
   title: 'Vue2.x模板',
-  fixedHeader: false,
+  fixedHeader: true,
   sidebarLogo: false
 }

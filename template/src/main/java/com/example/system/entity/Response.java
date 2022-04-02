@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 public class Response {
     private Integer code;
-    private String msg;
+    private String message;
     private Object data;
     private LocalDateTime time;
 
@@ -35,7 +35,7 @@ public class Response {
     private static <T> Response response(StatusCode statusCode, T data) {
         Response response = new Response();
         response.setCode(statusCode.getCode());
-        response.setMsg(statusCode.getMsg());
+        response.setMessage(statusCode.getMessage());
         response.setData(data);
         response.setTime(LocalDateTime.now());
         return response;

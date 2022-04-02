@@ -13,9 +13,10 @@ import java.util.List;
  * @since JDK1.8
  */
 public interface UserInfoService {
-    List<UserInfo> list(UserInfo userInfo);
 
-    UserInfo one();
+    UserInfo one(String token);
+
+    List<UserInfo> list(UserInfo userInfo);
 
     void insert(UserInfo userInfo);
 

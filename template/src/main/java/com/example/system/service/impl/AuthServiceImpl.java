@@ -1,10 +1,12 @@
 package com.example.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
 import com.example.common.util.TokenUtils;
 import com.example.system.entity.User;
-import com.example.system.service.AuthService;
 import com.example.system.mapper.UserMapper;
+import com.example.system.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,13 @@ public class AuthServiceImpl implements AuthService {
         queryWrapper
                 .eq("username", user.getUsername())
                 .eq("password", user.getPassword());
-        User one = userMapper.selectOne(queryWrapper);
-        return tokenUtils.create(one.getId(), one.getUsername());
+        try {
+            User one = userMapper.selectOne(queryWrapper);
+            return tokenUtils.create(one.getId(), one.getUsername());
+        } catch (NullPointerException e) {
+            log.error(StatusCode.USERNAME_OR_PASSWORD_ERROR.getMessage(), e);
+            throw new CommonException(StatusCode.USERNAME_OR_PASSWORD_ERROR);
+        }
     }
 
     @Override
