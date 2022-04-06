@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -27,6 +29,7 @@ import java.util.Date;
 public class TokenUtils {
     private String signature;
     private long expiration;
+    private final HttpServletRequest request;
 
     /**
      * @param id       ID
@@ -63,6 +66,16 @@ public class TokenUtils {
     }
 
     /**
+     * 获取用户ID
+     *
+     * @return id
+     */
+    public Long getId() {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return getId(token);
+    }
+
+    /**
      * 获取用户账号
      *
      * @param token token
@@ -70,5 +83,15 @@ public class TokenUtils {
      */
     public String getUsername(String token) {
         return getClaims(token).get("username", String.class);
+    }
+
+    /**
+     * 获取用户账号
+     *
+     * @return username
+     */
+    public String getUsername() {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return getUsername(token);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.system.controller;
 
-import com.example.common.enums.StatusCode;
-import com.example.system.entity.Response;
+import com.example.common.entity.Response;
 import com.example.system.entity.Role;
 import com.example.system.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.List;
 
 /**
  * 项目: template
- * 时间: 2022/3/31 23:10
+ * 时间: 2022/4/4 23:20
  *
  * @author 黄宇
  * @version 1.0.0
@@ -23,29 +22,33 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/role")
 public class RoleController {
-    private final RoleService roleService;
+    private final RoleService service;
+
+    @GetMapping("/{id}")
+    public Response<Role> select(@PathVariable Long id) {
+        return Response.success(service.select(id));
+    }
 
     @GetMapping("")
-    public Response list(Role role) {
-        List<Role> roles = roleService.list(role);
-        return Response.success(StatusCode.SUCCESS, roles);
+    public Response<List<Role>> selectList(Role user) {
+        return Response.success(service.selectList(user));
     }
 
     @PostMapping("")
-    public Response insert(@RequestBody Role role) {
-        roleService.insert(role);
+    public Response<Void> insert(@RequestBody Role entity) {
+        service.insert(entity);
         return Response.success();
     }
 
     @PutMapping("")
-    public Response update(@RequestBody Role role) {
-        roleService.update(role);
+    public Response<Void> update(@RequestBody Role entity) {
+        service.update(entity);
         return Response.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response delete(@PathVariable long id){
-        roleService.delete(id);
+    public Response<Void> delete(@PathVariable Long id) {
+        service.delete(id);
         return Response.success();
     }
 }

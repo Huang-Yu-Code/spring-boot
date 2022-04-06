@@ -21,6 +21,11 @@ public enum StatusCode {
     USERNAME_OR_PASSWORD_ERROR(400,"账号或密码错误"),
     USERNAME_EXIST(400,"账号已存在"),
     BIND_EXCEPTION(400,"接口参数错误"),
+    // USER
+    USER_PASSWORD_ERROR(400,"密码错误"),
+    // ROLE
+    ROLE_NAME_EXIST(400,"角色已存在"),
+    ROLE_CODE_EXIST(400,"标识符已存在"),
     // MINIO
     MINIO_EXCEPTION(400,"文件服务器异常"),
     MINIO_UPLOAD_EXCEPTION(400,"文件上传异常"),

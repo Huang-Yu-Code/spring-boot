@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.github.codingob</groupId>
+    <groupId>com.example.codingob</groupId>
     <artifactId>web</artifactId>
     <version>1.0.0</version>
     <name>web</name>

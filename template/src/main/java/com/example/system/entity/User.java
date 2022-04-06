@@ -1,30 +1,25 @@
 package com.example.system.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * 项目: template
- * 时间: 2022/3/31 15:21
+ * 时间: 2022/4/4 21:18
  *
  * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
 @Data
-public class User {
-    @TableId
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String username;
     private String password;
-    private String state;
-    @TableField(fill = FieldFill.INSERT)
+    private Long state;
     private LocalDateTime createTime;
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

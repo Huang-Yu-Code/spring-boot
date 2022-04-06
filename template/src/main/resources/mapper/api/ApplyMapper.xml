@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.api.mapper.ApplyMapper">
+
+    <resultMap id="Map" type="com.example.api.entity.Apply">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="name" jdbcType="INTEGER"/>
+        <result property="warehouseId" column="state" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="VoMap" type="com.example.api.vo.ApplyVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="warehouseId" column="warehouse_id" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <association property="userInfo" javaType="com.example.system.entity.UserInfo">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="name" column="ui_name" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="idNumbers" column="id_numbers" jdbcType="VARCHAR"/>
+            <result property="phoneNumbers" column="phone_numbers" jdbcType="INTEGER"/>
+        </association>
+        <collection property="goods" javaType="list" ofType="com.example.api.entity.Goods">
+            <id property="id" column="g_id" jdbcType="INTEGER"/>
+            <result property="name" column="g_name" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="numbers" column="numbers" jdbcType="INTEGER"/>
+            <result property="state" column="g_state" jdbcType="INTEGER"/>
+            <result property="warehouseId" column="warehouse_id" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="select" resultMap="VoMap">
+        select apply.id,
+               apply.user_id,
+               apply.warehouse_id,
+               apply.state,
+               apply.create_time,
+               apply.update_time,
+               ui.user_id,
+               ui.name ui_name,
+               ui.image,
+               ui.id_numbers,
+               ui.phone_numbers,
+               g.id g_id,
+               g.warehouse_id,
+               g.name g_name,
+               g.type,
+               g.numbers,
+               g.state g_state
+        from apply
+                 inner join user_info ui on apply.user_id = ui.user_id
+                 inner join apply_goods dg on apply.id = dg.apply_id
+                 inner join goods g on dg.goods_id = g.id
+        where apply.id = #{id}
+    </select>
+
+    <!--查询多行数据-->
+    <select id="selectList" resultMap="VoMap">
+        select apply.id,
+        apply.user_id,
+        apply.warehouse_id,
+        apply.state,
+        apply.create_time,
+        apply.update_time,
+        ui.user_id,
+        ui.name ui_name,
+        ui.image,
+        ui.id_numbers,
+        ui.phone_numbers,
+        g.id g_id,
+        g.warehouse_id,
+        g.name g_name,
+        g.type,
+        g.numbers,
+        g.state g_state
+        from apply
+        inner join user_info ui on apply.user_id = ui.user_id
+        inner join apply_goods dg on apply.id = dg.apply_id
+        inner join goods g on dg.goods_id = g.id
+        <where>
+            <if test="id != null">
+                and apply.id = #{id}
+            </if>
+            <if test="userId != null">
+                and apply.user_id = #{userId}
+            </if>
+            <if test="warehouseId != null">
+                and apply.warehouse_id = #{warehouseId}
+            </if>
+            <if test="state != null">
+                and apply.state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into apply(id, user_id, warehouse_id, state)
+        values (#{id}, #{userId}, #{warehouseId}, #{state})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update apply
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="delete">
+        delete
+        from apply
+        where id = #{id}
+    </delete>
+
+</mapper>
+

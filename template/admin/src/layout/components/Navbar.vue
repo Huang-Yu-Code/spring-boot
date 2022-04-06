@@ -7,8 +7,8 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="image+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <img :src="info.image+'?imageView2/1/w/80/h/80'" class="user-avatar" alt="图标">
+          <em class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
@@ -38,7 +38,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'image'
+      'info'
     ])
   },
   methods: {

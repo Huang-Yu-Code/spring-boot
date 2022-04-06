@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>com.github.codingob</groupId>
-    <artifactId>data-jdbc</artifactId>
+    <artifactId>jdbc</artifactId>
     <version>1.0.0</version>
-    <name>data-jdbc</name>
-    <description>Demo data-jdbc project for Spring Boot</description>
+    <name>jdbc</name>
+    <description>Demo jdbc project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>

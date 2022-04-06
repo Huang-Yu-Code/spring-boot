@@ -1,12 +1,12 @@
 import axios from 'axios'
-import {Message} from 'element-ui'
+import {Message, MessageBox} from 'element-ui'
 
-const service = axios.create({
-    baseURL: 'http://localhost:8080/api',
+const request = axios.create({
+    baseURL: 'http://localhost:8080',
     timeout: 5000
 })
 
-service.interceptors.request.use(
+request.interceptors.request.use(
     config => {
         return config
     },
@@ -20,14 +20,35 @@ service.interceptors.request.use(
     }
 )
 
-service.interceptors.response.use(
+request.interceptors.response.use(
     response => {
-        return response
+        const {code, message, data} = response.data
+        if (code !== 200) {
+            Message({
+                message,
+                type: 'error',
+                duration: 5 * 1000
+            })
+            if (code===401){
+                MessageBox.confirm('您已注销登录, 是否重新登录', '注销确认', {
+                    confirmButtonText: '重新登录',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    store.dispatch('auth/resetToken').then(() => {
+                        location.reload()
+                    })
+                })
+            }
+            return Promise.reject(new Error(message))
+        } else {
+            return data
+        }
     },
     error => {
-        console.log(error)
+        console.log('err' + error.message) // for debug
         Message({
-            message: 'error',
+            message: error.message,
             type: 'error',
             duration: 5 * 1000
         })
@@ -35,4 +56,4 @@ service.interceptors.response.use(
     }
 )
 
-export default service
+export default request

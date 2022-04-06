@@ -3,13 +3,13 @@ import {MessageBox, Message} from 'element-ui'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
 
-const service = axios.create({
-  baseURL: 'http://localhost:8080',
+const request = axios.create({
+  baseURL: 'http://localhost:8080/api',
   withCredentials: true,
   timeout: 5000
 })
 
-service.interceptors.request.use(
+request.interceptors.request.use(
   config => {
     if (store.getters.token) {
       config.headers['Authorization'] = getToken()
@@ -24,7 +24,7 @@ service.interceptors.request.use(
 )
 
 // response interceptor
-service.interceptors.response.use(
+request.interceptors.response.use(
   response => {
     const {code, message, data} = response.data
     if (code !== 200) {
@@ -60,4 +60,4 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default request

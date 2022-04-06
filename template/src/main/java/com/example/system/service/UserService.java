@@ -1,13 +1,14 @@
 package com.example.system.service;
 
-import com.example.system.entity.Password;
 import com.example.system.entity.User;
+import com.example.system.vo.Password;
+import com.example.system.vo.UserVo;
 
 import java.util.List;
 
 /**
  * 项目: template
- * 时间: 2022/3/31 15:22
+ * 时间: 2022/4/4 21:11
  *
  * @author 黄宇
  * @version 1.0.0
@@ -15,13 +16,17 @@ import java.util.List;
  */
 public interface UserService {
 
-    List<User> list(User user);
+    UserVo select(Long id);
 
-    void insert(User user);
+    List<UserVo> selectList(User entity);
+
+    void insert(UserVo entity);
+
+    void update(UserVo entity);
 
     void updatePassword(Password password);
 
-    void updateState(User user);
+    void updateState(User entity);
 
-    void delete(long id);
+    void delete(Long id);
 }

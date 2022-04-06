@@ -3,7 +3,6 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
 import Layout from '@/layout'
 
 /**
@@ -25,15 +24,16 @@ import Layout from '@/layout'
   }
  */
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
+    hidden: true
+  },
+
+  {
+    path: '/logon',
+    component: () => import('@/views/logon/index'),
     hidden: true
   },
 
@@ -51,15 +51,11 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: {title: 'Dashboard', icon: 'dashboard'}
+      meta: {title: '首页', icon: 'dashboard'}
     }]
   },
 ]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
 export const asyncRoutes = [
 
   // personal
@@ -70,19 +66,18 @@ export const asyncRoutes = [
     name: 'Personal',
     meta: {
       title: '个人中心',
-      icon: 'el-icon-s-help',
-      roles: ['admin', 'doctor', 'warehouse']
+      icon: 'nested',
     },
     children: [
       {
         path: 'index',
         component: () => import('@/views/personal/index'),
-        meta: {title: '个人信息'}
+        meta: {title: '个人信息', icon: 'table'}
       },
       {
         path: 'password',
         component: () => import('@/views/personal/password'),
-        meta: {title: '修改密码'}
+        meta: {title: '修改密码', icon: 'table'}
       }
     ]
   },
@@ -100,27 +95,27 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/goods/index'),
-        meta: { title: '物品详情' }
+        meta: {title: '物品详情'}
       },
       {
         path: 'donation',
         component: () => import('@/views/goods/donation'),
-        meta: { title: '物品捐赠' }
+        meta: {title: '物品捐赠'}
       },
       {
         path: 'donation-log',
         component: () => import('@/views/goods/donationLog'),
-        meta: { title: '物品捐赠记录' }
+        meta: {title: '物品捐赠记录'}
       },
       {
         path: 'apply',
         component: () => import('@/views/goods/apply'),
-        meta: { title: '物品申请',roles:['admin','doctor'] }
+        meta: {title: '物品申请', roles: ['admin', 'doctor']}
       },
       {
         path: 'apply-log',
         component: () => import('@/views/goods/applyLog'),
-        meta: { title: '物品申请记录' }
+        meta: {title: '物品申请记录'}
       },
     ]
   },
@@ -133,23 +128,22 @@ export const asyncRoutes = [
     meta: {
       title: '仓库',
       icon: 'el-icon-s-help',
-      roles: ['admin','warehouse']
     },
     children: [
       {
         path: 'index',
         component: () => import('@/views/warehouse/index'),
-        meta: { title: '仓库详情' }
+        meta: {title: '仓库详情'}
       },
       {
-        path: 'role',
+        path: 'donation',
         component: () => import('@/views/warehouse/donation'),
-        meta: { title: '捐赠审核' }
+        meta: {title: '捐赠审核', roles: ['admin', 'warehouse']}
       },
       {
-        path: '13',
+        path: 'apply',
         component: () => import('@/views/warehouse/apply'),
-        meta: { title: '申请审核' }
+        meta: {title: '申请审核', roles: ['admin', 'warehouse']}
       },
     ]
   },
@@ -167,15 +161,20 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'user',
-        component: () => import('@/views/system/user'),
-        meta: { title: '用户管理' }
-      },
-      {
         path: 'role',
         component: () => import('@/views/system/role'),
-        meta: { title: '角色管理' }
-      }
+        meta: {title: '角色管理'}
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/system/user'),
+        meta: {title: '用户管理'}
+      },
+      {
+        path: 'warehouse',
+        component: () => import('@/views/system/warehouse'),
+        meta: {title: '仓库管理'}
+      },
     ]
   },
 
@@ -184,7 +183,7 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history',
   scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })

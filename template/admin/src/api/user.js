@@ -1,15 +1,42 @@
 import request from '@/utils/request'
 
-export function getInfo(token) {
+const url = '/user'
+
+export function getUsers(params) {
   return request({
-    url: '/user/info/' + token,
+    url,
     method: 'get',
+    params: params
   })
 }
 
-export function getRole(token) {
+export function insertUser(data) {
   return request({
-    url: '/user/role/' + token,
-    method: 'get',
+    url,
+    method: 'post',
+    data
+  })
+}
+
+export function updateUser(data) {
+  return request({
+    url,
+    method: 'put',
+    data
+  })
+}
+
+export function updatePassword(data) {
+  return request({
+    url: url + '/password',
+    method: 'put',
+    data
+  })
+}
+
+export function deleteUser(id) {
+  return request({
+    url: url + '/' + id,
+    method: 'delete'
   })
 }

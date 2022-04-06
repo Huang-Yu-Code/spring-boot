@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function getUser() {
+  return request({
+    url: '/user/',
+    method: 'get',
+  })
+}
+
 export function logout() {
   return request({
     url: '/logout',

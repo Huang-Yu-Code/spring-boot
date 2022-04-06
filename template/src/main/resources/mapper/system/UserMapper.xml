@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.system.mapper.UserMapper">
+
+    <resultMap id="Map" type="com.example.system.entity.User">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="VoMap" type="com.example.system.vo.UserVo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="createTime" column="u_create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="u_update_time" jdbcType="TIMESTAMP"/>
+        <association property="userInfo" javaType="com.example.system.entity.UserInfo">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="name" column="ui_name" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="idNumbers" column="id_numbers" jdbcType="VARCHAR"/>
+            <result property="phoneNumbers" column="phone_numbers" jdbcType="INTEGER"/>
+            <result property="createTime" column="ui_create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="ui_update_time" jdbcType="TIMESTAMP"/>
+        </association>
+        <collection property="roles" javaType="list" ofType="com.example.system.entity.Role">
+            <id property="id" column="r_id" jdbcType="INTEGER"/>
+            <result property="name" column="r_name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="createTime" column="r_create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="r_update_time" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="select" resultMap="VoMap">
+        select u.id,
+               u.username,
+               u.state,
+               u.create_time u_create_time,
+               u.update_time u_update_time,
+               ui.user_id,
+               ui.name ui_name,
+               ui.image,
+               ui.id_numbers,
+               ui.phone_numbers,
+               ui.create_time ui_create_time,
+               ui.update_time ui_update_time,
+               ur.user_id,
+               ur.role_id,
+               ur.create_time ur_create_time,
+               ur.update_time ur_update_time,
+               r.id r_id,
+               r.code,
+               r.name r_name,
+               r.create_time r_create_time,
+               r.update_time r_update_time
+        from user u
+                 inner join user_info ui on u.id = ui.user_id
+                 inner join user_role ur on u.id = ur.user_id
+                 inner join role r on ur.role_id = r.id
+        where u.id = #{id}
+    </select>
+
+    <!--查询多行数据-->
+    <select id="selectList" resultMap="VoMap">
+        select u.id,
+        u.username,
+        u.state,
+        u.create_time u_create_time,
+        u.update_time u_update_time,
+        ui.user_id,
+        ui.name ui_name,
+        ui.image,
+        ui.id_numbers,
+        ui.phone_numbers,
+        ui.create_time ui_create_time,
+        ui.update_time ui_update_time,
+        ur.user_id,
+        ur.role_id,
+        ur.create_time ur_create_time,
+        ur.update_time ur_update_time,
+        r.id r_id,
+        r.code,
+        r.name r_name,
+        r.create_time r_create_time,
+        r.update_time r_update_time
+        from user u
+        inner join user_info ui on u.id = ui.user_id
+        inner join user_role ur on u.id = ur.user_id
+        inner join role r on ur.role_id = r.id
+        <where>
+            <if test="id != null">
+                and u.id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user(id, username, password, state)
+        values (#{id}, #{username}, #{password}, #{state})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="delete">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+
+</mapper>
+

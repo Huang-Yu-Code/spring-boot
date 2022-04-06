@@ -6,18 +6,21 @@ import java.util.List;
 
 /**
  * 项目: template
- * 时间: 2022/3/31 23:11
+ * 时间: 2022/4/4 23:18
  *
  * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
 public interface RoleService {
-    List<Role> list(Role role);
 
-    void insert(Role role);
+    Role select(Long id);
 
-    void update(Role role);
+    List<Role> selectList(Role entity);
 
-    void delete(long id);
+    void insert(Role entity);
+
+    void update(Role entity);
+
+    void delete(Long id);
 }

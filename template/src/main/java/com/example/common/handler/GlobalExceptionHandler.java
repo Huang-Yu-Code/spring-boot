@@ -1,8 +1,8 @@
 package com.example.common.handler;
 
+import com.example.common.entity.Response;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
-import com.example.system.entity.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
