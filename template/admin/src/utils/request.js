@@ -17,8 +17,7 @@ request.interceptors.request.use(
     return config
   },
   error => {
-    // do something with request error
-    console.log(error) // for debug
+    console.log(error)
     return Promise.reject(error)
   }
 )
@@ -50,12 +49,12 @@ request.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error.message) // for debug
     Message({
-      message: error.message,
+      message: '网络错误,请检查网络连接',
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
+    console.log(error.message)
     return Promise.reject(error)
   }
 )

@@ -32,12 +32,6 @@ export const constantRoutes = [
   },
 
   {
-    path: '/logon',
-    component: () => import('@/views/logon/index'),
-    hidden: true
-  },
-
-  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -82,72 +76,6 @@ export const asyncRoutes = [
     ]
   },
 
-  // goods
-  {
-    path: '/goods',
-    component: Layout,
-    name: 'Goods',
-    meta: {
-      title: '防疫物品',
-      icon: 'el-icon-s-help'
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/goods/index'),
-        meta: {title: '物品详情'}
-      },
-      {
-        path: 'donation',
-        component: () => import('@/views/goods/donation'),
-        meta: {title: '物品捐赠'}
-      },
-      {
-        path: 'donation-log',
-        component: () => import('@/views/goods/donationLog'),
-        meta: {title: '物品捐赠记录'}
-      },
-      {
-        path: 'apply',
-        component: () => import('@/views/goods/apply'),
-        meta: {title: '物品申请', roles: ['admin', 'doctor']}
-      },
-      {
-        path: 'apply-log',
-        component: () => import('@/views/goods/applyLog'),
-        meta: {title: '物品申请记录'}
-      },
-    ]
-  },
-
-  //warehouse
-  {
-    path: '/warehouse',
-    component: Layout,
-    name: 'Warehouse',
-    meta: {
-      title: '仓库',
-      icon: 'el-icon-s-help',
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/warehouse/index'),
-        meta: {title: '仓库详情'}
-      },
-      {
-        path: 'donation',
-        component: () => import('@/views/warehouse/donation'),
-        meta: {title: '捐赠审核', roles: ['admin', 'warehouse']}
-      },
-      {
-        path: 'apply',
-        component: () => import('@/views/warehouse/apply'),
-        meta: {title: '申请审核', roles: ['admin', 'warehouse']}
-      },
-    ]
-  },
-
   // system
   {
     path: '/system',
@@ -169,12 +97,7 @@ export const asyncRoutes = [
         path: 'user',
         component: () => import('@/views/system/user'),
         meta: {title: '用户管理'}
-      },
-      {
-        path: 'warehouse',
-        component: () => import('@/views/system/warehouse'),
-        meta: {title: '仓库管理'}
-      },
+      }
     ]
   },
 

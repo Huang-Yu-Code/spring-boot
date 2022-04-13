@@ -1,15 +1,13 @@
-import Cookies from 'js-cookie'
-
 const key = 'token'
 
 export function getToken() {
-  return Cookies.get(key)
+  return localStorage.getItem(key)
 }
 
 export function setToken(token) {
-  return Cookies.set(key, token)
+  return localStorage.setItem(key, token)
 }
 
 export function removeToken() {
-  return Cookies.remove(key)
+  return localStorage.removeItem(key)
 }
