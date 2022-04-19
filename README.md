@@ -1,6 +1,6 @@
 # Spring-Boot
 
-Version: 2.5.2
+Version: 2.5.5
 
 ## [Admin](./admin)
 

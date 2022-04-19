@@ -1,7 +1,6 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import { getUser, login, logout } from '@/api/auth'
-import item from '@/layout/components/Sidebar/Item'
 
 const getDefaultState = () => {
   return {

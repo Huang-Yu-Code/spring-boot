@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: mybatis-plus
+  profiles:
+    active: default
+    include:
+      - mybatis-plus
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_boot
+    username: root
+    password: root
