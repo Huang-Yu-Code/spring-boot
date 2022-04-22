@@ -10,7 +10,7 @@ export function getRoles(params) {
   })
 }
 
-export function insertRole(data) {
+export function addRole(data) {
   return request({
     url,
     method: 'post',

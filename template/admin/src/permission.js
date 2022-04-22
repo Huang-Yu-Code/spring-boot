@@ -24,8 +24,10 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          const { roles }  = await store.dispatch('auth/getUser')
-          const accessRoutes = await store.dispatch('permission/generateRoutes', roles.map(item=>{return item.code}))
+          const roles = await store.dispatch('auth/hasRoles')
+          const accessRoutes = await store.dispatch('permission/generateRoutes', roles.map(item => {
+            return item.code
+          }))
 
           router.addRoutes(accessRoutes)
 
@@ -38,12 +40,10 @@ router.beforeEach(async (to, from, next) => {
         }
       }
     }
-  }
-  else {
+  } else {
     if (whiteList.indexOf(to.path) !== -1) {
       next()
-    }
-    else {
+    } else {
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }

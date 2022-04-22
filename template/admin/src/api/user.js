@@ -10,7 +10,7 @@ export function getUsers(params) {
   })
 }
 
-export function insertUser(data) {
+export function addUser(data) {
   return request({
     url,
     method: 'post',
@@ -21,14 +21,6 @@ export function insertUser(data) {
 export function updateUser(data) {
   return request({
     url,
-    method: 'put',
-    data
-  })
-}
-
-export function updatePassword(data) {
-  return request({
-    url: url + '/password',
     method: 'put',
     data
   })

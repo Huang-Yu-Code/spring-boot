@@ -1,8 +1,8 @@
 package com.example.common.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
+import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,9 +27,9 @@ import java.util.Date;
 @Getter
 @Setter
 public class TokenUtils {
+    private final HttpServletRequest request;
     private String signature;
     private long expiration;
-    private final HttpServletRequest request;
 
     /**
      * @param id       ID
@@ -52,7 +52,18 @@ public class TokenUtils {
      * @return 荷载
      */
     public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(signature).parseClaimsJws(token).getBody();
+        try {
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(signature).parseClaimsJws(token);
+            return claimsJws.getBody();
+        } catch (IllegalArgumentException e) {
+            throw new CommonException(StatusCode.TOKEN_NULL);
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException e) {
+            throw new CommonException(StatusCode.TOKEN_ERROR);
+        } catch (ExpiredJwtException e) {
+            throw new CommonException(StatusCode.TOKEN_EXPIRED);
+        } catch (Exception e) {
+            throw new CommonException(StatusCode.SERVER_EXCEPTION);
+        }
     }
 
     /**

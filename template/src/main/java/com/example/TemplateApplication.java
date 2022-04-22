@@ -13,8 +13,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
  * @version 1.0.0
  * @since JDK1.8
  */
-@SpringBootApplication
-@MapperScan(basePackages = "com.example.*.mapper")
+@SpringBootApplication(scanBasePackages = {"com.example.api", "com.example.common"})
+@MapperScan(basePackages = "com.example.api.mapper")
 @ConfigurationPropertiesScan
 public class TemplateApplication {
     public static void main(String[] args) {

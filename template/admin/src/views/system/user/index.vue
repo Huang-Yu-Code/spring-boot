@@ -1,221 +1,166 @@
 <template>
   <div>
-    <!--过滤-->
-    <el-form :inline="true" :model="params" class="demo-form-inline">
-      <el-form-item label="账号">
-        <el-input v-model="params.username" placeholder="账号" maxlength="18" show-word-limit></el-input>
-      </el-form-item>
-      <el-form-item label="姓名">
-        <el-input v-model="params.userInfo.name" placeholder="姓名" maxlength="16" show-word-limit></el-input>
-      </el-form-item>
-      <el-form-item label="角色">
-        <el-select v-model="params.role.id">
-          <el-option v-for="role in roles" :label="role.name" :value="role.id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="flushList">查询|刷新</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="success" @click="insertDialog=true">添加</el-button>
-      </el-form-item>
-    </el-form>
-    <!--添加面板-->
-    <el-dialog title="添加" :visible.sync="insertDialog" width="40%">
-      <el-form ref="form" :model="insertForm" label-width="80px">
-        <el-form-item label="角色">
-          <el-checkbox v-for="role in roles" v-model="role.checked" :label="role.name"
-                       @change="insertForm.roles = roles.filter(item=> item.checked)"
-          >
-          </el-checkbox>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="insertForm.userInfo.name" maxlength="16" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号">
-          <el-input v-model="insertForm.userInfo.idNumbers" maxlength="18" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="insertForm.userInfo.phoneNumbers" maxlength="11" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="insertUser">确定</el-button>
-          <el-button @click="insertDialog = false">取消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <!--查找-->
+    <el-collapse>
+      <el-collapse-item>
+        <template slot="title">
+          精准查找
+        </template>
+        <el-form :inline="true" :model="params" class="demo-form-inline">
+          <el-form-item label="账号">
+            <el-input v-model="params.username" placeholder="账号" maxlength="16" show-word-limit></el-input>
+          </el-form-item>
+          <el-form-item label="状态">
+            <el-select v-model="params.state" placeholder="请选择账号状态">
+              <el-option label="正常" value="1"></el-option>
+              <el-option label="异常" value="0"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="small" @click="handleSearchButton">查找</el-button>
+          </el-form-item>
+        </el-form>
+      </el-collapse-item>
+    </el-collapse>
     <!--表格-->
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column label="序号" type="index" width="50"></el-table-column>
-      <el-table-column label="账号" prop="username"></el-table-column>
-      <el-table-column label="角色">
+    <el-table :data="tableData" stripe border size="small" highlight-current-row style="width: 100%">
+      <el-table-column label="序号" type="index" width="50" align="center"></el-table-column>
+      <el-table-column label="账号" prop="username" align="center"></el-table-column>
+      <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-for="role in scope.row.roles">{{ role.name }}</el-tag>
+          <el-tag :type="scope.row.state===1?'success':'danger'"><em
+            :class="scope.row.state===1?'el-icon-success':'el-icon-error'"></em>{{
+              scope.row.state === 1 ? '正常' : '异常'
+            }}
+          </el-tag>
         </template>
       </el-table-column>
-
-      <el-table-column label="状态">
-        <template slot-scope="scope">
-          <el-tooltip :content="scope.row.state===1?'启用':'未启用'" placement="top">
-            <el-switch
-              v-model="scope.row.state"
-              @change="updateState(scope.row)"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              :active-value="1"
-              :inactive-value="0">
-            </el-switch>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column label="姓名" prop="userInfo.name"></el-table-column>
-      <el-table-column label="身份证" prop="userInfo.idNumbers"></el-table-column>
-      <el-table-column label="手机" prop="userInfo.phoneNumbers"></el-table-column>
-      <el-table-column label="创建时间" prop="createTime"></el-table-column>
-      <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+      <el-table-column label="创建时间" prop="createTime" align="center"></el-table-column>
+      <el-table-column label="更新时间" prop="updateTime" align="center"></el-table-column>
       <el-table-column label="操作">
+        <template slot="header" slot-scope="scope">
+          <el-button type="success" size="small" @click="handleAddButton">添加</el-button>
+        </template>
         <template slot-scope="scope">
-          <el-button size="small" @click="editItem(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteUser(scope.row.id)">删除</el-button>
+          <el-button size="mini" type="success" @click="">{{ scope.row.state === 1 ? '冻结' : '解冻' }}</el-button>
+          <el-button size="mini" type="warning" @click="">重置密码</el-button>
+          <el-button size="mini" type="primary" @click="handleRoleButton(scope.row.id)">授权</el-button>
+          <el-button size="mini" type="danger" @click="handleDeleteButton(scope.row.id)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!--编辑面板-->
-    <el-dialog title="编辑" :visible.sync="updateDialog" width="40%">
-      <el-form ref="form" :model="updateForm" label-width="80px">
-        <el-form-item label="角色">
-          <el-checkbox v-for="role in roles" v-model="role.checked" :label="role.name"
-                       @change="handleCheckBoxChange"
-          >
-          </el-checkbox>
+    <!--添加面板-->
+    <el-dialog title="添加" :visible.sync="addDialog" width="33%">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="账号">
+          <el-input v-model="form.username" maxlength="18" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="updateForm.userInfo.name" maxlength="16" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号">
-          <el-input v-model="updateForm.userInfo.idNumbers" maxlength="18" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="updateForm.userInfo.phoneNumbers" maxlength="11" show-word-limit></el-input>
+        <el-form-item label="密码">
+          <el-input v-model="form.password" maxlength="16" show-word-limit></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="updateUser">确定</el-button>
-          <el-button @click="updateDialog=false">取消</el-button>
+          <el-button type="primary" @click="handleAddButtonSubmit">确定</el-button>
+          <el-button @click="handleAddButtonCancel">取消</el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <!--授权面板-->
+    <el-dialog title="授权" :visible.sync="updateDialog" width="33%">
+      <el-tree
+        :data="roles"
+        :props="{label: 'name'}"
+        :default-checked-keys="userRoles"
+        ref="tree"
+        show-checkbox
+        node-key="id"
+        @check="handleCheck">
+      </el-tree>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getRoles } from '@/api/role'
-import { deleteUser, getUsers, insertUser, updateUser } from '@/api/user'
+
+import {getUsers, addUser, updateUser, deleteUser} from '@/api/user'
+
+import {getRoles} from '@/api/role'
+
+import {getUserRoles, addUserRole, deleteUserRole} from '@/api/userRole'
 
 export default {
   data() {
     return {
-      params: {
-        username: '',
-        userInfo: {
-          name: ''
-        },
-        role: {
-          id: ''
-        }
-      },
-      roles: [],
+      params: {},
       tableData: [],
-      insertForm: {
-        userInfo: {
-          name: '',
-          idNumbers: '',
-          phoneNumbers: ''
-        },
-        roles: []
-      },
-      insertDialog: false,
-      updateForm: {
-        id: null,
-        username: '',
-        userInfo: {
-          name: '',
-          idNumbers: '',
-          phoneNumbers: ''
-        },
-        roles: []
-      },
-      updateDialog: false
+      form: {},
+      roles: [],
+      userId:null,
+      userRoles: [],
+      addDialog: false,
+      updateDialog: false,
     }
   },
-  computed: {
-    isChecked(role) {
-      return
-    }
-  },
+  computed: {},
+  watch: {},
   mounted() {
-    this.initData()
+    this.initialization()
   },
   methods: {
-    initData() {
+    initialization() {
+      this.getTableData()
       this.getRoles()
-      this.getUsers()
     },
-    flushList() {
-      this.getUsers()
-      this.$message.success('数据已刷新')
-    },
-    getUsers() {
+    getTableData() {
       getUsers(this.params).then(data => {
         this.tableData = data
       })
     },
     getRoles() {
-      getRoles(this.params.role).then(data => {
+      getRoles({}).then(data => {
         this.roles = data
       })
     },
-    insertUser() {
-      insertUser(this.insertForm).then(() => {
+    getUserRoles(userId) {
+      getUserRoles({userId}).then(data => {
+        if (!data) this.userRoles=[]
+        this.userRoles = data.map(item => {
+          return item.roleId
+        })
+      })
+    },
+    handleSearchButton() {
+      this.getTableData();
+    },
+    handleAddButton() {
+      this.addDialog = true
+      this.form = {}
+    },
+    handleAddButtonSubmit() {
+      addUser(this.form).then(() => {
         this.$message.success('添加成功')
-        this.insertDialog = false
-        this.getUsers()
+        this.getTableData()
+        this.addDialog = false
       })
     },
-    editItem(item) {
-
+    handleAddButtonCancel() {
+      this.addDialog = false
+    },
+    handleRoleButton(userId) {
+      this.getUserRoles(userId)
+      this.userId=userId
       this.updateDialog = true
-      this.updateForm = item
     },
-    updateUser() {
-      updateUser(this.updateForm).then(() => {
-        this.$message.success('修改成功')
-        this.updateDialog = false
-      })
-    },
-    deleteUser(id) {
+    handleDeleteButton(id) {
       deleteUser(id).then(() => {
         this.$message.success('删除成功')
-        this.getUsers()
+        this.getTableData()
       })
     },
-    updateState(item){
-      updateUser(item).then(()=>{
-        this.getUsers()
-      })
+    handleCheck(data,tree){
+      console.log(this.$refs.tree.getCurrentKey())
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {
-        })
-    },
-    handleCheckBoxChange() {
-      this.insertForm.roles = this.roles.filter(item => {
-        return item.checked
-      })
-    }
+
   }
 }
 </script>
