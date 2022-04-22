@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/layout'
 
 Vue.use(Router)
-
-import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -47,6 +46,25 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: {title: '首页', icon: 'dashboard'}
     }]
+  },
+
+  // template
+  {
+    path: '/template',
+    component: Layout,
+    redirect: '/template/index',
+    name: 'Template',
+    meta: {
+      title: '模板管理',
+      icon: 'el-icon-s-help'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/template/index'),
+        meta: {title: '模板管理'}
+      }
+    ]
   },
 ]
 

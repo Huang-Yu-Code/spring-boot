@@ -1,11 +1,13 @@
 import {getToken, removeToken, setToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
-import {login, hasRoles, logout} from '@/api/auth'
+import {hasRoles, login, logout} from '@/api/auth'
+import {image} from '@/settings'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    roles: []
+    roles: [],
+    image: image,
   }
 }
 
@@ -20,6 +22,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_IMAGE: (state, image) => {
+    state.image = image
   }
 }
 

@@ -29,13 +29,10 @@
 import {mapGetters} from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import {getUserInfo} from '@/api/auth'
 
 export default {
   data() {
-    return {
-      image: ""
-    }
+    return {}
   },
   components: {
     Breadcrumb,
@@ -44,12 +41,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
+      'image'
     ])
-  },
-  beforeMount() {
-    getUserInfo().then((data) => {
-      this.image = data.image
-    })
   },
   methods: {
     toggleSideBar() {

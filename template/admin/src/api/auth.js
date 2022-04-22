@@ -15,13 +15,6 @@ export function hasRoles() {
   })
 }
 
-export function getUserInfo() {
-  return request({
-    url: '/user-info/',
-    method: 'get',
-  })
-}
-
 export function logout() {
   return request({
     url: '/logout',

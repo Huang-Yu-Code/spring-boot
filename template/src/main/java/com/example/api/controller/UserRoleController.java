@@ -35,11 +35,9 @@ public class UserRoleController {
     @GetMapping()
     public Response<List<UserRole>> select(UserRole entity) {
         QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-        Long id = entity.getId();
         Long userId = entity.getUserId();
         Long roleId = entity.getRoleId();
-        queryWrapper.eq(!ObjectUtils.isEmpty(id), "id", id)
-                .eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
+        queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
                 .eq(!ObjectUtils.isEmpty(roleId), "role_id", roleId);
         List<UserRole> list = service.list(queryWrapper);
         return Response.success(list);
@@ -51,9 +49,14 @@ public class UserRoleController {
         return Response.success();
     }
 
-    @DeleteMapping("/{id}")
-    public Response<Void> delete(@PathVariable Long id) {
-        service.removeById(id);
+    @DeleteMapping("")
+    public Response<Void> delete(UserRole entity) {
+        QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
+        Long userId = entity.getUserId();
+        Long roleId = entity.getRoleId();
+        queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
+                .eq(!ObjectUtils.isEmpty(roleId), "role_id", roleId);
+        service.remove(queryWrapper);
         return Response.success();
     }
 }
