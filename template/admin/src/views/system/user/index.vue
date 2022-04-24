@@ -48,8 +48,8 @@
             }}
           </el-button>
           <el-button size="mini" type="warning" @click="handleResetPasswordButton(scope.row)">重置密码</el-button>
-          <el-button size="mini" type="primary" @click="handleRoleButton(scope.row.id)">授权</el-button>
-          <el-button size="mini" type="danger" @click="handleDeleteButton(scope.row.id)">删除
+          <el-button size="mini" type="primary" @click="handleRoleButton(scope.row)">授权</el-button>
+          <el-button size="mini" type="danger" @click="handleDeleteButton(scope.row)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -70,18 +70,10 @@
       </el-form>
     </el-dialog>
     <!--授权面板-->
-    <el-dialog :visible.sync="updateDialog" title="授权" width="33%">
-      <el-tree
-        ref="tree"
-        :data="roles"
-        :default-checked-keys="userRoles"
-        :props="{label:'name'}"
-        check-on-click-node
-        empty-text="暂无数据"
-        node-key="id"
-        show-checkbox
-        @check="handleCheck">
-      </el-tree>
+    <el-dialog :visible.sync="roleDialog" title="授权" width="33%">
+      <el-checkbox-group v-model="userRoles">
+        <el-checkbox v-for="role in roles" :label="role.id" :key="role.id" @change="handleChange">{{role.name}}</el-checkbox>
+      </el-checkbox-group>
     </el-dialog>
   </div>
 </template>
@@ -104,7 +96,7 @@ export default {
       userId: null,
       userRoles: [],
       addDialog: false,
-      updateDialog: false,
+      roleDialog: false,
     }
   },
   computed: {},
@@ -127,9 +119,8 @@ export default {
         this.roles = data
       })
     },
-    getUserRoles(userId) {
-      getUserRoles({userId}).then(data => {
-        if (!data) this.userRoles = []
+    getUserRoles() {
+      getUserRoles({userId:this.userId}).then(data => {
         this.userRoles = data.map(item => {
           return item.roleId
         })
@@ -165,27 +156,16 @@ export default {
         this.$message.success('密码重置为:123456')
       })
     },
-    handleRoleButton(userId) {
-      this.getUserRoles(userId)
-      this.userId = userId
-      this.updateDialog = true
+    handleRoleButton(item) {
+      this.userId = item.id
+      this.getUserRoles()
+      this.roleDialog = true
     },
-    handleCheck(data) {
-      let checked = this.$refs.tree.getNode(data).checked
-      let roleId = data.id
-      let userId = this.userId
-      if (checked) {
-        addUserRole({userId, roleId}).then(() => {
-          this.$message.success('授权成功')
-        })
-      } else {
-        deleteUserRole({userId, roleId}).then(() => {
-          this.$message.success('取消授权')
-        })
-      }
+    handleChange(val) {
+      console.log(val)
     },
-    handleDeleteButton(id) {
-      deleteUser(id).then(() => {
+    handleDeleteButton(item) {
+      deleteUser(item.id).then(() => {
         this.$message.success('删除成功')
         this.getTableData()
       })
