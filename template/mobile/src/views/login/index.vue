@@ -1,80 +1,42 @@
 <template>
-  <div id="login">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-button type="text" style="float: right; padding: 3px 0;color: red" @click="$router.push({name:'Logon'})">
-          注册账号
-        </el-button>
-      </div>
-      <el-form ref="form" :model="form">
-        <el-form-item>
-          <el-input v-model="form.username">
-            <template slot="prepend"><em slot="prefix" class="el-icon-user-solid">账号:</em></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.password" show-password>
-            <template slot="prepend"><em slot="prefix" class="el-icon-info">密码:</em></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="small" @click="login">登录</el-button>
-          <el-button type="warning" size="small">忘记密码</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
-  </div>
+  <van-form @submit="onSubmit">
+    <van-field
+        v-model="username"
+        :rules="[{ required: true, message: '请填写用户名' }]"
+        label="用户名"
+        name="用户名"
+        placeholder="用户名"
+    />
+    <van-field
+        v-model="password"
+        :rules="[{ required: true, message: '请填写密码' }]"
+        label="密码"
+        name="密码"
+        placeholder="密码"
+        type="password"
+    />
+    <div style="margin: 16px;">
+      <van-button block native-type="submit" round type="info">提交</van-button>
+    </div>
+  </van-form>
 </template>
 
 <script>
-
 export default {
-  props: {},
   data() {
     return {
-      form: {
-        username: 'admin',
-        password: '123456',
-      },
-    }
-  },
-  computed: {},
-  watch: {},
-  beforeCreate() {
-  },
-  created() {
-  },
-  beforeMount() {
-  },
-  mounted() {
-  },
-  beforeUpdate() {
-  },
-  updated() {
-  },
-  beforeDestroy() {
-  },
-  destroyed() {
+      username: '',
+      password: '',
+    };
   },
   methods: {
-    login() {
-      this.$store.dispatch('auth/login', this.form).then(() => {
-        this.$message.success('登录成功')
-        this.$router.push({path: this.redirect || '/'})
-      })
-    }
+    onSubmit(values) {
+      console.log('submit', values);
+    },
   },
 }
 </script>
 
 <style scoped>
-#login {
-  display: flex;
-  justify-content: center;
-}
-
-.box-card {
-  width: 400px;
-}
 
 </style>

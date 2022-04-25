@@ -1,15 +1,18 @@
 package com.example.api.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.api.entity.Role;
 import com.example.api.entity.UserRole;
+import com.example.api.service.IRoleService;
 import com.example.api.service.IUserRoleService;
-import com.example.common.entity.Response;
+import com.example.common.entity.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -20,43 +23,36 @@ import java.util.List;
  * @since 2022-04-21
  */
 @RestController
-@RequestMapping("/user-role")
+@RequestMapping("/users")
 @Slf4j
 @RequiredArgsConstructor
 public class UserRoleController {
     private final IUserRoleService service;
+    private final IRoleService roleService;
 
-    @PostMapping("")
-    public Response<Void> insert(@RequestBody UserRole entity) {
-        service.save(entity);
-        return Response.success();
+
+    @PostMapping("/{userId}/roles/{roleId}")
+    public R<Void> insert(@PathVariable Long userId, @PathVariable Long roleId) {
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userId);
+        userRole.setRoleId(roleId);
+        service.save(userRole);
+        return R.success();
     }
 
-    @GetMapping()
-    public Response<List<UserRole>> select(UserRole entity) {
+    @GetMapping("/{userId}/roles")
+    public R<List<Role>> select(@PathVariable Long userId) {
+        List<Long> collect = service.list(new QueryWrapper<UserRole>().eq(!ObjectUtils.isEmpty(userId), "user_id", userId)).stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        List<Role> roles = roleService.list(new QueryWrapper<Role>().in("id", collect));
+        return R.success(roles);
+    }
+
+    @DeleteMapping("/{userId}/roles/{roleId}")
+    public R<Void> delete(@PathVariable Long userId, @PathVariable Long roleId) {
         QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-        Long userId = entity.getUserId();
-        Long roleId = entity.getRoleId();
-        queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
-                .eq(!ObjectUtils.isEmpty(roleId), "role_id", roleId);
-        List<UserRole> list = service.list(queryWrapper);
-        return Response.success(list);
-    }
-
-    @PutMapping("")
-    public Response<Void> update(@RequestBody UserRole entity) {
-        service.updateById(entity);
-        return Response.success();
-    }
-
-    @DeleteMapping("")
-    public Response<Void> delete(UserRole entity) {
-        QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
-        Long userId = entity.getUserId();
-        Long roleId = entity.getRoleId();
         queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
                 .eq(!ObjectUtils.isEmpty(roleId), "role_id", roleId);
         service.remove(queryWrapper);
-        return Response.success();
+        return R.success();
     }
 }

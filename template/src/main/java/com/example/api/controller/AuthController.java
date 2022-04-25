@@ -8,7 +8,7 @@ import com.example.api.service.IRoleService;
 import com.example.api.service.IUserRoleService;
 import com.example.api.service.IUserService;
 import com.example.common.entity.Login;
-import com.example.common.entity.Response;
+import com.example.common.entity.R;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
 import com.example.common.util.TokenUtils;
@@ -42,7 +42,7 @@ public class AuthController {
     private final IRoleService roleService;
 
     @PostMapping("/login")
-    public Response<String> login(@RequestBody Login login) {
+    public R<String> login(@RequestBody Login login) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         String username = login.getUsername();
         String password = login.getPassword();
@@ -56,24 +56,24 @@ public class AuthController {
             throw new CommonException(StatusCode.USER_STATE_EXCEPTION);
         }
         Long id = user.getId();
-        return Response.success(tokenUtils.create(id, username));
+        return R.success(tokenUtils.create(id, username));
     }
 
     @GetMapping("/roles")
-    public Response<List<Role>> roles() {
+    public R<List<Role>> roles() {
         Long id = tokenUtils.getId();
         List<UserRole> userRoles = userRoleService.list(new QueryWrapper<UserRole>().eq("user_id", id));
         if (ObjectUtils.isEmpty(userRoles)) {
-            return Response.success(Collections.emptyList());
+            return R.success(Collections.emptyList());
         }
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
         List<Role> list = roleService.list(queryWrapper);
-        return Response.success(list);
+        return R.success(list);
     }
 
     @PostMapping("/logout")
-    public Response<Void> logout() {
-        return Response.success();
+    public R<Void> logout() {
+        return R.success();
     }
 }

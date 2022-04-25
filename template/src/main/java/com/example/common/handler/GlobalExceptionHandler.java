@@ -1,6 +1,6 @@
 package com.example.common.handler;
 
-import com.example.common.entity.Response;
+import com.example.common.entity.R;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,21 +22,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public Response bindException(BindException e) {
+    public R bindException(BindException e) {
         log.error(StatusCode.BIND_EXCEPTION.getMessage(), e);
-        return Response.failure(StatusCode.BIND_EXCEPTION);
+        return R.failure(StatusCode.BIND_EXCEPTION);
     }
 
     @ExceptionHandler(CommonException.class)
-    public Response commonException(CommonException e) {
+    public R commonException(CommonException e) {
         log.error(e.getStatusCode().getMessage(), e);
-        return Response.failure(e.getStatusCode());
+        return R.failure(e.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
-    public Response exception(Exception e) {
+    public R exception(Exception e) {
         log.error("ERROR:", e);
-        return Response.failure(StatusCode.SERVER_EXCEPTION);
+        return R.failure(StatusCode.SERVER_EXCEPTION);
     }
 
 }

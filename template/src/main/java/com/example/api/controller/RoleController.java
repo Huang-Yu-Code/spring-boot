@@ -3,7 +3,7 @@ package com.example.api.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.api.entity.Role;
 import com.example.api.service.IRoleService;
-import com.example.common.entity.Response;
+import com.example.common.entity.R;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
@@ -28,13 +28,13 @@ public class RoleController {
     private final IRoleService service;
 
     @PostMapping("")
-    public Response<Void> insert(@RequestBody Role entity) {
+    public R<Void> insert(@RequestBody Role entity) {
         service.save(entity);
-        return Response.success();
+        return R.success();
     }
 
     @GetMapping()
-    public Response<List<Role>> select(Role entity) {
+    public R<List<Role>> select(Role entity) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         Long id = entity.getId();
         String code = entity.getCode();
@@ -43,18 +43,18 @@ public class RoleController {
                 .eq(StringUtils.hasText(code), "code", code)
                 .eq(StringUtils.hasText(name), "name", name);
         List<Role> list = service.list(queryWrapper);
-        return Response.success(list);
+        return R.success(list);
     }
 
     @PutMapping("")
-    public Response<Void> update(@RequestBody Role entity) {
+    public R<Void> update(@RequestBody Role entity) {
         service.updateById(entity);
-        return Response.success();
+        return R.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> delete(@PathVariable Long id) {
+    public R<Void> delete(@PathVariable Long id) {
         service.removeById(id);
-        return Response.success();
+        return R.success();
     }
 }

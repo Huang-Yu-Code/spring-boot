@@ -7,28 +7,41 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
+        redirect: '/home',
         component: Layout,
         children: [
             {
-                path: '',
+                path: 'home',
                 name: 'Home',
-                component: () => import('@/views/home'),
-                meta: {title: '首页'}
+                component: () => import('@/views/home')
             },
             {
-                path: '/logon',
-                name: 'Logon',
-                component: () => import('@/views/logon'),
-                meta: {title: '注册'}
+                path: 'category',
+                name: 'Category',
+                component: () => import('@/views/category')
             },
             {
-                path: '/login',
+                path: 'car',
+                name: 'Car',
+                component: () => import('@/views/car')
+            },
+            {
+                path: 'personal',
+                name: 'Personal',
+                component: () => import('@/views/personal')
+            },
+            {
+                path: 'login',
                 name: 'Login',
-                component: () => import('@/views/login'),
-                meta: {title: '登录'}
+                component: () => import('@/views/login')
             },
-        ],
+        ]
     },
+    {
+        path: '*',
+        name: '404',
+        component: () => import('@/views/404')
+    }
 ]
 
 const router = new VueRouter({
@@ -37,14 +50,13 @@ const router = new VueRouter({
     routes
 })
 
-const whiteList = ['/', '/logon', '/login']
+const whiteList = ['/', '/home', '/category', '/login', '/404']
 
 router.beforeEach(((to, from, next) => {
-    if (whiteList.indexOf(to.path) === -1) {
-        next(`/login?redirect=${to.path}`)
-
-    } else {
+    if (whiteList.includes(to.path)) {
         next()
+    } else {
+        next('/login')
     }
 }))
 

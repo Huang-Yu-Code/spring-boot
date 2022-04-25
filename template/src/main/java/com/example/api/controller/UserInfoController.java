@@ -3,7 +3,7 @@ package com.example.api.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.api.entity.UserInfo;
 import com.example.api.service.IUserInfoService;
-import com.example.common.entity.Response;
+import com.example.common.entity.R;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
 import com.example.common.util.TokenUtils;
@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2022-04-21
  */
 @RestController
-@RequestMapping("/user-info")
+@RequestMapping("/user-infos")
 @Slf4j
 @RequiredArgsConstructor
 public class UserInfoController {
@@ -32,13 +32,13 @@ public class UserInfoController {
     private final TokenUtils tokenUtils;
 
     @PostMapping("")
-    public Response<Void> insert(@RequestBody UserInfo entity) {
+    public R<Void> insert(@RequestBody UserInfo entity) {
         service.save(entity);
-        return Response.success();
+        return R.success();
     }
 
     @GetMapping("/")
-    public Response<UserInfo> select() {
+    public R<UserInfo> select() {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
         Long userId = tokenUtils.getId();
         queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId);
@@ -46,11 +46,11 @@ public class UserInfoController {
         if (ObjectUtils.isEmpty(userInfo)) {
             throw new CommonException(StatusCode.USERINFO_NO_EXIST);
         }
-        return Response.success(userInfo);
+        return R.success(userInfo);
     }
 
     @GetMapping("")
-    public Response<List<UserInfo>> select(UserInfo entity) {
+    public R<List<UserInfo>> select(UserInfo entity) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
         Long id = entity.getId();
         Long userId = entity.getUserId();
@@ -65,19 +65,19 @@ public class UserInfoController {
                 .eq(StringUtils.hasText(idNumbers), "id_numbers", idNumbers)
                 .eq(StringUtils.hasText(phoneNumbers), "phone_numbers", phoneNumbers);
         List<UserInfo> list = service.list(queryWrapper);
-        return Response.success(list);
+        return R.success(list);
     }
 
     @PutMapping("")
-    public Response<Void> update(@RequestBody UserInfo entity) {
+    public R<Void> update(@RequestBody UserInfo entity) {
         service.updateById(entity);
-        return Response.success();
+        return R.success();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> delete(@PathVariable Long id) {
+    public R<Void> delete(@PathVariable Long id) {
         service.removeById(id);
-        return Response.success();
+        return R.success();
     }
 
 }
