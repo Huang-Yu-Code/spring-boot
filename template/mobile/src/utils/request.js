@@ -1,7 +1,7 @@
 import axios from 'axios'
-import {MessageBox, Message} from 'element-ui'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
+import {Toast} from 'vant'
 
 const request = axios.create({
   baseURL: 'http://localhost:8080/api',
@@ -27,20 +27,11 @@ request.interceptors.response.use(
   response => {
     const {code, message, data} = response.data
     if (code !== 200) {
-      Message({
-        message,
-        type: 'error',
-        duration: 5 * 1000
-      })
+      Toast.fail(message);
       if (code===401){
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
+        Toast.fail(message);
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
         })
       }
       return Promise.reject(new Error(message))
@@ -49,12 +40,7 @@ request.interceptors.response.use(
     }
   },
   error => {
-    Message({
-      message: '网络错误,请检查网络连接',
-      type: 'error',
-      duration: 3 * 1000
-    })
-    console.log(error.message)
+    Toast.fail('网络错误,请检查网络连接');
     return Promise.reject(error)
   }
 )

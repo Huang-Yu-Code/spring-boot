@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     handleGoHome() {
-      this.$router.push('/home')
+      this.$router.push('/')
     }
   }
 }
