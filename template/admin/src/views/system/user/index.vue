@@ -71,9 +71,14 @@
     </el-dialog>
     <!--授权面板-->
     <el-dialog :visible.sync="roleDialog" title="授权" width="33%">
-      <el-checkbox-group v-model="userRoles">
-        <el-checkbox v-for="role in roles" :label="role.id" :key="role.id" @change="handleChange">{{role.name}}</el-checkbox>
-      </el-checkbox-group>
+      <el-tree
+        ref="tree"
+        :data="roles"
+        :props="props"
+        node-key="id"
+        show-checkbox
+        @check="handleCheck">
+      </el-tree>
     </el-dialog>
   </div>
 </template>
@@ -95,6 +100,9 @@ export default {
       roles: [],
       userId: null,
       userRoles: [],
+      props: {
+        label: 'name',
+      },
       addDialog: false,
       roleDialog: false,
     }
@@ -121,9 +129,7 @@ export default {
     },
     getUserRoles() {
       getUserRoles({userId:this.userId}).then(data => {
-        this.userRoles = data.map(item => {
-          return item.roleId
-        })
+        this.userRoles = data
       })
     },
     handleSearchButton() {
@@ -161,8 +167,8 @@ export default {
       this.getUserRoles()
       this.roleDialog = true
     },
-    handleChange(val) {
-      console.log(val)
+    handleCheck(data) {
+      console.log(this.$refs.tree.getNode(data).checked)
     },
     handleDeleteButton(item) {
       deleteUser(item.id).then(() => {

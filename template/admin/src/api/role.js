@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/role'
+const url = '/roles'
 
 export function getRoles(params) {
   return request({

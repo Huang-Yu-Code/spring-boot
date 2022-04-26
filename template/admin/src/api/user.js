@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/user'
+const url = '/users'
 
 export function getUsers(params) {
   return request({

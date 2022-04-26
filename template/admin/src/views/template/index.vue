@@ -3,9 +3,7 @@
     <el-tree
       ref="tree"
       :data="roles"
-      :props="{label:'name'}"
-      check-on-click-node
-      empty-text="暂无数据"
+      :props="props"
       node-key="id"
       show-checkbox
       @check="handleCheck">
@@ -14,26 +12,35 @@
 </template>
 
 <script>
+import {getRoles} from '@/api/role'
+
 export default {
   data() {
     return {
-      userRoles: [],
-      roles: [{id: 1, name: '选项1'}, {id: 2, name: '选项2'}],
-    };
+      roles: [],
+      hasRoles: [],
+      props: {
+        label: 'name',
+      },
+    }
   },
+  computed: {},
+
   mounted() {
-    this.$refs.tree.setCheckedKeys(this.userRoles, false)
+    this.initialization()
   },
   methods: {
-    handleCheck(data) {
-      let checked = this.$refs.tree.getNode(data).checked
-      let roleId = data.id
-      if (checked) {
-        console.log('add')
-      } else {
-        console.log('del')
-      }
+    initialization() {
+      this.getRoles()
     },
+    getRoles() {
+      getRoles().then(data => {
+        this.roles = data
+      })
+    },
+    handleCheck(data) {
+      console.log(this.$refs.tree.getNode(data).checked)
+    }
   }
 }
 </script>

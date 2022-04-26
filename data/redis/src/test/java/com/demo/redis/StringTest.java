@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @SpringBootTest
 @Slf4j
-public class StringTest {
+class StringTest {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -22,22 +22,24 @@ public class StringTest {
 
     @Test
     void set() {
-        stringRedisTemplate.opsForValue().set("姓名", "黄宇");
+        stringRedisTemplate.opsForValue().set("name", "黄宇");
     }
 
     @Test
     void get() {
-        stringRedisTemplate.opsForValue().get("key1");
+        String name = stringRedisTemplate.opsForValue().get("name");
+        Assertions.assertEquals("黄宇", name);
+        log.info(name);
     }
 
     @Test
     void append() {
-        stringRedisTemplate.opsForValue().append("key1", "value2");
+        stringRedisTemplate.opsForValue().append("name", "value2");
     }
 
     @Test
-    void hasKey(){
-        Boolean hasKey = redisTemplate.hasKey("key1");
+    void hasKey() {
+        Boolean hasKey = redisTemplate.hasKey("name");
         Assertions.assertEquals(true, hasKey);
     }
 
@@ -52,8 +54,8 @@ public class StringTest {
     }
 
     @Test
-    void getObject(){
-        Entity entity = (Entity) redisTemplate.opsForValue().get("entity1");
-        log.info(entity.toString());
+    void getObject() {
+        Entity entity = (Entity) redisTemplate.opsForValue().get("用户");
+        log.info("entity:{}",entity);
     }
 }
