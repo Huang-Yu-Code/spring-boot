@@ -21,14 +21,9 @@ public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
-    /**
      * 用户ID
      */
+    @TableId(value = "user_id", type = IdType.NONE)
     private Long userId;
 
     /**
@@ -60,14 +55,6 @@ public class UserInfo implements Serializable {
      * 更新时间
      */
     private LocalDateTime updateTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getUserId() {
         return userId;

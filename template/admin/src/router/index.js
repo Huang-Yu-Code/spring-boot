@@ -62,7 +62,22 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/template/index'),
-        meta: {title: '模板管理'}
+        meta: {title: '仪表盘'}
+      },
+      {
+        path: 'table',
+        component: () => import('@/views/template/table'),
+        meta: {title: '表格'}
+      },
+      {
+        path: 'form',
+        component: () => import('@/views/template/form'),
+        meta: {title: '表单'}
+      },
+      {
+        path: 'upload',
+        component: () => import('@/views/template/upload'),
+        meta: {title: '上传'}
       }
     ]
   },
@@ -110,6 +125,11 @@ export const asyncRoutes = [
         path: 'role',
         component: () => import('@/views/system/role'),
         meta: {title: '角色管理'}
+      },
+      {
+        path: 'menu',
+        component: () => import('@/views/system/menu'),
+        meta: {title: '菜单管理'}
       },
       {
         path: 'user',

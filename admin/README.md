@@ -1,5 +1,5 @@
 # Spring-Boot-Admin
 
-## [Server](./server)
+## [Server](./admin-server)
 
-## [Client](./client)
+## [Client](./admin-client)

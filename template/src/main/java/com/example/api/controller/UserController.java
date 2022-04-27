@@ -25,12 +25,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
-    private final IUserService service;
+    private final IUserService iUserService;
 
     @PostMapping("")
     public R<Void> insert(@RequestBody User entity) {
         entity.setState(1L);
-        service.save(entity);
+        iUserService.save(entity);
         return R.success();
     }
 
@@ -44,19 +44,19 @@ public class UserController {
                 .eq(StringUtils.hasText(username), "username", username)
                 .eq(!ObjectUtils.isEmpty(state), "state", state);
         queryWrapper.select("id", "username", "state", "create_time", "update_time");
-        List<User> list = service.list(queryWrapper);
+        List<User> list = iUserService.list(queryWrapper);
         return R.success(list);
     }
 
     @PutMapping("")
     public R<Void> update(@RequestBody User entity) {
-        service.updateById(entity);
+        iUserService.updateById(entity);
         return R.success();
     }
 
     @DeleteMapping("/{id}")
     public R<Void> delete(@PathVariable Long id) {
-        service.removeById(id);
+        iUserService.removeById(id);
         return R.success();
     }
 }

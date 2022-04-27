@@ -1,6 +1,6 @@
 import {getToken, removeToken, setToken} from '@/utils/auth'
 import {resetRouter} from '@/router'
-import {hasRoles, login, logout} from '@/api/auth'
+import {getUserRoles, login, logout} from '@/api/auth'
 import {image} from '@/settings'
 
 const getDefaultState = () => {
@@ -42,9 +42,9 @@ const actions = {
     })
   },
 
-  hasRoles({commit}) {
+  getUserRoles({commit}) {
     return new Promise((resolve, reject) => {
-      hasRoles().then(roles => {
+      getUserRoles().then(roles => {
         if (!roles) {
           reject('认证失败, 请重新登录!')
         }

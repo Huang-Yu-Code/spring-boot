@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function getUserInfo() {
+export function updateUserInfo(file, data) {
   return request({
-    url: '/user-info/',
-    method: 'get',
+    url: '/upload',
+    method: 'put',
+    data: {file, ...data}
   })
 }

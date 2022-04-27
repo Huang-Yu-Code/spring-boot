@@ -6,8 +6,11 @@ import com.example.api.entity.UserRole;
 import com.example.api.service.IRoleService;
 import com.example.api.service.IUserRoleService;
 import com.example.common.entity.R;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +30,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class UserRoleController {
-    private final IUserRoleService service;
-    private final IRoleService roleService;
+    private final IUserRoleService iUserRoleService;
+    private final IRoleService iRoleService;
 
 
     @PostMapping("/{userId}/roles/{roleId}")
@@ -36,14 +39,18 @@ public class UserRoleController {
         UserRole userRole = new UserRole();
         userRole.setUserId(userId);
         userRole.setRoleId(roleId);
-        service.save(userRole);
+        try {
+            iUserRoleService.save(userRole);
+        } catch (DuplicateKeyException e) {
+            throw new CommonException(StatusCode.USER_ROLE_EXIST);
+        }
         return R.success();
     }
 
     @GetMapping("/{userId}/roles")
     public R<List<Role>> select(@PathVariable Long userId) {
-        List<Long> collect = service.list(new QueryWrapper<UserRole>().eq(!ObjectUtils.isEmpty(userId), "user_id", userId)).stream().map(UserRole::getRoleId).collect(Collectors.toList());
-        List<Role> roles = roleService.list(new QueryWrapper<Role>().in("id", collect));
+        List<Long> collect = iUserRoleService.list(new QueryWrapper<UserRole>().eq(!ObjectUtils.isEmpty(userId), "user_id", userId)).stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        List<Role> roles = iRoleService.list(new QueryWrapper<Role>().in("id", collect));
         return R.success(roles);
     }
 
@@ -52,7 +59,7 @@ public class UserRoleController {
         QueryWrapper<UserRole> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
                 .eq(!ObjectUtils.isEmpty(roleId), "role_id", roleId);
-        service.remove(queryWrapper);
+        iUserRoleService.remove(queryWrapper);
         return R.success();
     }
 }

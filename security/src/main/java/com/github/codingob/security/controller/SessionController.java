@@ -1,7 +1,8 @@
 package com.github.codingob.security.controller;
 
 import com.github.codingob.security.service.SessionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,21 +16,19 @@ import javax.servlet.http.HttpServletRequest;
  * @since JDK1.8
  */
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class SessionController {
-    private SessionService service;
-
-    @Autowired
-    public void setService(SessionService service) {
-        this.service = service;
-    }
+    private final SessionService service;
+    private final HttpServletRequest request;
 
     @GetMapping("/")
-    public String get(HttpServletRequest request) {
+    public String get() {
         return "Get session username is: " + service.getUsername(request.getSession());
     }
 
     @GetMapping("/set")
-    public String set(HttpServletRequest request) {
+    public String set() {
         service.setUsername(request.getSession());
         return "Set session username ok!";
     }

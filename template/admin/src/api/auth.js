@@ -8,9 +8,16 @@ export function login(data) {
   })
 }
 
-export function hasRoles() {
+export function getUserRoles() {
   return request({
-    url: '/roles',
+    url: '/user-roles',
+    method: 'get',
+  })
+}
+
+export function getUserInfo() {
+  return request({
+    url: '/user-info',
     method: 'get',
   })
 }

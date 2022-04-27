@@ -1,21 +1,22 @@
 import request from '@/utils/request'
 
-const url = '/user-role'
-
 export function getUserRoles(params) {
+  const {userId} = params
   return request({
-    url, method: 'get', params: params
+    url: '/users/' + userId + '/roles', method: 'get',
   })
 }
 
 export function addUserRole(data) {
+  const {userId, roleId} = data
   return request({
-    url, method: 'post', data
+    url: '/users/' + userId + '/roles/' + roleId, method: 'post',
   })
 }
 
 export function deleteUserRole(params) {
+  const {userId, roleId} = params
   return request({
-    url: url, method: 'delete', params: {params}
+    url: '/users/' + userId + '/roles/' + roleId, method: 'delete',
   })
 }

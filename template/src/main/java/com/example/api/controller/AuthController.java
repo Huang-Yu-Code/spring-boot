@@ -3,8 +3,10 @@ package com.example.api.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.api.entity.Role;
 import com.example.api.entity.User;
+import com.example.api.entity.UserInfo;
 import com.example.api.entity.UserRole;
 import com.example.api.service.IRoleService;
+import com.example.api.service.IUserInfoService;
 import com.example.api.service.IUserRoleService;
 import com.example.api.service.IUserService;
 import com.example.common.entity.Login;
@@ -15,10 +17,8 @@ import com.example.common.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthController {
     private final TokenUtils tokenUtils;
-    private final IUserService service;
+    private final IUserService iUserService;
+    private final IUserInfoService iUserInfoService;
     private final IUserRoleService userRoleService;
     private final IRoleService roleService;
 
@@ -47,7 +48,7 @@ public class AuthController {
         String username = login.getUsername();
         String password = login.getPassword();
         queryWrapper.eq("username", username).eq("password", password);
-        User user = service.getOne(queryWrapper);
+        User user = iUserService.getOne(queryWrapper);
         if (ObjectUtils.isEmpty(user)) {
             throw new CommonException(StatusCode.USERNAME_OR_PASSWORD_ERROR);
         }
@@ -59,7 +60,7 @@ public class AuthController {
         return R.success(tokenUtils.create(id, username));
     }
 
-    @GetMapping("/roles")
+    @GetMapping("/user-roles")
     public R<List<Role>> roles() {
         Long id = tokenUtils.getId();
         List<UserRole> userRoles = userRoleService.list(new QueryWrapper<UserRole>().eq("user_id", id));
@@ -72,8 +73,22 @@ public class AuthController {
         return R.success(list);
     }
 
+    @GetMapping("/user-info")
+    public R<UserInfo> userInfo() {
+        Long id = tokenUtils.getId();
+        UserInfo userInfo = iUserInfoService.getById(id);
+        return R.success(userInfo);
+    }
+
     @PostMapping("/logout")
     public R<Void> logout() {
+        return R.success();
+    }
+
+    @PostMapping("/upload")
+    public R<Void> upload(@RequestParam("file") MultipartFile multipartFile, UserInfo userInfo) {
+        log.info("file:{}", multipartFile.getOriginalFilename());
+        log.info("params:{}", userInfo);
         return R.success();
     }
 }

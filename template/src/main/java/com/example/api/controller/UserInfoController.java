@@ -28,12 +28,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserInfoController {
-    private final IUserInfoService service;
+    private final IUserInfoService iUserInfoService;
     private final TokenUtils tokenUtils;
 
     @PostMapping("")
     public R<Void> insert(@RequestBody UserInfo entity) {
-        service.save(entity);
+        iUserInfoService.save(entity);
         return R.success();
     }
 
@@ -42,7 +42,7 @@ public class UserInfoController {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
         Long userId = tokenUtils.getId();
         queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId);
-        UserInfo userInfo = service.getOne(queryWrapper);
+        UserInfo userInfo = iUserInfoService.getOne(queryWrapper);
         if (ObjectUtils.isEmpty(userInfo)) {
             throw new CommonException(StatusCode.USERINFO_NO_EXIST);
         }
@@ -52,31 +52,29 @@ public class UserInfoController {
     @GetMapping("")
     public R<List<UserInfo>> select(UserInfo entity) {
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-        Long id = entity.getId();
         Long userId = entity.getUserId();
         String name = entity.getName();
         String image = entity.getImage();
         String idNumbers = entity.getIdNumbers();
         String phoneNumbers = entity.getPhoneNumbers();
-        queryWrapper.eq(!ObjectUtils.isEmpty(id), "id", id)
-                .eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
+        queryWrapper.eq(!ObjectUtils.isEmpty(userId), "user_id", userId)
                 .eq(StringUtils.hasText(name), "name", name)
                 .eq(StringUtils.hasText(image), "image", image)
                 .eq(StringUtils.hasText(idNumbers), "id_numbers", idNumbers)
                 .eq(StringUtils.hasText(phoneNumbers), "phone_numbers", phoneNumbers);
-        List<UserInfo> list = service.list(queryWrapper);
+        List<UserInfo> list = iUserInfoService.list(queryWrapper);
         return R.success(list);
     }
 
     @PutMapping("")
     public R<Void> update(@RequestBody UserInfo entity) {
-        service.updateById(entity);
+        iUserInfoService.updateById(entity);
         return R.success();
     }
 
     @DeleteMapping("/{id}")
     public R<Void> delete(@PathVariable Long id) {
-        service.removeById(id);
+        iUserInfoService.removeById(id);
         return R.success();
     }
 

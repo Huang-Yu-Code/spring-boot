@@ -89,7 +89,7 @@ import {addUser, deleteUser, getUsers, updateUser} from '@/api/user'
 
 import {getRoles} from '@/api/role'
 
-import {addUserRole, deleteUserRole, getUserRoles} from '@/api/userRole'
+import {addUserRole, getUserRoles} from '@/api/userRole'
 
 export default {
   data() {
@@ -128,7 +128,7 @@ export default {
       })
     },
     getUserRoles() {
-      getUserRoles({userId:this.userId}).then(data => {
+      getUserRoles({userId: this.userId}).then(data => {
         this.userRoles = data
       })
     },
@@ -168,7 +168,11 @@ export default {
       this.roleDialog = true
     },
     handleCheck(data) {
-      console.log(this.$refs.tree.getNode(data).checked)
+      addUserRole({userId: this.userId, roleId: data.id}).then(() => {
+        this.$message.success('授权成功')
+      }).catch(() => {
+        this.$refs.tree.getNode(data).setChecked(false)
+      })
     },
     handleDeleteButton(item) {
       deleteUser(item.id).then(() => {

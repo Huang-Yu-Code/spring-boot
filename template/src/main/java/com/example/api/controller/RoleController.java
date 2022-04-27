@@ -21,15 +21,15 @@ import java.util.List;
  * @since 2022-04-21
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/roles")
 @Slf4j
 @RequiredArgsConstructor
 public class RoleController {
-    private final IRoleService service;
+    private final IRoleService iRoleService;
 
     @PostMapping("")
     public R<Void> insert(@RequestBody Role entity) {
-        service.save(entity);
+        iRoleService.save(entity);
         return R.success();
     }
 
@@ -42,19 +42,19 @@ public class RoleController {
         queryWrapper.eq(!ObjectUtils.isEmpty(id), "id", id)
                 .eq(StringUtils.hasText(code), "code", code)
                 .eq(StringUtils.hasText(name), "name", name);
-        List<Role> list = service.list(queryWrapper);
+        List<Role> list = iRoleService.list(queryWrapper);
         return R.success(list);
     }
 
     @PutMapping("")
     public R<Void> update(@RequestBody Role entity) {
-        service.updateById(entity);
+        iRoleService.updateById(entity);
         return R.success();
     }
 
     @DeleteMapping("/{id}")
     public R<Void> delete(@PathVariable Long id) {
-        service.removeById(id);
+        iRoleService.removeById(id);
         return R.success();
     }
 }

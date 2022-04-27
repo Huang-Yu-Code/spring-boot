@@ -29,6 +29,8 @@ public enum StatusCode {
     BIND_EXCEPTION(400, "接口参数错误"),
     // USER
     USER_PASSWORD_ERROR(400, "密码错误"),
+    // USER_ROLE
+    USER_ROLE_EXIST(400, "重复授权"),
     // ROLE
     ROLE_NAME_EXIST(400, "角色已存在"),
     ROLE_CODE_EXIST(400, "标识符已存在"),
