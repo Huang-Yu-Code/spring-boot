@@ -10,6 +10,7 @@ import com.example.api.service.IUserInfoService;
 import com.example.api.service.IUserRoleService;
 import com.example.api.service.IUserService;
 import com.example.common.entity.Login;
+import com.example.common.entity.Password;
 import com.example.common.entity.R;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
@@ -17,6 +18,7 @@ import com.example.common.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +41,8 @@ public class AuthController {
     private final TokenUtils tokenUtils;
     private final IUserService iUserService;
     private final IUserInfoService iUserInfoService;
-    private final IUserRoleService userRoleService;
-    private final IRoleService roleService;
+    private final IUserRoleService iUserRoleService;
+    private final IRoleService iRoleService;
 
     @PostMapping("/login")
     public R<String> login(@RequestBody Login login) {
@@ -63,13 +65,13 @@ public class AuthController {
     @GetMapping("/user-roles")
     public R<List<Role>> roles() {
         Long id = tokenUtils.getId();
-        List<UserRole> userRoles = userRoleService.list(new QueryWrapper<UserRole>().eq("user_id", id));
+        List<UserRole> userRoles = iUserRoleService.list(new QueryWrapper<UserRole>().eq("user_id", id));
         if (ObjectUtils.isEmpty(userRoles)) {
             return R.success(Collections.emptyList());
         }
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id", userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList()));
-        List<Role> list = roleService.list(queryWrapper);
+        List<Role> list = iRoleService.list(queryWrapper);
         return R.success(list);
     }
 
@@ -78,6 +80,20 @@ public class AuthController {
         Long id = tokenUtils.getId();
         UserInfo userInfo = iUserInfoService.getById(id);
         return R.success(userInfo);
+    }
+
+    @PostMapping("/password")
+    public R<Void> password(@RequestBody Password password) {
+        Long id = tokenUtils.getId();
+        String oldPassword = password.getOldPassword();
+        String newPassword = password.getNewPassword();
+        User user = iUserService.getOne(new QueryWrapper<User>().eq("id", id).eq("password", oldPassword));
+        if (ObjectUtils.isEmpty(user)) {
+            throw new CommonException(StatusCode.USER_PASSWORD_ERROR);
+        }
+        user.setPassword(newPassword);
+        iUserService.updateById(user);
+        return R.success();
     }
 
     @PostMapping("/logout")

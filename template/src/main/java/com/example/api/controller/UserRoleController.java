@@ -14,6 +14,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,9 @@ public class UserRoleController {
     @GetMapping("/{userId}/roles")
     public R<List<Role>> select(@PathVariable Long userId) {
         List<Long> collect = iUserRoleService.list(new QueryWrapper<UserRole>().eq(!ObjectUtils.isEmpty(userId), "user_id", userId)).stream().map(UserRole::getRoleId).collect(Collectors.toList());
+        if (ObjectUtils.isEmpty(collect)){
+            return R.success(Collections.emptyList());
+        }
         List<Role> roles = iRoleService.list(new QueryWrapper<Role>().in("id", collect));
         return R.success(roles);
     }

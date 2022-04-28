@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.api.entity.Role;
 import com.example.api.service.IRoleService;
 import com.example.common.entity.R;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +32,21 @@ public class RoleController {
 
     @PostMapping("")
     public R<Void> insert(@RequestBody Role entity) {
-        iRoleService.save(entity);
+        try {
+            iRoleService.save(entity);
+        }catch (DuplicateKeyException e){
+            String key = e.getCause().getMessage().split("for key")[1].trim().replace("'","");
+            log.info(key);
+            String uniqueCode = "role.unique_code";
+            String uniqueName = "role.unique_name";
+            if (key.matches(uniqueName)){
+                throw new CommonException(StatusCode.ROLE_NAME_EXIST);
+            }
+            if (key.matches(uniqueCode)){
+                throw new CommonException(StatusCode.ROLE_CODE_EXIST);
+            }
+            throw new CommonException(StatusCode.SERVER_EXCEPTION);
+        }
         return R.success();
     }
 

@@ -12,7 +12,7 @@
           <el-input v-model="form.rePassword" show-password/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="updatePassword">立即修改</el-button>
+          <el-button type="primary" @click="resetPassword">立即修改</el-button>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
@@ -22,8 +22,9 @@
 
 <script>
 
+import {resetPassword} from '@/api/auth'
+
 export default {
-  props: {},
   data() {
     const validateRePassword = (rule, value, callback) => {
       if (value !== this.form.newPassword) {
@@ -55,11 +56,19 @@ export default {
       }
     }
   },
-  computed: {},
-  watch: {},
   methods: {
-    updatePassword() {
-      // TODO
+    resetPassword() {
+      this.$refs.form.validate((valid)=>{
+        if (valid){
+          resetPassword(this.form).then(()=>{
+            this.$message.success('修改成功,请重新登录!')
+            this.$store.dispatch('auth/resetToken')
+            this.$router.push('/')
+          })
+        }else {
+          return false
+        }
+      })
     }
   }
 }

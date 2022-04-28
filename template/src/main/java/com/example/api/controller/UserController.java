@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.api.entity.User;
 import com.example.api.service.IUserService;
 import com.example.common.entity.R;
+import com.example.common.enums.StatusCode;
+import com.example.common.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +33,11 @@ public class UserController {
     @PostMapping("")
     public R<Void> insert(@RequestBody User entity) {
         entity.setState(1L);
-        iUserService.save(entity);
+        try {
+            iUserService.save(entity);
+        }catch (DuplicateKeyException e){
+            throw new CommonException(StatusCode.USERNAME_EXIST);
+        }
         return R.success();
     }
 

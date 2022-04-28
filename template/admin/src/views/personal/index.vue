@@ -53,7 +53,7 @@
             class="avatar-uploader"
             list-type="picture"
             with-credentials>
-            <img :src="data.image" alt="头像" class="avatar">
+            <el-avatar :size="150" :src="data.image"></el-avatar>
           </el-upload>
         </el-form-item>
         <el-form-item label="姓名">

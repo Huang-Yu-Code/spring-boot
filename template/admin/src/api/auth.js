@@ -15,6 +15,14 @@ export function getUserRoles() {
   })
 }
 
+export function resetPassword(data) {
+  return request({
+    url: '/password',
+    method: 'post',
+    data
+  })
+}
+
 export function getUserInfo() {
   return request({
     url: '/user-info',
