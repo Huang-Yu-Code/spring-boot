@@ -22,19 +22,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
-    public R bindException(BindException e) {
+    public R<Void> bindException(BindException e) {
         log.error(StatusCode.BIND_EXCEPTION.getMessage(), e);
         return R.failure(StatusCode.BIND_EXCEPTION);
     }
 
     @ExceptionHandler(CommonException.class)
-    public R commonException(CommonException e) {
+    public R<Void> commonException(CommonException e) {
         log.error(e.getStatusCode().getMessage(), e);
         return R.failure(e.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
-    public R exception(Exception e) {
+    public R<Void> exception(Exception e) {
         log.error("ERROR:", e);
         return R.failure(StatusCode.SERVER_EXCEPTION);
     }

@@ -89,7 +89,7 @@ import {addUser, deleteUser, getUsers, updateUser} from '@/api/user'
 
 import {getRoles} from '@/api/role'
 
-import {addUserRole, getUserRoles} from '@/api/userRole'
+import {addUserRole, deleteUserRole, getUserRoles} from '@/api/userRole'
 
 export default {
   data() {
@@ -99,7 +99,6 @@ export default {
       form: {},
       roles: [],
       userId: null,
-      userRoles: [],
       props: {
         label: 'name',
       },
@@ -129,7 +128,9 @@ export default {
     },
     getUserRoles() {
       getUserRoles({userId: this.userId}).then(data => {
-        this.userRoles = data
+        this.$refs.tree.setCheckedKeys(data.map(role => {
+          return role.id
+        }), false)
       })
     },
     handleSearchButton() {
@@ -168,11 +169,20 @@ export default {
       this.roleDialog = true
     },
     handleCheck(data) {
-      addUserRole({userId: this.userId, roleId: data.id}).then(() => {
-        this.$message.success('授权成功')
-      }).catch(() => {
-        this.$refs.tree.getNode(data).setChecked(false)
-      })
+      const node = this.$refs.tree.getNode(data)
+      if (node.checked) {
+        addUserRole({userId: this.userId, roleId: data.id}).then(() => {
+          this.$message.success('授权成功')
+        }).catch(() => {
+          node.setChecked(false)
+        })
+      } else {
+        deleteUserRole({userId: this.userId, roleId: data.id}).then(() => {
+          this.$message.success('撤销授权')
+        }).catch(() => {
+          node.setChecked(true)
+        })
+      }
     },
     handleDeleteButton(item) {
       deleteUser(item.id).then(() => {
