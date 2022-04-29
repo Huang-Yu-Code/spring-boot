@@ -4,7 +4,7 @@ const url = '/users'
 
 export function getUsers(params) {
   return request({
-    url, method: 'get', params: params
+    url, method: 'get', params
   })
 }
 

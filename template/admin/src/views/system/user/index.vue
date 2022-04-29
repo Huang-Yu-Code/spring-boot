@@ -1,27 +1,5 @@
 <template>
   <div>
-    <!--查找-->
-    <el-collapse>
-      <el-collapse-item>
-        <template slot="title">
-          精准查找
-        </template>
-        <el-form :inline="true" :model="params" class="demo-form-inline">
-          <el-form-item label="账号">
-            <el-input v-model="params.username" maxlength="16" placeholder="账号" show-word-limit></el-input>
-          </el-form-item>
-          <el-form-item label="状态">
-            <el-select v-model="params.state" placeholder="请选择账号状态">
-              <el-option label="正常" value="1"></el-option>
-              <el-option label="异常" value="0"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button size="small" type="primary" @click="handleSearchButton">查找</el-button>
-          </el-form-item>
-        </el-form>
-      </el-collapse-item>
-    </el-collapse>
     <!--表格-->
     <el-table :data="tableData" border highlight-current-row size="small" stripe style="width: 100%">
       <el-table-column align="center" label="序号" type="index" width="50"></el-table-column>
@@ -70,7 +48,7 @@
       </el-form>
     </el-dialog>
     <!--授权面板-->
-    <el-dialog :visible.sync="roleDialog" title="授权" width="33%">
+    <el-dialog :visible.sync="roleDialog" title="授权" width="33%" @closed="handleClose">
       <el-tree
         ref="tree"
         :data="roles"
@@ -94,7 +72,6 @@ import {addUserRole, deleteUserRole, getUserRoles} from '@/api/userRole'
 export default {
   data() {
     return {
-      params: {},
       tableData: [],
       form: {},
       roles: [],
@@ -117,7 +94,7 @@ export default {
       this.getRoles()
     },
     getTableData() {
-      getUsers(this.params).then(data => {
+      getUsers().then(data => {
         this.tableData = data
       })
     },
@@ -125,16 +102,6 @@ export default {
       getRoles({}).then(data => {
         this.roles = data
       })
-    },
-    getUserRoles() {
-      getUserRoles({userId: this.userId}).then(data => {
-        this.$refs.tree.setCheckedKeys(data.map(role => {
-          return role.id
-        }), false)
-      })
-    },
-    handleSearchButton() {
-      this.getTableData();
     },
     handleAddButton() {
       this.addDialog = true
@@ -165,8 +132,15 @@ export default {
     },
     handleRoleButton(item) {
       this.userId = item.id
-      this.getUserRoles()
+      getUserRoles({userId: item.id}).then(data => {
+        this.$refs.tree.setCheckedKeys(data.map(role => {
+          return role.id
+        }), false)
+      })
       this.roleDialog = true
+    },
+    handleClose(){
+      this.$refs.tree.setCheckedKeys([],false)
     },
     handleCheck(data) {
       const node = this.$refs.tree.getNode(data)
