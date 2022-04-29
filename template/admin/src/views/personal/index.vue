@@ -80,13 +80,14 @@
 <script>
 
 import {getUserInfo} from '@/api/auth'
+import {updateUserInfo} from '@/api/userInfo'
 
 export default {
   data() {
     return {
       userInfo: {},
       updateDialog: false,
-      action: 'http://localhost:8080/api/upload',
+      action: 'http://localhost:8080/api/user-infos',
       headers: {},
       data: {},
       name: 'file',
@@ -107,15 +108,27 @@ export default {
         this.userInfo = data
       })
     },
-    handleUpload() {
-    },
     handleUpdateButton() {
       this.data = {...this.userInfo}
       this.updateDialog = true
     },
     updateUserInfo() {
-      console.log(this.$refs.upload)
-      this.$refs.upload.submit();
+      const uploadFiles = this.$refs.upload.uploadFiles
+      let data;
+      if (uploadFiles.length === 0) {
+        data = {...this.data}
+      } else {
+        data = new FormData()
+        data.append('file', uploadFiles[0].raw)
+        for (let key in this.data) {
+          data.append(key, this.data[key])
+        }
+      }
+      updateUserInfo(data).then(() => {
+        this.updateDialog = false
+        this.$message.success('更新成功')
+        this.getUserInfo()
+      })
     },
     handleBeforeUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';

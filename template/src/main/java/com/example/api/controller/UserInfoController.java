@@ -6,12 +6,14 @@ import com.example.api.service.IUserInfoService;
 import com.example.common.entity.R;
 import com.example.common.enums.StatusCode;
 import com.example.common.exception.CommonException;
+import com.example.common.util.MinioUtils;
 import com.example.common.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ import java.util.List;
 public class UserInfoController {
     private final IUserInfoService iUserInfoService;
     private final TokenUtils tokenUtils;
+    private final MinioUtils minioUtils;
 
     @PostMapping("")
     public R<Void> insert(@RequestBody UserInfo entity) {
@@ -67,7 +70,9 @@ public class UserInfoController {
     }
 
     @PutMapping("")
-    public R<Void> update(@RequestBody UserInfo entity) {
+    public R<Void> update(@RequestParam(value = "file", required = false) MultipartFile multipartFile, UserInfo entity) {
+        String upload = minioUtils.upload(multipartFile);
+        entity.setImage(upload);
         iUserInfoService.updateById(entity);
         return R.success();
     }

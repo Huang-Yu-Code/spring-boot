@@ -18,7 +18,6 @@ import com.example.common.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -102,8 +101,8 @@ public class AuthController {
     }
 
     @PostMapping("/upload")
-    public R<Void> upload(@RequestParam("file") MultipartFile multipartFile, UserInfo userInfo) {
-        log.info("file:{}", multipartFile.getOriginalFilename());
+    public R<Void> upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile, UserInfo userInfo) {
+        log.info("file:{}", multipartFile);
         log.info("params:{}", userInfo);
         return R.success();
     }

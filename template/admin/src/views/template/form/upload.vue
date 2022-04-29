@@ -20,6 +20,7 @@
       :drag="false"
       :file-list="fileList"
       :headers="headers"
+      :http-request="handleUpload"
       :multiple="false"
       :name="name"
       :on-change="handleOnChange"
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import request from '@/utils/request';
 
 export default {
   data() {
@@ -53,7 +55,6 @@ export default {
   },
   methods: {
     handleBeforeUpload(file) {
-      console.log(file.type)
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -67,24 +68,52 @@ export default {
     },
     handleOnChange(file, fileList) {
       this.image = URL.createObjectURL(file.raw)
-      console.log(fileList)
+    },
+    handleUpload() {
+      console.log(0);
     },
     submitUpload() {
-      console.log('click')
-      this.$refs.upload.submit();
+      // console.log(this.$refs.upload)
+      // console.log(this.$refs.upload.uploadFiles.length)
+      // if (this.$refs.upload.uploadFiles.length === 0) {
+
+      // } else {
+      //   this.$refs.upload.submit();
+      // }
+      const length = this.$refs.upload.uploadFiles.length
+      let data
+      if (length === 0) {
+        data = this.data
+      } else {
+        const uploadFile = this.$refs.upload.uploadFiles[0]
+        data = new FormData()
+        data.append('file', uploadFile.row)
+        data.append('file', uploadFile.row)
+        data.append('file', uploadFile.row)
+        data.append('file', uploadFile.row)
+        data.append('data', new Blob(JSON.stringify(this.data), {type: 'application/json'}))
+      }
+      request({
+        url: '/upload',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        method: 'post',
+        data
+      }).then(() => {
+        this.$message.success('ok')
+      })
     },
     handleOnProgress(event, file, fileList) {
-      console.log(event, file, fileList)
+
     },
     handleOnSuccess(response, file, fileList) {
-      console.log(response, file, fileList)
+
       this.$refs.upload.clearFiles()
       this.image = false
       this.data = {}
       this.$message.success('上传成功');
     },
     handleOnError(err, file, fileList) {
-      console.log(err, file, fileList)
+
     }
   }
 }

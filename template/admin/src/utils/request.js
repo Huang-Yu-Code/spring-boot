@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {MessageBox, Message} from 'element-ui'
+import {Message} from 'element-ui'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
 
@@ -11,9 +11,7 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
-    if (store.getters.token) {
-      config.headers['Authorization'] = getToken()
-    }
+    config.headers['Authorization'] = getToken()
     return config
   },
   error => {
@@ -25,36 +23,27 @@ request.interceptors.request.use(
 // response interceptor
 request.interceptors.response.use(
   response => {
-    const {code, message, data} = response.data
-    if (code !== 200) {
-      Message({
-        message,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      if (code===401){
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
-      return Promise.reject(new Error(message))
-    } else {
-      return data
-    }
+    const {data} = response.data
+    return data
   },
   error => {
+    let message;
+    if (error.response) {
+      const {status} = error.response
+      if (status === 401) {
+        store.dispatch('auth/resetToken').then(() => {
+          location.reload()
+        })
+      }
+      message = error.response.data.message
+    } else {
+      message = '网络错误,请检查网络连接'
+    }
     Message({
-      message: '网络错误,请检查网络连接',
+      message: message,
       type: 'error',
       duration: 3 * 1000
     })
-    console.log(error.message)
     return Promise.reject(error)
   }
 )

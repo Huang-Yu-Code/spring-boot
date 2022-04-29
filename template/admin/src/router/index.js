@@ -52,17 +52,43 @@ export const constantRoutes = [
   {
     path: '/template',
     component: Layout,
-    redirect: '/template/index',
-    name: 'Template',
+    redirect: 'noRedirect',
     meta: {
       title: '模板管理',
-      icon: 'el-icon-s-help'
+      icon: 'el-icon-s-help',
     },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/template/index'),
+        path: 'dashboard',
+        component: () => import('@/views/template/dashboard'),
         meta: {title: '仪表盘'}
+      },
+      {
+        path: 'echarts',
+        component: () => import('@/views/template/echarts'),
+        meta: {title: 'Echarts'},
+        children: [
+          {
+            path: 'bar',
+            component: () => import('@/views/template/echarts/bar'),
+            meta: {title: '柱状图'}
+          },
+          {
+            path: 'line',
+            component: () => import('@/views/template/echarts/line'),
+            meta: {title: '折线图'}
+          },
+          {
+            path: 'pie',
+            component: () => import('@/views/template/echarts/pie'),
+            meta: {title: '饼图'}
+          },
+          {
+            path: 'scatter',
+            component: () => import('@/views/template/echarts/scatter'),
+            meta: {title: '散点图'}
+          }
+        ]
       },
       {
         path: 'table',
@@ -76,7 +102,7 @@ export const constantRoutes = [
       },
       {
         path: 'upload',
-        component: () => import('@/views/template/upload'),
+        component: () => import('@/views/template/form/upload'),
         meta: {title: '上传'}
       }
     ]
@@ -85,12 +111,10 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
 
-  // personal
   {
     path: '/personal',
     component: Layout,
-    redirect: '/personal/index',
-    name: 'Personal',
+    redirect: 'noRedirect',
     meta: {
       title: '个人中心',
       icon: 'nested',
@@ -113,12 +137,11 @@ export const asyncRoutes = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/role',
-    name: 'System',
+    redirect: 'noRedirect',
     meta: {
       roles: ['admin'],
       title: '系统管理',
-      icon: 'el-icon-s-help'
+      icon: 'el-icon-s-help',
     },
     children: [
       {

@@ -2,4 +2,4 @@
   endpoint: http://localhost:9000
   access-key: minioadmin
   secret-key: minioadmin
-  bucket: asiatrip
+  bucket: template
