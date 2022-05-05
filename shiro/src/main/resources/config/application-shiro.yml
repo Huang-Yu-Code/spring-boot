@@ -1,0 +1,6 @@
+shiro:
+  loginUrl: /login
+  unauthorizedUrl: /unauthorized
+  enabled: true
+  web:
+    enabled: true

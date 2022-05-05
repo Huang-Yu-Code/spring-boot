@@ -1,0 +1,11 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: admin-server
+  thymeleaf:
+    cache: false
+    check-template: false
+    check-template-location: false
+  profiles:
+    active: default

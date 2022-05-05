@@ -1,0 +1,7 @@
+spring:
+  mail:
+    protocol: smtp
+    host: smtp.qq.com
+    port: 587
+    username: coderfast@qq.com
+    password: puxmeyvcvsxgbfic

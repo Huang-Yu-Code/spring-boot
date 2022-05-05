@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /jwt
+  ssl.key-store: classpath:keystore.p12
+  ssl.key-store-password: 123456
+  ssl.key-store-type: PKCS12
+  ssl.key-alias: tomcat
+spring:
+  application:
+    name: jwt
+  jackson:
+    default-property-inclusion: non_null
+  profiles:
+    active: default
+    include:
+      - jwt

@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: shiro
+  profiles:
+    active: default
+    include:
+      - shiro

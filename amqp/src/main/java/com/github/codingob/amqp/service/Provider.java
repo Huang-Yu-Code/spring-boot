@@ -1,24 +1,25 @@
 package com.github.codingob.amqp.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
 @Service
+@RequiredArgsConstructor
 public class Provider {
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    public void sendQueue(String routingKey, Object object) {
+        rabbitTemplate.convertAndSend(routingKey, object);
     }
 
-    public void sendQueue(){
-        rabbitTemplate.convertAndSend("queue","message");
+    public void sendQueue(String exchange, String routingKey, Object object, String id) {
+        rabbitTemplate.convertAndSend(exchange, routingKey, object, new CorrelationData(id));
     }
 }

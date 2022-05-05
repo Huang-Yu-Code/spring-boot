@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 交换机配置
  *
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */

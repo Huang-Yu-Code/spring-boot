@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 队列配置
  *
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
@@ -66,7 +66,7 @@ public class QueueConfig {
     }
 
     @Bean
-    public Queue ackQueue(){
+    public Queue ackQueue() {
         Map<String, Object> args = new HashMap<>(2);
         args.put("x-dead-letter-exchange", "demo.dead");
         args.put("x-dead-letter-routing-key", "");

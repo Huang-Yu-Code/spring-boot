@@ -1,7 +1,7 @@
 package com.example.minio.service.impl;
 
-import com.example.common.exception.CommonException;
-import com.example.common.util.MinioUtils;
+import com.example.minio.common.exception.CommonException;
+import com.example.minio.common.util.MinioUtils;
 import com.example.minio.entity.MinioFile;
 import com.example.minio.mapper.MinioFileMapper;
 import com.example.minio.service.MinioFileService;
@@ -42,10 +42,10 @@ public class MinioFileServiceImpl implements MinioFileService {
 
     @Override
     public void delete(Long id) {
-        log.info("id:{}",id);
+        log.info("id:{}", id);
         MinioFile minioFile = minioFileMapper.select(id);
-        log.info("minioFile:{}",minioFile);
-        Assert.notNull(minioFile,"资源文件不存在");
+        log.info("minioFile:{}", minioFile);
+        Assert.notNull(minioFile, "资源文件不存在");
         String url = minioFile.getUrl();
         minioFileMapper.delete(id);
         minioUtils.delete(url);

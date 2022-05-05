@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: mail
+  profiles:
+    active: default
+    include:
+      - mail

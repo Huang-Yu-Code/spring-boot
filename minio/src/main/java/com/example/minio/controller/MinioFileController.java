@@ -1,6 +1,6 @@
 package com.example.minio.controller;
 
-import com.example.common.util.Response;
+import com.example.minio.common.util.Response;
 import com.example.minio.entity.MinioFile;
 import com.example.minio.service.MinioFileService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.common.enums.ResponseCode.SUCCESS;
+import static com.example.minio.common.enums.ResponseCode.SUCCESS;
 
 /**
  * 项目: Minio

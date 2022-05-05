@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 绑定配置
  *
- * @author codingob
+ * @author 黄宇
  * @version 1.0.0
  * @since JDK1.8
  */
@@ -46,7 +46,7 @@ public class BindingConfig {
     }
 
     @Bean
-    public Binding deadBinding(Queue deadQueue,DirectExchange deadExchange){
+    public Binding deadBinding(Queue deadQueue, DirectExchange deadExchange) {
         return BindingBuilder.bind(deadQueue).to(deadExchange).with("");
     }
 }
