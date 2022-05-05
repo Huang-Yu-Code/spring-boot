@@ -61,3 +61,10 @@ services:
       - "9000:9000"
       - "9001:9001"
     restart: always
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always

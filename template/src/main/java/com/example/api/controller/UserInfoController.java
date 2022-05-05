@@ -71,8 +71,12 @@ public class UserInfoController {
 
     @PutMapping("")
     public R<Void> update(@RequestParam(value = "file", required = false) MultipartFile multipartFile, UserInfo entity) {
-        String upload = minioUtils.upload(multipartFile);
-        entity.setImage(upload);
+        if (!ObjectUtils.isEmpty(multipartFile)){
+            String image = entity.getImage();
+            String upload = minioUtils.upload(multipartFile);
+            entity.setImage(upload);
+            minioUtils.delete(image);
+        }
         iUserInfoService.updateById(entity);
         return R.success();
     }

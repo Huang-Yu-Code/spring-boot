@@ -35,25 +35,21 @@
         <el-form-item label="头像">
           <el-upload
             ref="upload"
-            :action="action"
+            action=""
             :auto-upload="false"
             :before-upload="handleBeforeUpload"
-            :data="data"
-            :drag="false"
             :file-list="fileList"
-            :headers="headers"
             :multiple="false"
-            :name="name"
             :on-change="handleOnChange"
             :on-error="handleOnError"
             :on-progress="handleOnProgress"
             :on-success="handleOnSuccess"
             :show-file-list="false"
-            accept="image/*"
+            accept="image/png"
             class="avatar-uploader"
             list-type="picture"
             with-credentials>
-            <el-avatar :size="150" :src="data.image"></el-avatar>
+            <el-avatar :size="150" :src="image"></el-avatar>
           </el-upload>
         </el-form-item>
         <el-form-item label="姓名">
@@ -87,9 +83,8 @@ export default {
     return {
       userInfo: {},
       updateDialog: false,
-      action: 'http://localhost:8080/api/user-infos',
-      headers: {},
       data: {},
+      image:'',
       name: 'file',
       fileList: []
     }
@@ -110,19 +105,17 @@ export default {
     },
     handleUpdateButton() {
       this.data = {...this.userInfo}
+      this.image = this.userInfo.image
       this.updateDialog = true
     },
     updateUserInfo() {
       const uploadFiles = this.$refs.upload.uploadFiles
-      let data;
-      if (uploadFiles.length === 0) {
-        data = {...this.data}
-      } else {
-        data = new FormData()
+      const data = new FormData();
+      for (let key in this.data) {
+        data.append(key, this.data[key])
+      }
+      if (uploadFiles.length === 1) {
         data.append('file', uploadFiles[0].raw)
-        for (let key in this.data) {
-          data.append(key, this.data[key])
-        }
       }
       updateUserInfo(data).then(() => {
         this.updateDialog = false
@@ -131,6 +124,7 @@ export default {
       })
     },
     handleBeforeUpload(file) {
+      console.log('before upload')
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -143,7 +137,10 @@ export default {
       return isJPG && isLt2M;
     },
     handleOnChange(file, fileList) {
-      this.data.image = URL.createObjectURL(file.raw)
+      this.$refs.upload.clearFiles()
+      this.image = file.url
+      this.$refs.upload.uploadFiles.push(file)
+      // console.log(this.$refs.upload.uploadFiles)
     },
     handleOnProgress(event, file, fileList) {
       console.log(event, file, fileList)

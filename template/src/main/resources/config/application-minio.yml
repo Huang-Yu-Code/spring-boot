@@ -1,5 +1,5 @@
 ﻿minio:
-  endpoint: http://localhost:9000
+  endpoint: http://server:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket: template
