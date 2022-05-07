@@ -15,6 +15,7 @@
         <module>data-jpa</module>
         <module>data-redis</module>
         <module>data-mongo</module>
+        <module>elasticsearch</module>
     </modules>
 
     <properties>

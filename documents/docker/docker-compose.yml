@@ -19,6 +19,14 @@ services:
       - "3306:3306"
     restart: always
 
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+
   adminer:
     image: adminer
     ports:
@@ -67,4 +75,21 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    restart: always
+
+  elasticsearch:
+    image: elasticsearch
+    environment:
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    restart: always
+
+  kibana:
+    image: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
     restart: always
