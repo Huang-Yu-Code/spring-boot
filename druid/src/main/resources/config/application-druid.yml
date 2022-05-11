@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    druid:
+      db-type: mysql
+      initial-size: 30
+      max-active: 30
+      min-idle: 20
+      max-wait: 20

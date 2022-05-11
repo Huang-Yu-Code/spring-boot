@@ -1,0 +1,5 @@
+pagehelper:
+  auto-dialect: true
+  reasonable: true
+  close-conn: true
+  offset-as-page-num: false

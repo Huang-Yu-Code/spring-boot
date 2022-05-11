@@ -29,6 +29,7 @@
         <module>wechat</module>
         <module>minio</module>
         <module>template</module>
+        <module>druid</module>
     </modules>
 
 </project>

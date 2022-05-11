@@ -1,14 +1,13 @@
 spring:
   application:
-    name: mybatis
+    name: druid
   profiles:
     active: default
     include:
-      - mybatis
-      - pagehelper
+      - druid
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://server:3306/spring_boot
     username: root
     password: root
-
+    type: com.alibaba.druid.pool.DruidDataSource

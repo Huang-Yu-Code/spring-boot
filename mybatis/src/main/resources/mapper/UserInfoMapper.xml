@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.example.mybatis.entity.UserInfo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="idNumbers" column="id_numbers" jdbcType="VARCHAR"/>
+        <result property="phoneNumbers" column="phone_numbers" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into user_info(id, name, image, id_numbers, phone_numbers, email)
+        values (#{id}, #{name}, #{image}, #{idNumbers}, #{phoneNumbers}, #{email})
+    </insert>
+
+    <select id="select" resultMap="BaseResultMap">
+        select id,
+               name,
+               image,
+               id_numbers,
+               phone_numbers,
+               email,
+               create_time,
+               update_time
+        from user_info
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select id,
+               name,
+               image,
+               id_numbers,
+               phone_numbers,
+               email,
+               create_time,
+               update_time
+        from user_info
+        where id = #{id}
+    </select>
+
+    <update id="update">
+        update user_info
+        <set>
+            <if test="name != null and name!=''">
+                name=#{name},
+            </if>
+            <if test="image != null and image!=''">
+                image=#{image},
+            </if>
+            <if test="idNumbers != null and idNumbers!=''">
+                id_numbers=#{idNumbers},
+            </if>
+            <if test="phoneNumbers != null and phoneNumbers!=''">
+                phone_numbers=#{phoneNumbers},
+            </if>
+            <if test="email != null and email!=''">
+                email=#{email},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from user_info
+        where id = #{id}
+    </delete>
+
+</mapper>
