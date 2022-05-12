@@ -1,5 +1,6 @@
 package com.example.mybatis.mapper;
 
+import com.example.mybatis.dto.UserDto;
 import com.example.mybatis.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,7 @@ public interface UserMapper {
     int update(User user);
 
     int delete(@Param("id") Long id);
+
+    List<UserDto> get();
+    UserDto getOne(@Param("id") Long id);
 }

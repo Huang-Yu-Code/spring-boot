@@ -10,6 +10,34 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="ResultMap" type="com.example.mybatis.dto.UserDto">
+        <association property="user" javaType="com.example.mybatis.entity.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        </association>
+        <association property="userInfo" javaType="com.example.mybatis.entity.UserInfo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name_user_info" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="idNumbers" column="id_numbers" jdbcType="VARCHAR"/>
+            <result property="phoneNumbers" column="phone_numbers" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time_user_info" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time_user_info" jdbcType="TIMESTAMP"/>
+        </association>
+        <collection property="roles" javaType="list" ofType="com.example.mybatis.entity.Role">
+            <id property="id" column="id_role" jdbcType="BIGINT"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="name" column="name_role" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time_role" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time_role" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into user(username, password, state)
         values (#{username}, #{password}, #{state})
@@ -44,5 +72,58 @@
         from user
         where id = #{id}
     </delete>
+
+    <select id="get" resultMap="ResultMap">
+        select u.id,
+               u.username,
+               u.password,
+               u.state,
+               u.create_time,
+               u.update_time,
+               ui.id,
+               ui.name name_user_info,
+               ui.image,
+               ui.id_numbers,
+               ui.phone_numbers,
+               ui.email,
+               ui.create_time create_time_user_info,
+               ui.update_time update_time_user_info,
+               r.id id_role,
+               r.name name_role,
+               r.code,
+               r.create_time create_time_role,
+               r.update_time update_time_role
+        from user u
+                 inner join user_info ui on u.id = ui.id
+                 inner join user_role ur on u.id = ur.user_id
+                 inner join role r on u.id = ur.role_id
+    </select>
+
+    <select id="getOne" resultMap="ResultMap">
+        select u.id,
+               u.username,
+               u.password,
+               u.state,
+               u.create_time,
+               u.update_time,
+               ui.id,
+               ui.name name_user_info,
+               ui.image,
+               ui.id_numbers,
+               ui.phone_numbers,
+               ui.email,
+               ui.create_time create_time_user_info,
+               ui.update_time update_time_user_info,
+               r.id id_role,
+               r.name name_role,
+               r.code,
+               r.create_time create_time_role,
+               r.update_time update_time_role
+        from user u
+                 inner join user_info ui on u.id = ui.id
+                 inner join user_role ur on u.id = ur.user_id
+                 inner join role r on u.id = ur.role_id
+        where u.id = #{id}
+    </select>
 
 </mapper>

@@ -31,5 +31,8 @@
         <module>template</module>
         <module>druid</module>
     </modules>
+    <properties>
+        <java.version>8</java.version>
+    </properties>
 
 </project>

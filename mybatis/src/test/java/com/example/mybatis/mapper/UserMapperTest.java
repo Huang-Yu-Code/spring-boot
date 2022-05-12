@@ -1,5 +1,6 @@
 package com.example.mybatis.mapper;
 
+import com.example.mybatis.dto.UserDto;
 import com.example.mybatis.entity.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,7 +39,7 @@ class UserMapperTest {
 
     @Test
     void select() {
-        PageHelper.startPage(1,2);
+        PageHelper.startPage(1, 2);
         List<User> users = userMapper.select();
         PageInfo<User> pageInfo = new PageInfo<>(users);
         log.info("{}", users);
@@ -66,5 +67,19 @@ class UserMapperTest {
     void delete() {
         int rows = userMapper.delete(3L);
         Assertions.assertEquals(1, rows);
+    }
+
+    @Test
+    void get() {
+        List<UserDto> userDtos = userMapper.get();
+        log.info("{}", userDtos);
+        Assertions.assertNotNull(userDtos);
+    }
+
+    @Test
+    void getOne() {
+        UserDto userDto = userMapper.getOne(1L);
+        log.info("{}", userDto);
+        Assertions.assertNotNull(userDto);
     }
 }
