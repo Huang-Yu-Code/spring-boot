@@ -37,12 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-        jdbcTokenRepository.setDataSource(dataSource);
-        return jdbcTokenRepository;
-    }
+    //@Bean
+    //public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+    //    JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+    //    jdbcTokenRepository.setDataSource(dataSource);
+    //    return jdbcTokenRepository;
+    //}
 
     @Override
     public UserDetailsService userDetailsService() {
@@ -107,7 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.rememberMe()
                 .rememberMeParameter("rememberMe")
-                .tokenRepository(persistentTokenRepository())
+                //.tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(60 * 60 * 24 * 7)
                 .userDetailsService(userDetailsService());
         http.logout()

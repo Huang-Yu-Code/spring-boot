@@ -1,7 +1,7 @@
-package com.github.codingob.spring.boot.web.socket.controller;
+package com.example.websocket.controller;
 
-import com.github.codingob.spring.boot.web.socket.message.RequestMessage;
-import com.github.codingob.spring.boot.web.socket.message.ResponseMessage;
+import com.example.websocket.message.RequestMessage;
+import com.example.websocket.message.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

@@ -1,4 +1,4 @@
-package com.github.codingob.spring.boot.web.socket;
+package com.example.websocket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,8 +11,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
  */
 @SpringBootApplication
 @EnableWebSocketMessageBroker
-public class WebSocketApplication {
+public class WebsocketApplication {
     public static void main(String[] args) {
-        SpringApplication.run(WebSocketApplication.class, args);
+        SpringApplication.run(WebsocketApplication.class, args);
     }
 }

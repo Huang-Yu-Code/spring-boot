@@ -1,4 +1,4 @@
-package com.github.codingob.spring.boot.web.socket.message;
+package com.example.websocket.message;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
